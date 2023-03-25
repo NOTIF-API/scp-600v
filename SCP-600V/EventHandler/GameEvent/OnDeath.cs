@@ -50,7 +50,14 @@ namespace SCP_600V.EventHandler.GameEvent
                         }
                         if (api.Scp600PlyGet.IsScp600(ev.Player))
                         {
-                            api.Scp600manager.Remove(ev.Player);
+                            ev.Player.SessionVariables.Remove("IsSCP600");
+                            ev.Player.SessionVariables.Remove("IsScp");
+                            ev.Player.MaxHealth = 100;
+
+                            ev.Player.CustomInfo = string.Empty;
+                            ev.Player.InfoArea |= ~PlayerInfoArea.Nickname;
+                            ev.Player.InfoArea |= ~PlayerInfoArea.UnitName;
+                            Log.Debug("Remove all session variables and set default hp");
                             Log.Debug("scp600 player is dead");
                         }
                     }

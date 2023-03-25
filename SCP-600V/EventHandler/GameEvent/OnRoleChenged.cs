@@ -13,7 +13,7 @@ namespace SCP_600V.EventHandler.GameEvent
             {
                 if (e.NewRole == PlayerRoles.RoleTypeId.Spectator)
                 {
-                    SCP_600V.API.Players.Scp600manager.Remove(e.Player);
+                    
                 }
             }
         }

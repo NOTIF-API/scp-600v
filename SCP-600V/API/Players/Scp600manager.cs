@@ -1,5 +1,6 @@
 ﻿using Exiled.API.Features;
 using SCP_600V.API.Players;
+using Exiled.API.Enums;
 
 namespace SCP_600V.API.Players
 {
@@ -14,8 +15,12 @@ namespace SCP_600V.API.Players
                 ply.MaxHealth = 100;
 
                 ply.CustomInfo = string.Empty;
+                ply.ReferenceHub.nicknameSync.ShownPlayerInfo &= ~PlayerInfoArea.Nickname;
+                ply.ReferenceHub.nicknameSync.ShownPlayerInfo &= ~PlayerInfoArea.UnitName;
+                ply.ReferenceHub.nicknameSync.ShownPlayerInfo &= ~PlayerInfoArea.Role;
                 ply.InfoArea |= ~PlayerInfoArea.Nickname;
                 ply.InfoArea |= ~PlayerInfoArea.UnitName;
+                ply.DisableAllEffects();
                 Log.Debug("Remove all session variables and set default hp");
             }
         }
@@ -32,7 +37,11 @@ namespace SCP_600V.API.Players
             {
                 ply.Group = a;
             }
-            ply.CustomInfo = $"{ply.Nickname}\n{Scp600PlyGet.GetScp600().Count}";
+            ply.CustomInfo = $"{ply.Nickname}\nSCP-600V-{Scp600PlyGet.GetScp600().Count}";
+            ply.ReferenceHub.nicknameSync.ShownPlayerInfo &= ~PlayerInfoArea.Nickname;
+            ply.ReferenceHub.nicknameSync.ShownPlayerInfo &= ~PlayerInfoArea.UnitName;
+            ply.ReferenceHub.nicknameSync.ShownPlayerInfo &= ~PlayerInfoArea.Role;
+            ply.EnableEffect(new Effect(EffectType.Bleeding, 9999f));
         }
     }
 }
