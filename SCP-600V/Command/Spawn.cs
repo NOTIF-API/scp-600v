@@ -2,7 +2,6 @@
 using Exiled.API.Features;
 using CommandSystem;
 using Exiled.Permissions.Extensions;
-using FMOD;
 
 namespace SCP_600V.Command
 {
@@ -13,7 +12,7 @@ namespace SCP_600V.Command
 
         public string[] Aliases { get; set; } = { "S600", "sp6" };
 
-        public string Description { get; set; } = "Spawn your as scp-600v";
+        public string Description { get; set; } = "Spawn your or another player as scp-600v";
 
         public bool Execute(ArraySegment<string> arguments, ICommandSender sender, out string response)
         {
@@ -22,16 +21,39 @@ namespace SCP_600V.Command
             {
                 if (writer.CheckPermission("s6.SelfSpawn"))
                 {
-                    if (writer.Role.Type != PlayerRoles.RoleTypeId.Spectator)
+                    if (arguments.Count == 0)
                     {
-                        new Extension.Scp600(writer);
-                        response = Sai.Instance.Config.SpawnMessage;
-                        return true;
+                        if (writer.Role.Type != PlayerRoles.RoleTypeId.Spectator)
+                        {
+                            new Extension.Scp600(writer);
+                            response = Sai.Instance.Config.SpawnMessage;
+                            return true;
+                        }
+                        if (writer.Role.Type == PlayerRoles.RoleTypeId.Spectator)
+                        {
+                            response = Sai.Instance.Config.SpawnCommandEr;
+                            return false;
+                        }
                     }
-                    if (writer.Role.Type == PlayerRoles.RoleTypeId.Spectator)
+                    else
                     {
-                        response = Sai.Instance.Config.SpawnCommandEr;
-                        return false;
+                        Player neded = Player.Get(arguments.At(0));
+                        if (neded != null)
+                        {
+                            if (neded.Role.Type == PlayerRoles.RoleTypeId.Spectator)
+                            {
+                                response = Sai.Instance.Config.SpawnCommandEr;
+                                return false;
+                            }
+                            new Extension.Scp600(writer);
+                            response = Sai.Instance.Config.SpawnMessage;
+                            return true;
+                        }
+                        if (neded == null)
+                        {
+                            response = Sai.Instance.Config.PlayerNF;
+                            return false;
+                        }
                     }
                 }
                 else

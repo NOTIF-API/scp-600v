@@ -100,11 +100,13 @@
     </Reference>
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="API\Players\Scp600manager.cs" />
     <Compile Include="API\Players\Scp600PlyGet.cs" />
     <Compile Include="Command\ChengeClass.cs" />
     <Compile Include="Command\GetPlayerAsScp600.cs" />
     <Compile Include="Command\GetSessionVariables.cs" />
     <Compile Include="Command\MaxHealth.cs" />
+    <Compile Include="Command\PermissionList.cs" />
     <Compile Include="Command\Spawn.cs" />
     <Compile Include="Config.cs" />
     <Compile Include="EventHandler\GameEvent\OnDamage.cs" />
@@ -116,9 +118,6 @@
     <Compile Include="Extension\Scp600.cs" />
     <Compile Include="Sai.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
-  </ItemGroup>
-  <ItemGroup>
-    <Content Include="2Q.ico" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
 </Project>

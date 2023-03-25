@@ -1,6 +1,5 @@
 ﻿using PlayerRoles;
-using SCP_600V.Command;
-using System;
+using api = SCP_600V.API.Players;
 using System.Collections.Generic;
 using Exiled.API.Features;
 using EvArg = Exiled.Events.EventArgs;
@@ -14,52 +13,47 @@ namespace SCP_600V.EventHandler.GameEvent
     {
         public void OnPlayerKill(EvArg.Player.DiedEventArgs ev)
         {
-            // роль умершего игрока до смерти
-            RoleTypeId role = ev.TargetOldRole;
-            //получаем убитого игрока
-            Player deadplayer = ev.Player;
-            // получаем убийцу
-            Player killer = ev.Attacker;
-            // инвентарь убийцы
-            List<Item.Item> items = new List<Item.Item>();
-            // максимум хп убийцы
-            float mhea = killer.MaxHealth;
-            // текущие хп убийцы
-            float hea = killer.Health;
-            // позиция убийцы
-            Vector3 poso = killer.Position;
-            //если убица наш сцп
-            if (killer != deadplayer)
+            if (ev.Player != null)
             {
-                if (killer.SessionVariables.ContainsKey("IsSCP600"))
+                if (ev.Attacker != null)
                 {
-                    if (role != RoleTypeId.Spectator)
+                    RoleTypeId role = ev.TargetOldRole;
+
+                    List<Item.Item> items = new List<Item.Item>();
+
+                    float mhea = ev.Attacker.MaxHealth;
+
+                    float hea = ev.Attacker.Health;
+
+                    Vector3 poso = ev.Attacker.Position;
+                    Log.Debug($"Get all parameters");
+
+                    if (ev.Attacker.Nickname != ev.Player.Nickname)
                     {
-                        foreach (Item.Item a in killer.Items)
+                        if (api.Scp600PlyGet.IsScp600(ev.Attacker))
                         {
-                            items.Add(a);
+                            Log.Debug("Attacker is scp600");
+                            if (role != RoleTypeId.Spectator)
+                            {
+                                foreach (Item.Item a in ev.Attacker.Items)
+                                {
+                                    items.Add(a);
+                                }
+                                ev.Attacker.Role.Set(role, SpawnReason.ForceClass, RoleSpawnFlags.None);
+                                ev.Attacker.Teleport(poso);
+                                ev.Attacker.AddItem(items);
+                                ev.Attacker.Health = hea;
+                                ev.Attacker.MaxHealth = mhea;
+                                ev.Attacker.Broadcast(message: $"{Sai.Instance.Config.MessageScpTransform.Replace("{player}", ev.Player.Nickname)}", duration: 5);
+                                Log.Debug("Scp600 get new role");
+                            }
                         }
-                        killer.Role.Set(role, SpawnReason.ForceClass, RoleSpawnFlags.None);
-                        killer.Teleport(poso);
-                        killer.AddItem(items);
-                        killer.Health = hea;
-                        killer.MaxHealth = mhea;
-                        killer.Broadcast(message: $"{Sai.Instance.Config.MessageScpTransform.Replace("{player}", deadplayer.Nickname)}", duration: 5);
+                        if (api.Scp600PlyGet.IsScp600(ev.Player))
+                        {
+                            api.Scp600manager.Remove(ev.Player);
+                            Log.Debug("scp600 player is dead");
+                        }
                     }
-                }
-                if (deadplayer.SessionVariables.ContainsKey("IsSCP600"))
-                {
-                    deadplayer.SessionVariables.Remove("IsSCP600");
-                    deadplayer.SessionVariables.Remove("IsScp");
-                    //убираем тег групы
-                    deadplayer.Group = null;
-                    //возрощаем его хп на дефолт
-                    deadplayer.MaxHealth = 100;
-                    //убираем тег кастомного юнита
-                    deadplayer.CustomInfo = $"{deadplayer.Nickname}";
-                    deadplayer.ReferenceHub.nicknameSync.ShownPlayerInfo &= ~PlayerInfoArea.Nickname;
-                    deadplayer.ReferenceHub.nicknameSync.ShownPlayerInfo &= ~PlayerInfoArea.UnitName;
-                    deadplayer.ReferenceHub.nicknameSync.ShownPlayerInfo &= ~PlayerInfoArea.Role;
                 }
             }
         }

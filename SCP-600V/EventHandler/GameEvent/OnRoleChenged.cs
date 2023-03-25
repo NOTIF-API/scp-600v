@@ -9,12 +9,11 @@ namespace SCP_600V.EventHandler.GameEvent
     {
         public void OnRoleChenge(EvArg.Player.ChangingRoleEventArgs e)
         {
-            if (e.Player.SessionVariables.ContainsKey("IsSCP600"))
+            if (SCP_600V.API.Players.Scp600PlyGet.IsScp600(e.Player))
             {
                 if (e.NewRole == PlayerRoles.RoleTypeId.Spectator)
                 {
-                    e.Player.SessionVariables.Remove("IsSCP600");
-                    e.Player.SessionVariables.Remove("IsScp");
+                    SCP_600V.API.Players.Scp600manager.Remove(e.Player);
                 }
             }
         }

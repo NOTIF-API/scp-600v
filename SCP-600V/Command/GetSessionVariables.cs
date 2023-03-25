@@ -26,15 +26,18 @@ namespace SCP_600V.Command
                         response = Sai.Instance.Config.PlayerNF;
                         return false;
                     }
-
-                    string asd = "";
-                    foreach (string arga in ply.SessionVariables.Keys)
+                    if (ply != null)
                     {
-                        asd += arga + " ";
+                        string asd = "";
+                        foreach (string arga in ply.SessionVariables.Keys)
+                        {
+                            asd += arga + " ";
+                        }
+                        response = asd;
+                        return true;
                     }
-                    response = asd;
-                    return true;
-
+                    response = "idk";
+                    return false;
                 }
                 else
                 {

@@ -33,11 +33,31 @@ namespace SCP_600V.Command
                         {
                             try
                             {
-                                int num = int.Parse(arguments.At(0));
-                                ply.MaxHealth = num;
-                                ply.Health = num;
-                                response = $"{Sai.Instance.Config.MhpChenged.Replace("{amount}", num.ToString())}";
-                                return true;
+                                if (arguments.Count == 1)
+                                {
+                                    int num = int.Parse(arguments.At(0));
+                                    ply.MaxHealth = num;
+                                    ply.Health = num;
+                                    response = $"{Sai.Instance.Config.MhpChenged.Replace("{amount}", num.ToString())}";
+                                    return true;
+                                }
+                                if (arguments.Count == 2)
+                                {
+                                    Player who = Player.Get(arguments.At(1));
+                                    if (who != null)
+                                    {
+                                        int num = int.Parse(arguments.At(0));
+                                        who.MaxHealth = num;
+                                        who.Health = num;
+                                        response = $"{Sai.Instance.Config.MhpChenged.Replace("{amount}", num.ToString())}";
+                                        return true;
+                                    }
+                                    if (who == null)
+                                    {
+                                        response = Sai.Instance.Config.PlayerNF + "\n mhp <amount> <userID>";
+                                        return false;
+                                    }
+                                }
                             }
                             catch
                             {

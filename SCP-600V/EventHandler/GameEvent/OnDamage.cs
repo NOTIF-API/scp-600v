@@ -36,6 +36,11 @@ namespace SCP_600V.EventHandler.GameEvent
                             e.DamageHandler.Damage = 0;
                             e.IsAllowed = false;
                         }
+                        if (api.IsCustomScp(e.Player)|api.IsScp035(e.Player)|api.IsSH(e.Player)|api.IsScp600(e.Player))
+                        {
+                            e.DamageHandler.Damage = 0;
+                            e.IsAllowed = false;
+                        }
                     }
                 }
             }
