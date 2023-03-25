@@ -14,7 +14,7 @@ namespace SCP_600V.Command
 
             public string[] Aliases { get; set; } = { "vars", "servervars" };
 
-            public string Description { get; set; } = "Get player sessions variables\nvars <userID>";
+            public string Description { get; set; } = "Get player sessions variables";
 
             public bool Execute(ArraySegment<string> arguments, ICommandSender sender, out string response)
             {

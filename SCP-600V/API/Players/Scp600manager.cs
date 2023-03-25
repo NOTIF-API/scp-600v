@@ -20,7 +20,6 @@ namespace SCP_600V.API.Players
                 ply.ReferenceHub.nicknameSync.ShownPlayerInfo &= ~PlayerInfoArea.Role;
                 ply.InfoArea |= ~PlayerInfoArea.Nickname;
                 ply.InfoArea |= ~PlayerInfoArea.UnitName;
-                ply.DisableAllEffects();
                 Log.Debug("Remove all session variables and set default hp");
             }
         }

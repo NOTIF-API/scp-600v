@@ -45,6 +45,8 @@ namespace SCP_600V.EventHandler.GameEvent
                                 ev.Attacker.Health = hea;
                                 ev.Attacker.MaxHealth = mhea;
                                 ev.Attacker.Broadcast(message: $"{Sai.Instance.Config.MessageScpTransform.Replace("{player}", ev.Player.Nickname)}", duration: 5);
+                                ev.Attacker.EnableEffect(new Effect(EffectType.Bleeding, 9999f));
+                                ev.Attacker.Heal(10);
                                 Log.Debug("Scp600 get new role");
                             }
                         }
