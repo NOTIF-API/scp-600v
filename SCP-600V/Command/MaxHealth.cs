@@ -13,7 +13,7 @@ namespace SCP_600V.Command
 
         public string[] Aliases { get; set; } = { "mhp", "s6mhp" };
 
-        public string Description { get; set; } = "Chenge your maxhealt values";
+        public string Description { get; set; } = "Chenge your maxhealt values\n<amount> <userID>";
 
         public bool Execute(ArraySegment<string> arguments, ICommandSender sender, out string response)
         {
@@ -54,7 +54,7 @@ namespace SCP_600V.Command
                                     }
                                     if (who == null)
                                     {
-                                        response = Sai.Instance.Config.PlayerNF + "\n mhp <amount> <userID>";
+                                        response = Sai.Instance.Config.PlayerNF;
                                         return false;
                                     }
                                 }

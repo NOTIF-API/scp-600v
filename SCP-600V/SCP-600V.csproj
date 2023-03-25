@@ -113,6 +113,8 @@
     <Compile Include="EventHandler\GameEvent\OnDeath.cs" />
     <Compile Include="EventHandler\GameEvent\OnRoleChenged.cs" />
     <Compile Include="EventHandler\GameEvent\Scp106.cs" />
+    <Compile Include="EventHandler\GameEvent\Scp096trigered.cs" />
+    <Compile Include="EventHandler\GameEvent\Scp173trigered.cs" />
     <Compile Include="EventHandler\RoundEvent\EndingRound.cs" />
     <Compile Include="EventHandler\RoundEvent\StartingRound.cs" />
     <Compile Include="Extension\Scp600.cs" />

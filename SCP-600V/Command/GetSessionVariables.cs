@@ -14,12 +14,13 @@ namespace SCP_600V.Command
 
             public string[] Aliases { get; set; } = { "vars", "servervars" };
 
-            public string Description { get; set; } = "Get player sessions variables";
+            public string Description { get; set; } = "Get player sessions variables\nvars <userID>";
 
             public bool Execute(ArraySegment<string> arguments, ICommandSender sender, out string response)
             {
+                Player send = Player.Get(sender);
                 Player ply = Player.Get(arguments.At(0));
-                if (sender.CheckPermission("s6.debug"))
+                if (send.CheckPermission("s6.debug"))
                 {
                     if (ply == null)
                     {

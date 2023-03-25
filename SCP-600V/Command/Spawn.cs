@@ -12,7 +12,7 @@ namespace SCP_600V.Command
 
         public string[] Aliases { get; set; } = { "S600", "sp6" };
 
-        public string Description { get; set; } = "Spawn your or another player as scp-600v";
+        public string Description { get; set; } = "Spawn your as scp-600v\nsp6 <userID>";
 
         public bool Execute(ArraySegment<string> arguments, ICommandSender sender, out string response)
         {

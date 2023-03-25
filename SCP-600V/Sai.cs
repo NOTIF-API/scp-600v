@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Net.Http.Headers;
 using Exiled.API.Features;
 using Hand = Exiled.Events.Handlers;
 
@@ -13,6 +14,8 @@ namespace SCP_600V
         public EventHandler.GameEvent.OnDeath ode;
         public EventHandler.GameEvent.OnRoleChenged orc;
         public EventHandler.GameEvent.Scp106 spd;
+        public EventHandler.GameEvent.Scp096trigered sot;
+        public EventHandler.GameEvent.Scp173trigered sit;
 
         public override void OnEnabled()
         {
@@ -24,12 +27,16 @@ namespace SCP_600V
             ode = new EventHandler.GameEvent.OnDeath();
             orc = new EventHandler.GameEvent.OnRoleChenged();
             spd = new SCP_600V.EventHandler.GameEvent.Scp106();
+            sot = new SCP_600V.EventHandler.GameEvent.Scp096trigered();
+            sit = new SCP_600V.EventHandler.GameEvent.Scp173trigered();
             Hand.Server.RoundStarted += str.OnRoundStarted;
             Hand.Server.EndingRound += er.OnEndingRound;
             Hand.Player.Hurting += odmg.DamageHandler;
             Hand.Player.Died += ode.OnPlayerKill;
             Hand.Player.ChangingRole += orc.OnRoleChenge;
             Hand.Player.EnteringPocketDimension += spd.OnPocketDemensionCapture;
+            Hand.Scp096.Charging += sot.Scp096Trigered;
+            Hand.Scp173.Blinking += sit.Scp173Trigered;
         }
         public override void OnDisabled()
         {
