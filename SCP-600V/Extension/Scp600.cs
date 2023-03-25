@@ -26,29 +26,14 @@ namespace SCP_600V.Extension
             {
                 MaxHealt = Sai.Instance.Config.Maxhealt;
             }
-            // adding attributes
-            player.SessionVariables.Add("IsSCP600", null);
-            // determines that it is a script for other plugins
-            player.SessionVariables.Add("IsScp", null);
             // player stat's
             player.MaxHealth = MaxHealt;
             player.Health = MaxHealt;
-            player.CustomInfo = $"{player.Nickname}\nSCP-600V-{API.Players.Scp600PlyGet.GetScp600().Count}";
-            player.ReferenceHub.nicknameSync.ShownPlayerInfo &= ~PlayerInfoArea.Nickname;
-            player.ReferenceHub.nicknameSync.ShownPlayerInfo &= ~PlayerInfoArea.UnitName;
-            player.ReferenceHub.nicknameSync.ShownPlayerInfo &= ~PlayerInfoArea.Role;
-            UserGroup a = new UserGroup();
-            a.KickPower = 0;
-            a.RequiredKickPower = 0;
-            a.BadgeColor = $"{Sai.Instance.Config.BadgeColor}";
-            a.BadgeText = "SCP-600V";
-            if (player.Group == null)
-            {
-                player.Group = a;
-            }
+            SCP_600V.API.Players.Scp600manager.Add(player);
             player.AddItem(ItemType.KeycardScientist);
             player.AddAmmo(AmmoType.Nato9, 30);
             player.Broadcast(message: $"<color=\"red\">{Sai.Instance.Config.SpawnMessage}</color>", duration: 5);
+            Log.Debug("Create new scp600");
         }
     }
 }
