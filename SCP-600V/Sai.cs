@@ -14,6 +14,7 @@ namespace SCP_600V
         public EventHandler.GameEvent.OnDeath ode;
         public EventHandler.GameEvent.OnRoleChenged orc;
         public EventHandler.GameEvent.Scp106 spd;
+        public EventHandler.UserEvent.UserVerefieded uvf;
 
         public override void OnEnabled()
         {
@@ -25,12 +26,14 @@ namespace SCP_600V
             ode = new EventHandler.GameEvent.OnDeath();
             orc = new EventHandler.GameEvent.OnRoleChenged();
             spd = new SCP_600V.EventHandler.GameEvent.Scp106();
+            uvf = new SCP_600V.EventHandler.UserEvent.UserVerefieded();
             Hand.Server.RoundStarted += str.OnRoundStarted;
             Hand.Server.EndingRound += er.OnEndingRound;
             Hand.Player.Hurting += odmg.DamageHandler;
             Hand.Player.Died += ode.OnPlayerKill;
             Hand.Player.ChangingRole += orc.OnRoleChenge;
             Hand.Player.EnteringPocketDimension += spd.OnPocketDemensionCapture;
+            Hand.Player.Verified += uvf.OnVerefy;
         }
         public override void OnDisabled()
         {

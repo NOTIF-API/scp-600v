@@ -6,6 +6,7 @@ using EvArg = Exiled.Events.EventArgs;
 using Item = Exiled.API.Features.Items;
 using UnityEngine;
 using Exiled.API.Enums;
+using MEC;
 
 namespace SCP_600V.EventHandler.GameEvent
 {
@@ -35,19 +36,29 @@ namespace SCP_600V.EventHandler.GameEvent
                             Log.Debug("Attacker is scp600");
                             if (role != RoleTypeId.Spectator)
                             {
-                                foreach (Item.Item a in ev.Attacker.Items)
+                                if (role != ev.Attacker.Role.Type)
                                 {
-                                    items.Add(a);
+                                    foreach (Item.Item a in ev.Attacker.Items)
+                                    {
+                                        items.Add(a);
+                                    }
+                                    Timing.CallDelayed(0.3f, () =>
+                                    {
+                                        ev.Attacker.Role.Set(role, SpawnReason.ForceClass, RoleSpawnFlags.None);
+                                        ev.Attacker.Teleport(poso);
+                                        ev.Attacker.AddItem(items);
+                                        ev.Attacker.Health = hea;
+                                        ev.Attacker.MaxHealth = mhea;
+                                        ev.Attacker.Broadcast(message: $"{Sai.Instance.Config.MessageScpTransform.Replace("{player}", ev.Player.Nickname)}", duration: 5);
+                                        ev.Attacker.EnableEffect(new Effect(EffectType.Bleeding, 9999f));
+                                        ev.Attacker.Heal(10);
+                                        Log.Debug("Scp600 get new role");
+                                    });
                                 }
-                                ev.Attacker.Role.Set(role, SpawnReason.ForceClass, RoleSpawnFlags.None);
-                                ev.Attacker.Teleport(poso);
-                                ev.Attacker.AddItem(items);
-                                ev.Attacker.Health = hea;
-                                ev.Attacker.MaxHealth = mhea;
-                                ev.Attacker.Broadcast(message: $"{Sai.Instance.Config.MessageScpTransform.Replace("{player}", ev.Player.Nickname)}", duration: 5);
-                                ev.Attacker.EnableEffect(new Effect(EffectType.Bleeding, 9999f));
-                                ev.Attacker.Heal(10);
-                                Log.Debug("Scp600 get new role");
+                                else
+                                {
+                                    ev.Attacker.Heal(10);
+                                }
                             }
                         }
                         if (api.Scp600PlyGet.IsScp600(ev.Player))
@@ -62,6 +73,10 @@ namespace SCP_600V.EventHandler.GameEvent
                             Log.Debug("Remove all session variables and set default hp");
                             Log.Debug("scp600 player is dead");
                         }
+                        Timing.CallDelayed(1f, () =>
+                        {
+                            Extension.CheckNotIsLast.Start();
+                        });
                     }
                 }
             }

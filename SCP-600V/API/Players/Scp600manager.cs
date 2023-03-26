@@ -13,7 +13,13 @@ namespace SCP_600V.API.Players
                 ply.SessionVariables.Remove("IsSCP600");
                 ply.SessionVariables.Remove("IsScp");
                 ply.MaxHealth = 100;
-
+                if (Sai.Instance.Config.IsVisibleBadge)
+                {
+                    if (ply.Group != null)
+                    {
+                        ply.Group = null;
+                    }
+                }
                 ply.CustomInfo = string.Empty;
                 ply.ReferenceHub.nicknameSync.ShownPlayerInfo &= ~PlayerInfoArea.Nickname;
                 ply.ReferenceHub.nicknameSync.ShownPlayerInfo &= ~PlayerInfoArea.UnitName;
@@ -27,14 +33,17 @@ namespace SCP_600V.API.Players
         {
             ply.SessionVariables.Add("IsSCP600", null);
             ply.SessionVariables.Add("IsScp", null);
-            UserGroup a = new UserGroup();
-            a.KickPower = 0;
-            a.RequiredKickPower = 0;
-            a.BadgeColor = $"{Sai.Instance.Config.BadgeColor}";
-            a.BadgeText = "SCP-600V";
-            if (ply.Group == null)
+            if (Sai.Instance.Config.IsVisibleBadge)
             {
-                ply.Group = a;
+                UserGroup a = new UserGroup();
+                a.KickPower = 0;
+                a.RequiredKickPower = 0;
+                a.BadgeColor = $"{Sai.Instance.Config.BadgeColor}";
+                a.BadgeText = "SCP-600V";
+                if (ply.Group == null)
+                {
+                    ply.Group = a;
+                }
             }
             ply.CustomInfo = $"{ply.Nickname}\nSCP-600V-{Scp600PlyGet.GetScp600().Count}";
             ply.ReferenceHub.nicknameSync.ShownPlayerInfo &= ~PlayerInfoArea.Nickname;

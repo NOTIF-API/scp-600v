@@ -1,5 +1,5 @@
 ﻿using EvArg = Exiled.Events.EventArgs;
-using api = SCP_600V.API.Players.Scp600PlyGet;
+using servrol = SCP_600V.API.Players.Servroles;
 
 namespace SCP_600V.EventHandler.RoundEvent
 {

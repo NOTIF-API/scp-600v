@@ -10,6 +10,13 @@ namespace SCP_600V.EventHandler.RoundEvent
     {
         public void OnRoundStarted()
         {
+            if (Sai.Instance.Config.IsFFEnabled == true)
+            {
+                if (Server.FriendlyFire == false)
+                {
+                    Server.FriendlyFire = true;
+                }
+            }
             List<Player> players = new List<Player>();
             Random random = new Random();
             foreach (Player p in Player.List)

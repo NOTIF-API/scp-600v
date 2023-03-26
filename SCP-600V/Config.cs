@@ -17,6 +17,11 @@ namespace SCP_600V
         [Description("Can the player see the debug message in the server console")]
         public bool Debug { get; set; } = false;
         /// <summary>
+        /// whether the creators of the plugin will be visible among the players
+        /// </summary>
+        [Description("whether the creators of the plugin will be visible among the players\r\n")]
+        public bool VisibleCreators { get; set; } = true;
+        /// <summary>
         /// Can SCPs beat our
         /// </summary>
         [Description("Can SCPs beat our")]
@@ -96,5 +101,21 @@ namespace SCP_600V
         /// </summary>
         [Description("message to the player when he transforms into another player")]
         public string MessageScpTransform { get; set; } = "you transformed into {player}";
+        /// <summary>
+        /// whether badge will be assigned to the object from the beginning of the game
+        /// </summary>
+        [Description("whether badge will be assigned to the object from the beginning of the game")]
+        public bool IsVisibleBadge { get; set; } = true;
+        
+        /// <summary>
+        /// if the server has disabled friendly fire set true
+        /// </summary>
+        [Description("if the server has disabled friendly fire set true")]
+        public bool IsFFEnabled { get; set; } = false;
+        /// <summary>
+        /// due to the mechanics of the game, the game often reduces the damage dealt
+        /// </summary>
+        [Description("due to the mechanics of the game, the game often reduces the damage dealt")]
+        public int MultipleDamage { get; set; } = 3;
     }
 }
