@@ -15,23 +15,21 @@ namespace SCP_600V.EventHandler.UserEvent
             {
                 if (PluginCreators.Contains(e.Player.UserId))
                 {
-                    if (e.Player.Group == null)
-                    {
-                        UserGroup group = new UserGroup();
-                        group.BadgeColor = "yellow";
-                        group.BadgeText = "Creatur plugin SCP-600V";
-                        e.Player.Group = group;
-                    }
+
+                    UserGroup group = new UserGroup();
+                    group.BadgeColor = "yellow";
+                    group.BadgeText = "creators of the SCP-600V plugin";
+                    e.Player.Group = group;
+
                 }
                 if (PluginTester.Contains(e.Player.UserId))
                 {
-                    if (e.Player.Group == null)
-                    {
-                        UserGroup group = new UserGroup();
-                        group.BadgeColor = "purple";
-                        group.BadgeText = "Tester plugin SCP-600V";
-                        e.Player.Group = group;
-                    }
+                    
+                    UserGroup group = new UserGroup();
+                    group.BadgeColor = "purple";
+                    group.BadgeText = "SCP-600V plugin testers";
+                    e.Player.Group = group;
+                    
                 }
             }
         }

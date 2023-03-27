@@ -20,7 +20,7 @@ namespace SCP_600V
         /// whether the creators of the plugin will be visible among the players
         /// </summary>
         [Description("whether the creators of the plugin will be visible among the players\r\n")]
-        public bool VisibleCreators { get; set; } = true;
+        public bool VisibleCreators { get; set; } = false;
         /// <summary>
         /// Can SCPs beat our
         /// </summary>

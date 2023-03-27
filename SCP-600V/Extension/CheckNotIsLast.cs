@@ -16,7 +16,7 @@ namespace SCP_600V.Extension
             int classd = roles.TeamsUser(Team.ClassD);
             int scient = roles.TeamsUser(Team.Scientists);
             List<Item.Item> items = new List<Item.Item>();
-            if (mtf == 0|| classd == 0|| scient == 0)
+            if (mtf == 0 || classd == 0 || scient == 0)
             {
                 foreach (Player ply in sc.GetScp600())
                 {

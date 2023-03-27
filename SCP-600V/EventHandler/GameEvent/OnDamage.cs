@@ -98,7 +98,7 @@ namespace SCP_600V.EventHandler.GameEvent
             }
             else
             {
-                if (api.IsCustomScp(atacker) || api.IsSH(atacker) || api.IsScp035(atacker) || api.IsScp600(atacker))
+                if (api.IsCustomScp(atacker) || api.IsSH(atacker) || api.IsScp035(atacker) || api.IsScp600(atacker) || atacker.Role.Team == Team.SCPs)
                 {
                     if (api.IsScp600(player))
                     {
