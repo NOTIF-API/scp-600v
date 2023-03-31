@@ -5,6 +5,7 @@ using System;
 
 namespace SCP_600V.Command
 {
+    [CommandHandler(typeof(RemoteAdminCommandHandler))]
     internal class VariableEdit : ICommand
     {
         public string Command { get; set; } = "varedit";
@@ -56,7 +57,7 @@ namespace SCP_600V.Command
                 {
                     if (arguments.At(0) == "add")
                     {
-                        if (!ply.SessionVariables.ContainsKey(arguments.At(1)))
+                        if (ply.SessionVariables.ContainsKey(arguments.At(1)))
                         {
                             ply.SessionVariables.Add(arguments.At(1), null);
                             response = "";
@@ -67,7 +68,7 @@ namespace SCP_600V.Command
                     }
                     if (arguments.At(0) == "remove")
                     {
-                        if (!ply.SessionVariables.ContainsKey(arguments.At(1)))
+                        if (ply.SessionVariables.ContainsKey(arguments.At(1)))
                         {
                             ply.SessionVariables.Remove(arguments.At(1));
                             response = "";

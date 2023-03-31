@@ -48,6 +48,10 @@ namespace SCP_600V.EventHandler.GameEvent
         }
         internal bool Scp600DamageHandler(Player atacker, Player player)
         {
+            if ( atacker.UserId == player.UserId )
+            {
+                return true;
+            }
             if (Sai.Instance.Config.IsScpCanDamageMe == false)
             {
                 if (player.Role.Team == Team.SCPs)
@@ -71,6 +75,10 @@ namespace SCP_600V.EventHandler.GameEvent
                
         internal bool NoScp600DamageHandler(Player atacker, Player player)
         {
+            if (atacker.UserId == player.UserId)
+            {
+                return true;
+            }
             if (Sai.Instance.Config.IsFFEnabled == false)
             {
                 if (Sai.Instance.Config.IsScpCanDamageMe == false)
@@ -98,9 +106,9 @@ namespace SCP_600V.EventHandler.GameEvent
             }
             else
             {
-                if (api.IsCustomScp(atacker) || api.IsSH(atacker) || api.IsScp035(atacker) || api.IsScp600(atacker) || atacker.Role.Team == Team.SCPs)
+                if (api.IsScp600(player))
                 {
-                    if (api.IsScp600(player))
+                    if (api.IsSH(atacker) || api.IsCustomScp(atacker) || api.IsScp035(atacker) || atacker.Role.Team == Team.SCPs)
                     {
                         return false;
                     }
@@ -109,7 +117,7 @@ namespace SCP_600V.EventHandler.GameEvent
                         return true;
                     }
                 }
-                if (atacker.Role.Team == player.Role.Team)
+                if (atacker.Role.Side == player.Role.Side)
                 {
                     if (api.IsScp600(player))
                     {

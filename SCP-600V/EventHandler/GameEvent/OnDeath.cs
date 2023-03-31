@@ -7,6 +7,7 @@ using Item = Exiled.API.Features.Items;
 using UnityEngine;
 using Exiled.API.Enums;
 using MEC;
+using Exiled.API.Features.Items;
 
 namespace SCP_600V.EventHandler.GameEvent
 {

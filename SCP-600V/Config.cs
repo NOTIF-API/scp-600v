@@ -1,10 +1,14 @@
 ﻿using System;
+using System.Collections.Generic;
 using System.ComponentModel;
+using Exiled.API.Enums;
 using Exiled.API.Features;
+using Exiled.API.Features.Items;
 using Exiled.API.Interfaces;
+
 namespace SCP_600V
 {
-    internal class Config: IConfig
+    internal class Config : IConfig
     {
         /// <summary>
         /// Enable or disable plugin
@@ -106,7 +110,7 @@ namespace SCP_600V
         /// </summary>
         [Description("whether badge will be assigned to the object from the beginning of the game")]
         public bool IsVisibleBadge { get; set; } = true;
-        
+
         /// <summary>
         /// if the server has disabled friendly fire set true
         /// </summary>
@@ -117,5 +121,17 @@ namespace SCP_600V
         /// </summary>
         [Description("due to the mechanics of the game, the game often reduces the damage dealt")]
         public int MultipleDamage { get; set; } = 3;
+        /// <summary>
+        /// the number of rounds given out at the beginning
+        /// </summary>
+        [Description("the number of rounds given out at the beginning")]
+        public Dictionary<AmmoType, ushort> StartAmmo { get; set; } = new Dictionary<AmmoType, ushort>()
+        {
+            { AmmoType.Nato9, 30 },
+            { AmmoType.Ammo44Cal, 0 },
+            { AmmoType.Nato556, 0 },
+            { AmmoType.Nato762, 0 },
+            { AmmoType.Ammo12Gauge, 0 }
+        };
     }
 }

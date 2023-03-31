@@ -8,6 +8,7 @@ using PlayerRoles;
 using Mirror;
 using Exiled.API.Enums;
 using Exiled.Permissions.Extensions;
+using MEC;
 
 namespace SCP_600V.Extension
 {
@@ -31,7 +32,13 @@ namespace SCP_600V.Extension
             player.Health = MaxHealt;
             SCP_600V.API.Players.Scp600manager.Add(player);
             player.AddItem(ItemType.KeycardScientist);
-            player.AddAmmo(AmmoType.Nato9, 30);
+            foreach (KeyValuePair<AmmoType, ushort> a in Sai.Instance.Config.StartAmmo)
+            {
+                Timing.CallDelayed(0.5f, () =>
+                {
+                    player.AddAmmo(a.Key, a.Value);
+                });
+            }
             player.Broadcast(message: $"<color=\"red\">{Sai.Instance.Config.SpawnMessage}</color>", duration: 5);
             Log.Debug("Create new scp600");
         }
