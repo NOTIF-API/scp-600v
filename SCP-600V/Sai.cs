@@ -15,6 +15,7 @@ namespace SCP_600V
         public EventHandler.GameEvent.OnRoleChenged orc;
         public EventHandler.GameEvent.Scp106 spd;
         public EventHandler.UserEvent.UserVerefieded uvf;
+        //public EventHandler.GameEvent.Scp173 s1;
 
         public override void OnEnabled()
         {
@@ -25,8 +26,9 @@ namespace SCP_600V
             odmg = new EventHandler.GameEvent.OnDamage();
             ode = new EventHandler.GameEvent.OnDeath();
             orc = new EventHandler.GameEvent.OnRoleChenged();
-            spd = new SCP_600V.EventHandler.GameEvent.Scp106();
-            uvf = new SCP_600V.EventHandler.UserEvent.UserVerefieded();
+            spd = new EventHandler.GameEvent.Scp106();
+            uvf = new EventHandler.UserEvent.UserVerefieded();
+            //s1 = new EventHandler.GameEvent.Scp173();
             Hand.Server.RoundStarted += str.OnRoundStarted;
             Hand.Server.EndingRound += er.OnEndingRound;
             Hand.Player.Hurting += odmg.DamageHandler;
@@ -34,6 +36,7 @@ namespace SCP_600V
             Hand.Player.ChangingRole += orc.OnRoleChenge;
             Hand.Player.EnteringPocketDimension += spd.OnPocketDemensionCapture;
             Hand.Player.Verified += uvf.OnVerefy;
+            //Hand.Scp173.Blinking += s1.OnScp173Visibled;
         }
         public override void OnDisabled()
         {
@@ -42,10 +45,20 @@ namespace SCP_600V
             str = null;
             er = null;
             odmg = null;
+            ode = null;
+            orc = null;
+            spd = null;
+            uvf = null;
+            //s1 = null;
 
             Hand.Server.RoundStarted -= str.OnRoundStarted;
             Hand.Server.EndingRound -= er.OnEndingRound;
             Hand.Player.Hurting -= odmg.DamageHandler;
+            Hand.Player.Died -= ode.OnPlayerKill;
+            Hand.Player.ChangingRole -= orc.OnRoleChenge;
+            Hand.Player.EnteringPocketDimension -= spd.OnPocketDemensionCapture;
+            Hand.Player.Verified -= uvf.OnVerefy;
+            //Hand.Scp173.Blinking -= s1.OnScp173Visibled;
         }
     }
 }

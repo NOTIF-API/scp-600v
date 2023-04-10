@@ -39,7 +39,12 @@ namespace SCP_600V
         /// Percentage to spawn stsp at the beginning of the game
         /// </summary>
         [Description("Percentage to spawn stsp at the beginning of the game")]
-        public int PercentToSpawn { get; set; } = 10;
+        public int PercentToSpawn { get; set; } = 25;
+        /// <summary>
+        /// determines if SCP-600 will take damage over its lifetime
+        /// </summary>
+        [Description("determines if SCP-600 will take damage over its lifetime")]
+        public bool CanBleading { get; set; } = true;
         /// <summary>
         /// Spawn message for SCP-600V
         /// </summary>

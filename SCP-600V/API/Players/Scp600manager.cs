@@ -49,7 +49,10 @@ namespace SCP_600V.API.Players
             ply.ReferenceHub.nicknameSync.ShownPlayerInfo &= ~PlayerInfoArea.Nickname;
             ply.ReferenceHub.nicknameSync.ShownPlayerInfo &= ~PlayerInfoArea.UnitName;
             ply.ReferenceHub.nicknameSync.ShownPlayerInfo &= ~PlayerInfoArea.Role;
-            ply.EnableEffect(new Effect(EffectType.Bleeding, 9999f));
+            if (Sai.Instance.Config.CanBleading)
+            {
+                ply.EnableEffect(new Effect(EffectType.Bleeding, 9999f));
+            }
         }
     }
 }

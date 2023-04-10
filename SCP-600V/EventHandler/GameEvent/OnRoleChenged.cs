@@ -9,12 +9,9 @@ namespace SCP_600V.EventHandler.GameEvent
     {
         public void OnRoleChenge(EvArg.Player.ChangingRoleEventArgs e)
         {
-            if (SCP_600V.API.Players.Scp600PlyGet.IsScp600(e.Player))
+            if (e.Player != null)
             {
-                if (e.NewRole == PlayerRoles.RoleTypeId.Spectator)
-                {
-                    
-                }
+                
             }
         }
     }

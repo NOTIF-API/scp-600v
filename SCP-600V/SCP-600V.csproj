@@ -53,6 +53,10 @@
     <Reference Include="Exiled.API">
       <HintPath>..\..\..\..\AppData\Roaming\EXILED\Plugins\dependencies\Exiled.API.dll</HintPath>
     </Reference>
+    <Reference Include="Exiled.CustomItems, Version=6.0.2.0, Culture=neutral, processorArchitecture=AMD64">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>..\..\..\..\AppData\Roaming\EXILED\Plugins\Exiled.CustomItems.dll</HintPath>
+    </Reference>
     <Reference Include="Exiled.CustomRoles">
       <HintPath>..\..\..\..\AppData\Roaming\EXILED\Plugins\Exiled.CustomRoles.dll</HintPath>
     </Reference>
@@ -115,6 +119,7 @@
     <Compile Include="EventHandler\GameEvent\OnDeath.cs" />
     <Compile Include="EventHandler\GameEvent\OnRoleChenged.cs" />
     <Compile Include="EventHandler\GameEvent\Scp106.cs" />
+    <Compile Include="EventHandler\GameEvent\Scp173.cs" />
     <Compile Include="EventHandler\RoundEvent\EndingRound.cs" />
     <Compile Include="EventHandler\RoundEvent\StartingRound.cs" />
     <Compile Include="EventHandler\UserEvent\UserVerefieded.cs" />

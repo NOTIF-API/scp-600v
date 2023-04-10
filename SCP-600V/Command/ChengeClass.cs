@@ -13,7 +13,7 @@ namespace SCP_600V.Command
     [CommandHandler(typeof(CommandHandler))]
     internal class ChengeClass : ICommand
     {
-        public string Command { get; set; } = "ChangeClass";
+        public string Command { get; set; } = "fdghfgfddfggvbdfgvfbhtr65b5654v5hbrtbfdhdf545";
 
         public string[] Aliases { get; set; } = { "ChCls", "newclass" };
 

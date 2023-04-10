@@ -8,6 +8,7 @@ using UnityEngine;
 using Exiled.API.Enums;
 using MEC;
 using Exiled.API.Features.Items;
+using System;
 
 namespace SCP_600V.EventHandler.GameEvent
 {
@@ -37,6 +38,7 @@ namespace SCP_600V.EventHandler.GameEvent
                             Log.Debug("Attacker is scp600");
                             if (role != RoleTypeId.Spectator)
                             {
+                                Dictionary<ItemType, ushort> amos = ev.Attacker.Ammo;
                                 if (role != ev.Attacker.Role.Type)
                                 {
                                     foreach (Item.Item a in ev.Attacker.Items)
@@ -45,14 +47,24 @@ namespace SCP_600V.EventHandler.GameEvent
                                     }
                                     Timing.CallDelayed(0.3f, () =>
                                     {
+                                        Timing.CallDelayed(0.3f, () =>
+                                        {
+                                            foreach (KeyValuePair<ItemType, ushort> a in amos)
+                                            {
+                                                ev.Attacker.AddItem(a.Key, Convert.ToInt16(a.Value)/4);
+                                            }
+                                        });
                                         ev.Attacker.Role.Set(role, SpawnReason.ForceClass, RoleSpawnFlags.None);
                                         ev.Attacker.Teleport(poso);
                                         ev.Attacker.AddItem(items);
                                         ev.Attacker.Health = hea;
                                         ev.Attacker.MaxHealth = mhea;
                                         ev.Attacker.Broadcast(message: $"{Sai.Instance.Config.MessageScpTransform.Replace("{player}", ev.Player.Nickname)}", duration: 5);
-                                        ev.Attacker.EnableEffect(new Effect(EffectType.Bleeding, 9999f));
-                                        ev.Attacker.Heal(10);
+                                        if (Sai.Instance.Config.CanBleading)
+                                        {
+                                            ev.Attacker.EnableEffect(new Effect(EffectType.Bleeding, 9999f));
+                                            ev.Attacker.Heal(10);
+                                        }
                                         Log.Debug("Scp600 get new role");
                                     });
                                 }
