@@ -1,5 +1,5 @@
 # scp-600v
-a plugin that adds a custom scp object to the game under the number scp-600 that appears among the staff of the d class with a scientist card, its goal is to destroy all people, it fulfills the same goals as scp and when a person is killed, it turns into it
+a new object scp-600 which at the beginning of the game with some chance will spawn among class d, its task is absolutely the same as that of any stsp, when a person is killed, it changes its role to the killed one (only the role), when there is no one left but him and other stsp round ends
 # permission's
 > s6.SelfSpawn - can an admin give himself the scp-600 role
 
