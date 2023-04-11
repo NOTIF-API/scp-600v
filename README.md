@@ -8,5 +8,3 @@ a plugin that adds a custom scp object to the game under the number scp-600 that
 > s6.debug - can admin get player's session variables
 
 > s6.GetPlayers - can the admin find out the list of players playing for scp-600
-
-[![LinkToLatestVersion](https://cdn.discordapp.com/attachments/809781933411663883/1095275941757976606/DownloadImg.png)](link to your URL)
