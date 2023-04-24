@@ -29,6 +29,7 @@ namespace SCP_600V.EventHandler.RoundEvent
             bool Siusiu = IsSpawnable();
             if (Siusiu)
             {
+                Log.Debug("Get Random player and spawn as scp-600v");
                 int LuckyPlayer = random.Next(players.Count);
                 Player pd = players[LuckyPlayer];
                 Scp ss = new Scp(pd, Sai.Instance.Config.Maxhealt);

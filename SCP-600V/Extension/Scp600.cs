@@ -39,7 +39,8 @@ namespace SCP_600V.Extension
                     player.AddAmmo(a.Key, a.Value);
                 });
             }
-            player.Broadcast(message: $"<color=\"red\">{Sai.Instance.Config.SpawnMessage}</color>", duration: 5);
+            //player.Broadcast(message: $"<color=\"red\">{Sai.Instance.Config.SpawnMessage}</color>", duration: 5);
+            player.ShowHint($"\n\n\n\n\n\n\n<align=\"left\"><color=#FF0000>{Sai.Instance.Config.SpawnMessage}</color>");
             Log.Debug("Create new scp600");
         }
     }

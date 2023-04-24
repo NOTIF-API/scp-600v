@@ -22,13 +22,17 @@ namespace SCP_600V.Extension
                 {
                     foreach (Item.Item item in ply.Items)
                     {
-                        items.Add(item);
+                        if (!item.IsAmmo)
+                        {
+                            items.Add(item);
+                        }
                     }
                     Timing.CallDelayed(0.3f, () =>
                     {
                         ply.Role.Set(RoleTypeId.Tutorial, Exiled.API.Enums.SpawnReason.ForceClass, RoleSpawnFlags.None);
                     });
                     ply.AddItem(items);
+                    ply.ShowHint($"\n\n\n\n\n\n\n{Sai.Instance.Config.OnLastPlayer}");
                 }
             }
         }

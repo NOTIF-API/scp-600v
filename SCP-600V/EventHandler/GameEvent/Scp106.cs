@@ -1,4 +1,5 @@
-﻿using EvArg = Exiled.Events.EventArgs;
+﻿using Exiled.API.Features;
+using EvArg = Exiled.Events.EventArgs;
 
 namespace SCP_600V.EventHandler.GameEvent
 {
@@ -10,6 +11,7 @@ namespace SCP_600V.EventHandler.GameEvent
             {
                 if (!Sai.Instance.Config.IsScpCanDamageMe)
                 {
+                    Log.Debug("Scp-106 pcs");
                     e.IsAllowed = false;
                 }
             }

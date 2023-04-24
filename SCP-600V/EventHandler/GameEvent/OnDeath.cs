@@ -29,6 +29,7 @@ namespace SCP_600V.EventHandler.GameEvent
                     float hea = ev.Attacker.Health;
 
                     Vector3 poso = ev.Attacker.Position;
+                    Vector3 rota = ev.Attacker.Rotation;
                     Log.Debug($"Get all parameters");
 
                     if (ev.Attacker.Nickname != ev.Player.Nickname)
@@ -43,7 +44,10 @@ namespace SCP_600V.EventHandler.GameEvent
                                 {
                                     foreach (Item.Item a in ev.Attacker.Items)
                                     {
-                                        items.Add(a);
+                                        if (!a.IsAmmo)
+                                        {
+                                            items.Add(a);
+                                        }
                                     }
                                     Timing.CallDelayed(0.3f, () =>
                                     {
@@ -51,15 +55,18 @@ namespace SCP_600V.EventHandler.GameEvent
                                         {
                                             foreach (KeyValuePair<ItemType, ushort> a in amos)
                                             {
-                                                ev.Attacker.AddItem(a.Key, Convert.ToInt16(a.Value)/4);
+                                                ev.Attacker.AddItem(a.Key, Convert.ToInt16(a.Value));
                                             }
                                         });
                                         ev.Attacker.Role.Set(role, SpawnReason.ForceClass, RoleSpawnFlags.None);
                                         ev.Attacker.Teleport(poso);
+                                        ev.Attacker.Rotation = rota;
                                         ev.Attacker.AddItem(items);
                                         ev.Attacker.Health = hea;
                                         ev.Attacker.MaxHealth = mhea;
-                                        ev.Attacker.Broadcast(message: $"{Sai.Instance.Config.MessageScpTransform.Replace("{player}", ev.Player.Nickname)}", duration: 5);
+                                        //ev.Attacker.Broadcast(message: $"{Sai.Instance.Config.MessageScpTransform.Replace("{player}", ev.Player.Nickname)}", duration: 5);
+                                        ev.Attacker.ShowHint($"\n\n\n\n\n\n\n<align=\"left\">{Sai.Instance.Config.MessageScpTransform.Replace("{player}", ev.Player.Nickname)}");
+                                        ev.Player.ShowHint($"\n\n\n\n\n\n\n{Sai.Instance.Config.MessageDeathPlayerByScp600}");
                                         if (Sai.Instance.Config.CanBleading)
                                         {
                                             ev.Attacker.EnableEffect(new Effect(EffectType.Bleeding, 9999f));

@@ -109,7 +109,12 @@ namespace SCP_600V
         /// message to the player when he transforms into another player
         /// </summary>
         [Description("message to the player when he transforms into another player")]
-        public string MessageScpTransform { get; set; } = "you transformed into {player}";
+        public string MessageScpTransform { get; set; } = "you transformed into <color=#03D1C5>{player}</color>";
+        /// <summary>
+        /// message if player dead by scp-600
+        /// </summary>
+        [Description("message if player dead by scp-600")]
+        public string MessageDeathPlayerByScp600 { get; set; } = "your killed by <color=\"red\">SCP-600V</color>";
         /// <summary>
         /// whether badge will be assigned to the object from the beginning of the game
         /// </summary>
@@ -126,6 +131,10 @@ namespace SCP_600V
         /// </summary>
         [Description("due to the mechanics of the game, the game often reduces the damage dealt")]
         public int MultipleDamage { get; set; } = 3;
+        /// <summary>
+        /// message if player last in game with other scp and more
+        /// </summary>
+        public string OnLastPlayer { get; set; } = "<align=\"left\"><color=#00FF00>Your</color> last player\n<align=\"center\"><color=FF0000>All human dead!</color>";
         /// <summary>
         /// the number of rounds given out at the beginning
         /// </summary>
