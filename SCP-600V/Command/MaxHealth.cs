@@ -69,6 +69,7 @@ namespace SCP_600V.Command
                     else
                     {
                         response = Sai.Instance.Config.NotScp600;
+                        return false;
                     }
                 }
                 else

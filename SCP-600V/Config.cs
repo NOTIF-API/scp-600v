@@ -21,11 +21,6 @@ namespace SCP_600V
         [Description("Can the player see the debug message in the server console")]
         public bool Debug { get; set; } = false;
         /// <summary>
-        /// whether the creators of the plugin will be visible among the players
-        /// </summary>
-        [Description("whether the creators of the plugin will be visible among the players\r\n")]
-        public bool VisibleCreators { get; set; } = false;
-        /// <summary>
         /// Can SCPs beat our
         /// </summary>
         [Description("Can SCPs beat our")]
@@ -120,7 +115,6 @@ namespace SCP_600V
         /// </summary>
         [Description("whether badge will be assigned to the object from the beginning of the game")]
         public bool IsVisibleBadge { get; set; } = true;
-
         /// <summary>
         /// if the server has disabled friendly fire set true
         /// </summary>

@@ -2,6 +2,7 @@
 using Exiled.API.Features;
 using CommandSystem;
 using Exiled.Permissions.Extensions;
+using System.Text;
 
 namespace SCP_600V.Command
 {
@@ -21,15 +22,15 @@ namespace SCP_600V.Command
             {
                 if (player.CheckPermission("s6.GetPlayers"))
                 {
-                    string a = "";
+                    StringBuilder a = new StringBuilder();
                     foreach (Player ply in Player.List)
                     {
                         if (ply.SessionVariables.ContainsKey("IsSCP600"))
                         {
-                            a += ply.Nickname + "; ";
+                            a.Append(ply.Nickname + ", ");
                         }
                     }
-                    response = $"{Sai.Instance.Config.ListGetted.Replace("{name}", a)}";
+                    response = $"{Sai.Instance.Config.ListGetted.Replace("{name}", a.ToString())}";
                     return true;
                 }
                 else

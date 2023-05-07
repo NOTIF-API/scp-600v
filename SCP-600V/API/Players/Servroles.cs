@@ -42,6 +42,6 @@ namespace SCP_600V.API.Players
         /// </summary>
         /// <param name="keyrole">string key</param>
         /// <returns>int number</returns>
-        public static int RolesUser(string keyrole) => Player.List.Where(x => x.SessionVariables.ContainsKey((string)keyrole)).Count();
+        public static int RolesUser(string keyrole) => Player.List.Where(x => x.SessionVariables.ContainsKey(keyrole)).Count();
     }
 }

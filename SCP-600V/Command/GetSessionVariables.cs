@@ -2,6 +2,7 @@
 using Exiled.API.Features;
 using CommandSystem;
 using Exiled.Permissions.Extensions;
+using System.Text;
 
 namespace SCP_600V.Command
 {
@@ -29,12 +30,12 @@ namespace SCP_600V.Command
                     }
                     if (ply != null)
                     {
-                        string asd = "";
+                        StringBuilder asd = new StringBuilder();
                         foreach (string arga in ply.SessionVariables.Keys)
                         {
-                            asd += arga + " ";
+                            asd.Append(arga + ", ");
                         }
-                        response = asd;
+                        response = asd.ToString();
                         return true;
                     }
                     response = "idk";

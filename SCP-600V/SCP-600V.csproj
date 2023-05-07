@@ -107,7 +107,7 @@
     <Compile Include="API\Players\Scp600manager.cs" />
     <Compile Include="API\Players\Scp600PlyGet.cs" />
     <Compile Include="API\Players\Servroles.cs" />
-    <Compile Include="Command\ChengeClass.cs" />
+    <Compile Include="API\Server\ServerSetting.cs" />
     <Compile Include="Command\GetPlayerAsScp600.cs" />
     <Compile Include="Command\GetSessionVariables.cs" />
     <Compile Include="Command\MaxHealth.cs" />
@@ -117,17 +117,19 @@
     <Compile Include="Config.cs" />
     <Compile Include="EventHandler\GameEvent\OnDamage.cs" />
     <Compile Include="EventHandler\GameEvent\OnDeath.cs" />
+    <Compile Include="EventHandler\GameEvent\OnEscape.cs" />
     <Compile Include="EventHandler\GameEvent\OnRoleChenged.cs" />
     <Compile Include="EventHandler\GameEvent\Scp106.cs" />
     <Compile Include="EventHandler\GameEvent\Scp173.cs" />
     <Compile Include="EventHandler\RoundEvent\EndingRound.cs" />
     <Compile Include="EventHandler\RoundEvent\StartingRound.cs" />
-    <Compile Include="EventHandler\UserEvent\UserVerefieded.cs" />
     <Compile Include="Extension\CheckNotIsLast.cs" />
     <Compile Include="Extension\Scp600.cs" />
     <Compile Include="Sai.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
-  <ItemGroup />
+  <ItemGroup>
+    <Folder Include="EventHandler\UserEvent\" />
+  </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
 </Project>
