@@ -17,7 +17,7 @@ s_c_p600_v:
   is_scp_can_damage_me: false
   # Max healt
   maxhealt: 400
-  # Percentage to spawn stsp at the beginning of the game
+  # Percentage to spawn scp at the beginning of the game
   percent_to_spawn: 25
   # determines if SCP-600 will take damage over its lifetime
   can_bleading: true
@@ -25,12 +25,6 @@ s_c_p600_v:
   spawn_message: You appeared behind SCP-600V
   # Badge color in player list
   badge_color: red
-  # message when entering a command to change the player's class when he did not specify a class argument
-  class_type: 'Set class name: {name}'
-  # message when entering a command when a player has reached the limit in reincarnations in the game
-  atemp_limit_message: Wait next game
-  # message when entering a command when the player is not an object
-  not_scp600: Your are not scp-600v now
   # message when player changed class
   complete_transform: Done
   # message when admin gets list of scp players
