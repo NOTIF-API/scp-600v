@@ -67,6 +67,9 @@
       <SpecificVersion>False</SpecificVersion>
       <HintPath>..\..\..\..\AppData\Roaming\EXILED\Plugins\Exiled.Permissions.dll</HintPath>
     </Reference>
+    <Reference Include="Exiled.Updater">
+      <HintPath>..\..\..\..\AppData\Roaming\EXILED\Plugins\Exiled.Updater.dll</HintPath>
+    </Reference>
     <Reference Include="Mirror">
       <HintPath>..\..\..\..\..\..\Program Files (x86)\Steam\steamapps\common\SCP Secret Laboratory Dedicated Server\SCPSL_Data\Managed\Mirror.dll</HintPath>
     </Reference>
@@ -114,10 +117,12 @@
     <Compile Include="Command\PermissionList.cs" />
     <Compile Include="Command\Spawn.cs" />
     <Compile Include="Command\VariableEdit.cs" />
+    <Compile Include="Component\HurtingPerTime.cs" />
     <Compile Include="Config.cs" />
     <Compile Include="EventHandler\GameEvent\OnDamage.cs" />
     <Compile Include="EventHandler\GameEvent\OnDeath.cs" />
     <Compile Include="EventHandler\GameEvent\OnEscape.cs" />
+    <Compile Include="EventHandler\GameEvent\OnKilled.cs" />
     <Compile Include="EventHandler\GameEvent\OnRoleChenged.cs" />
     <Compile Include="EventHandler\GameEvent\Scp106.cs" />
     <Compile Include="EventHandler\GameEvent\Scp173.cs" />

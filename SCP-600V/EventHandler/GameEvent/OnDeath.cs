@@ -32,7 +32,7 @@ namespace SCP_600V.EventHandler.GameEvent
                     Vector3 rota = ev.Attacker.Rotation;
                     Log.Debug($"Get all parameters");
 
-                    if (ev.Attacker.Nickname != ev.Player.Nickname)
+                    if (ev.Attacker != ev.Player)
                     {
                         if (api.Scp600PlyGet.IsScp600(ev.Attacker))
                         {
@@ -69,7 +69,6 @@ namespace SCP_600V.EventHandler.GameEvent
                                         ev.Player.ShowHint($"\n\n\n\n\n\n\n{Sai.Instance.Config.MessageDeathPlayerByScp600}");
                                         if (Sai.Instance.Config.CanBleading)
                                         {
-                                            ev.Attacker.EnableEffect(new Effect(EffectType.Bleeding, 9999f));
                                             ev.Attacker.Heal(10);
                                         }
                                         Log.Debug("Scp600 get new role");
@@ -87,9 +86,9 @@ namespace SCP_600V.EventHandler.GameEvent
                             ev.Player.SessionVariables.Remove("IsScp");
                             ev.Player.MaxHealth = 100;
 
-                            ev.Player.CustomInfo = string.Empty;
-                            ev.Player.InfoArea |= ~PlayerInfoArea.Nickname;
-                            ev.Player.InfoArea |= ~PlayerInfoArea.UnitName;
+                            //ev.Player.CustomInfo = string.Empty;
+                            //ev.Player.InfoArea |= ~PlayerInfoArea.Nickname;
+                            //ev.Player.InfoArea |= ~PlayerInfoArea.UnitName;
                             Log.Debug("Remove all session variables and set default hp");
                             Log.Debug("scp600 player is dead");
                         }

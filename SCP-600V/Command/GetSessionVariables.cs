@@ -23,17 +23,27 @@ namespace SCP_600V.Command
                 Player ply = Player.Get(arguments.At(0));
                 if (send.CheckPermission("s6.debug"))
                 {
-                    if (ply == null)
+                    if (send == null)
                     {
-                        response = Sai.Instance.Config.PlayerNF;
+                        response = "Unkown error";
                         return false;
                     }
-                    if (ply != null)
+                    if (send != null)
                     {
                         StringBuilder asd = new StringBuilder();
-                        foreach (string arga in ply.SessionVariables.Keys)
+                        if (ply != null)
                         {
-                            asd.Append(arga + ", ");
+                            foreach (string arga in ply.SessionVariables.Keys)
+                            {
+                                asd.Append(arga + ", ");
+                            }
+                        }
+                        else
+                        {
+                            foreach (string arga in send.SessionVariables.Keys)
+                            {
+                                asd.Append(arga + ", ");
+                            }
                         }
                         response = asd.ToString();
                         return true;

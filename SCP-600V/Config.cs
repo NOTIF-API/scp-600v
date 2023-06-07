@@ -1,9 +1,6 @@
-﻿using System;
-using System.Collections.Generic;
+﻿using System.Collections.Generic;
 using System.ComponentModel;
 using Exiled.API.Enums;
-using Exiled.API.Features;
-using Exiled.API.Features.Items;
 using Exiled.API.Interfaces;
 
 namespace SCP_600V
@@ -33,7 +30,7 @@ namespace SCP_600V
         /// <summary>
         /// Percentage to spawn stsp at the beginning of the game
         /// </summary>
-        [Description("Percentage to spawn stsp at the beginning of the game")]
+        [Description("Percentage to spawn scp at the beginning of the game")]
         public int PercentToSpawn { get; set; } = 25;
         /// <summary>
         /// determines if SCP-600 will take damage over its lifetime
@@ -48,18 +45,18 @@ namespace SCP_600V
         /// <summary>
         /// Badge color in player list
         /// </summary>
-        [Description("Badge color in player list")]
+        [Description("Badge color in player list only lowers chars")]
         public string BadgeColor { get; set; } = "red";
         /// <summary>
         /// message when entering a command to change the player's class when he did not specify a class argument
         /// </summary>
-        [Description("message when entering a command to change the player's class when he did not specify a class argument")]
-        public string ClassType { get; set; } = "Set class name: {name}";
+        //[Description("message when entering a command to change the player's class when he did not specify a class argument")]
+        //public string ClassType { get; set; } = "Set class name: {name}";
         /// <summary>
         /// message when entering a command when a player has reached the limit in reincarnations in the game
         /// </summary>
-        [Description("message when entering a command when a player has reached the limit in reincarnations in the game")]
-        public string AtempLimitMessage { get; set; } = "Wait next game";
+        //[Description("message when entering a command when a player has reached the limit in reincarnations in the game")]
+        //public string AtempLimitMessage { get; set; } = "Wait next game";
         /// <summary>
         /// message when entering a command when the player is not an object
         /// </summary>
@@ -109,7 +106,7 @@ namespace SCP_600V
         /// message if player dead by scp-600
         /// </summary>
         [Description("message if player dead by scp-600")]
-        public string MessageDeathPlayerByScp600 { get; set; } = "your killed by <color=\"red\">SCP-600V</color>";
+        public string MessageDeathPlayerByScp600 { get; set; } = "your killed by <color=#FF0000>SCP-600V</color>";
         /// <summary>
         /// whether badge will be assigned to the object from the beginning of the game
         /// </summary>

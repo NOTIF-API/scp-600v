@@ -1,5 +1,4 @@
 ﻿using System;
-using System.Net.Http.Headers;
 using Exiled.API.Features;
 using Hand = Exiled.Events.Handlers;
 
@@ -15,6 +14,7 @@ namespace SCP_600V
         public EventHandler.GameEvent.OnRoleChenged orc;
         public EventHandler.GameEvent.Scp106 spd;
         public EventHandler.GameEvent.OnEscape osc;
+        public EventHandler.GameEvent.OnKilled opk;
         //public EventHandler.GameEvent.Scp173 s1;
 
         public override void OnEnabled()
@@ -28,6 +28,7 @@ namespace SCP_600V
             orc = new EventHandler.GameEvent.OnRoleChenged();
             spd = new EventHandler.GameEvent.Scp106();
             osc = new SCP_600V.EventHandler.GameEvent.OnEscape();
+            opk = new EventHandler.GameEvent.OnKilled();
             //s1 = new EventHandler.GameEvent.Scp173();
             Hand.Server.RoundStarted += str.OnRoundStarted;
             Hand.Server.EndingRound += er.OnEndingRound;
@@ -36,6 +37,7 @@ namespace SCP_600V
             Hand.Player.ChangingRole += orc.OnRoleChenge;
             Hand.Player.EnteringPocketDimension += spd.OnPocketDemensionCapture;
             Hand.Player.Escaping += osc.OnEscaped;
+            Hand.Player.KillingPlayer += opk.KillingPlayer;
             //Hand.Scp173.Blinking += s1.OnScp173Visibled;
         }
         public override void OnDisabled()
@@ -49,6 +51,7 @@ namespace SCP_600V
             orc = null;
             spd = null;
             osc = null;
+            opk = null;
             //s1 = null;
 
             Hand.Server.RoundStarted -= str.OnRoundStarted;
@@ -58,6 +61,7 @@ namespace SCP_600V
             Hand.Player.ChangingRole -= orc.OnRoleChenge;
             Hand.Player.EnteringPocketDimension -= spd.OnPocketDemensionCapture;
             Hand.Player.Escaping -= osc.OnEscaped;
+            Hand.Player.KillingPlayer -= opk.KillingPlayer;
             //Hand.Scp173.Blinking -= s1.OnScp173Visibled;
         }
     }

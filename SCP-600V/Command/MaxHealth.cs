@@ -2,7 +2,6 @@
 using Exiled.API.Features;
 using CommandSystem;
 using Exiled.Permissions.Extensions;
-using FMOD;
 
 namespace SCP_600V.Command
 {
