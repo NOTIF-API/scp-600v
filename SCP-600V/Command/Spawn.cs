@@ -10,7 +10,7 @@ namespace SCP_600V.Command
     {
         public string Command { get; set; } = "SpawnScp600";
 
-        public string[] Aliases { get; set; } = { "S600", "sp6" };
+        public string[] Aliases { get; set; } = { "S600", "sp6", "scp600" };
 
         public string Description { get; set; } = "Spawn your as scp-600v\nsp6 <userID>";
 
@@ -25,9 +25,17 @@ namespace SCP_600V.Command
                     {
                         if (writer.Role.Type != PlayerRoles.RoleTypeId.Spectator)
                         {
-                            new Extension.Scp600(writer);
-                            response = Sai.Instance.Config.SpawnMessage;
-                            return true;
+                            if (!API.Players.Scp600PlyGet.IsScp600(writer))
+                            {
+                                new Extension.Scp600(writer);
+                                response = Sai.Instance.Config.SpawnMessage;
+                                return true;
+                            }
+                            else
+                            {
+                                response = "? your are scp-600 now";
+                                return false;
+                            }
                         }
                         if (writer.Role.Type == PlayerRoles.RoleTypeId.Spectator)
                         {
@@ -45,9 +53,17 @@ namespace SCP_600V.Command
                                 response = Sai.Instance.Config.SpawnCommandEr;
                                 return false;
                             }
-                            new Extension.Scp600(writer);
-                            response = Sai.Instance.Config.SpawnMessage;
-                            return true;
+                            if (!API.Players.Scp600PlyGet.IsScp600(neded))
+                            {
+                                new Extension.Scp600(neded);
+                                response = Sai.Instance.Config.SpawnMessage;
+                                return true;
+                            }
+                            else
+                            {
+                                response = "? is scp-600 playing now";
+                                return false;
+                            }
                         }
                         if (neded == null)
                         {

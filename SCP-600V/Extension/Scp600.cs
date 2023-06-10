@@ -31,6 +31,7 @@ namespace SCP_600V.Extension
             player.MaxHealth = MaxHealt;
             player.Health = MaxHealt;
             SCP_600V.API.Players.Scp600manager.Add(player);
+
             player.AddItem(ItemType.KeycardScientist);
             foreach (KeyValuePair<AmmoType, ushort> a in Sai.Instance.Config.StartAmmo)
             {

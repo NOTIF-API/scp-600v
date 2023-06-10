@@ -13,20 +13,20 @@ namespace SCP_600V.API.Players
                 ply.SessionVariables.Remove("IsSCP600");
                 ply.SessionVariables.Remove("IsScp");
                 ply.MaxHealth = 100;
-                if (/*Sai.Instance.Config.IsVisibleBadge*/true)
+                if (Sai.Instance.Config.IsVisibleBadge)
                 {
                     if (ply.Group != null& !ply.RemoteAdminAccess)
                     {
                         ply.Group = null;
                     }
                 }
-                /*ply.CustomInfo = string.Empty;
+                ply.CustomInfo = string.Empty;
                 ply.ReferenceHub.nicknameSync.ShownPlayerInfo &= ~PlayerInfoArea.Nickname;
                 ply.ReferenceHub.nicknameSync.ShownPlayerInfo &= ~PlayerInfoArea.UnitName;
                 ply.ReferenceHub.nicknameSync.ShownPlayerInfo &= ~PlayerInfoArea.Role;
                 ply.InfoArea |= ~PlayerInfoArea.Nickname;
                 ply.InfoArea |= ~PlayerInfoArea.UnitName;
-                Log.Debug("Remove all session variables and set default hp");*/
+                Log.Debug("Remove all session variables and set default hp");
             }
         }
         internal static void Add(Player ply)
@@ -45,7 +45,10 @@ namespace SCP_600V.API.Players
                     ply.Group = a;
                 }
             }
-            
+            ply.CustomInfo = $"{ply.Nickname}\nSCP-600V-{Scp600PlyGet.GetScp600().Count}";
+            ply.ReferenceHub.nicknameSync.ShownPlayerInfo &= ~PlayerInfoArea.Nickname;
+            ply.ReferenceHub.nicknameSync.ShownPlayerInfo &= ~PlayerInfoArea.UnitName;
+            ply.ReferenceHub.nicknameSync.ShownPlayerInfo &= ~PlayerInfoArea.Role;
             if (Sai.Instance.Config.CanBleading)
             {
                 ply.GameObject.AddComponent<Component.HurtingPerTime>();
