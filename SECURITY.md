@@ -7,6 +7,7 @@ currently being supported with security updates.
 
 | Version | Supported to latest exiled version | Exiled version |
 | ------- | ------------------------- | -------------- |
+| 2.0.0   | :white_check_mark:        | 7.0.0-rc5      |
 | 1.7.6   | :white_check_mark:        | 7.0.0-rc3      |
 | 1.7.5   | :white_check_mark:        | 7.0.0-rc2      |
 | 1.7.4   | :x:                       | 6.1.0-rc1      |
