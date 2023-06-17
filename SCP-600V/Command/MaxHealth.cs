@@ -2,6 +2,8 @@
 using Exiled.API.Features;
 using CommandSystem;
 using Exiled.Permissions.Extensions;
+using Exiled.CustomRoles.API.Features;
+using SCP_600V.Extension;
 
 namespace SCP_600V.Command
 {
@@ -21,7 +23,7 @@ namespace SCP_600V.Command
             {
                 if (ply.CheckPermission("s6.ChengeMHP"))
                 {
-                    if (ply.SessionVariables.ContainsKey("IsSCP600"))
+                    if (CustomRole.Get(typeof(Scp600CotumRoleBase)).Check(ply))
                     {
                         if (arguments.Count == 0)
                         {

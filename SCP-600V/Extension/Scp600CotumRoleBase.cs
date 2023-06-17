@@ -146,7 +146,7 @@ namespace SCP_600V.Extension
                 if (Check(e.Attacker))
                 {
                     Debug.Log("Attacker is SCP600");
-                    if (e.TargetOldRole != RoleTypeId.None & e.TargetOldRole != RoleTypeId.Spectator)
+                    if (e.TargetOldRole != RoleTypeId.None & e.TargetOldRole != RoleTypeId.Spectator& e.TargetOldRole != this.VisibledRole)
                     {
                         e.Attacker.ChangeAppearance(e.TargetOldRole, false, 0);
                         this.VisibledRole = e.TargetOldRole;
