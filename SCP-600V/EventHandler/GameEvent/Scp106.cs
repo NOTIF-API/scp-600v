@@ -7,7 +7,7 @@ namespace SCP_600V.EventHandler.GameEvent
 {
     internal class Scp106
     {
-        public void OnPocketDemensionCapture(EvArg.Player.EnteringPocketDimensionEventArgs e)
+        internal void OnPocketDemensionCapture(EvArg.Player.EnteringPocketDimensionEventArgs e)
         {
             if (CustomRole.Get(typeof(Scp600CotumRoleBase)).Check(e.Player) & e.Player != null)
             {

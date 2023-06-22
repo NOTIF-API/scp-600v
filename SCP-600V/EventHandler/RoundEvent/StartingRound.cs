@@ -9,7 +9,7 @@ namespace SCP_600V.EventHandler.RoundEvent
 {
     internal class StartingRound
     {
-        public void OnRoundStarted()
+        internal void OnRoundStarted()
         {
             List<Player> players = new List<Player>();
             Random random = new Random();
@@ -21,7 +21,7 @@ namespace SCP_600V.EventHandler.RoundEvent
                 }
             }
             bool Siusiu = IsSpawnable();
-            if (Siusiu)
+            if (Siusiu & Server.PlayerCount > 2)
             {
                 Log.Debug("Get Random player and spawn as scp-600v");
                 int LuckyPlayer = random.Next(players.Count);
@@ -29,7 +29,7 @@ namespace SCP_600V.EventHandler.RoundEvent
                 CustomRole.Get(typeof(Scp600CotumRoleBase)).AddRole(pd);
             }
         }
-        public bool IsSpawnable()
+        internal bool IsSpawnable()
         {
             Random rand = new Random((int)DateTime.Now.Ticks);
             int res = rand.Next(101);

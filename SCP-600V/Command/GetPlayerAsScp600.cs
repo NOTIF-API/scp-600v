@@ -3,6 +3,7 @@ using Exiled.API.Features;
 using CommandSystem;
 using Exiled.Permissions.Extensions;
 using System.Text;
+using SCP_600V.API.Role;
 
 namespace SCP_600V.Command
 {
@@ -23,12 +24,9 @@ namespace SCP_600V.Command
                 if (player.CheckPermission("s6.GetPlayers"))
                 {
                     StringBuilder a = new StringBuilder();
-                    foreach (Player ply in Player.List)
+                    foreach (Player ply in RoleGet.Scp600Players())
                     {
-                        if (ply.SessionVariables.ContainsKey("IsSCP600"))
-                        {
-                            a.Append(ply.Nickname + ", ");
-                        }
+                        a.Append(ply.Nickname + ", ");
                     }
                     response = $"{Sai.Instance.Config.ListGetted.Replace("{name}", a.ToString())}";
                     return true;

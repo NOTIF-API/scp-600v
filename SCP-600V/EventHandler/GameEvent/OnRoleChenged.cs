@@ -9,7 +9,7 @@ namespace SCP_600V.EventHandler.GameEvent
 {
     internal class OnRoleChenged
     {
-        public void OnRoleChenge(EvArg.Player.ChangingRoleEventArgs e)
+        internal void OnRoleChenge(EvArg.Player.ChangingRoleEventArgs e)
         {
             if (RoleGet.IsScp600(e.Player) & e.Reason == SpawnReason.ForceClass & e.NewRole == PlayerRoles.RoleTypeId.Spectator & e.Player != null)
             {

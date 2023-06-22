@@ -7,7 +7,7 @@ namespace SCP_600V.EventHandler.GameEvent
 {
     internal class OnEscape
     {
-        public void OnEscaped(EvArg.Player.EscapingEventArgs e)
+        internal void OnEscaped(EvArg.Player.EscapingEventArgs e)
         {
             if (CustomRole.Get(typeof(Scp600CotumRoleBase)).Check(e.Player)&e.Player != null)
             {

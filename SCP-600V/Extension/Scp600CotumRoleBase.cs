@@ -78,7 +78,7 @@ namespace SCP_600V.Extension
                     player.UniqueRole = this.Name;
                     player.TryAddCustomRoleFriendlyFire(this.Name, this.CustomRoleFFMultiplier);
 
-                    player.CustomInfo = this.CustomInfo;
+                    player.CustomInfo = $"{player.Nickname}\n{this.CustomInfo}";
                     player.InfoArea &= ~PlayerInfoArea.Role;
 
                     if (Sai.Instance.Config.CanBleading)
@@ -156,12 +156,9 @@ namespace SCP_600V.Extension
         }
         public void PickUpItems(PickingUpItemEventArgs e)
         {
-            if (e.Player != null)
+            if (this.DontUserItems.Contains(e.Pickup.Type) & e.Player != null & Check(e.Player))
             {
-                if (this.DontUserItems.Contains(e.Pickup.Type))
-                {
-                    e.IsAllowed = false;
-                }
+                e.IsAllowed = false;
             }
         }
         public IEnumerator<float> Hurting(Player player)

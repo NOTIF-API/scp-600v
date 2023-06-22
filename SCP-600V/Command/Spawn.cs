@@ -20,60 +20,26 @@ namespace SCP_600V.Command
         public bool Execute(ArraySegment<string> arguments, ICommandSender sender, out string response)
         {
             Player writer = Player.Get(sender);
-            if (writer != null)
+            if (writer.CheckPermission("s6.SelfSpawn") & writer != null)
             {
-                if (writer.CheckPermission("s6.SelfSpawn"))
+                if (writer.Role.Type != PlayerRoles.RoleTypeId.Spectator)
                 {
-                    if (arguments.Count == 0)
+                    if (!RoleGet.IsScp600(writer))
                     {
-                        if (writer.Role.Type != PlayerRoles.RoleTypeId.Spectator)
-                        {
-                            if (RoleGet.IsScp600(writer))
-                            {
-                                CustomRole.Get(typeof(Scp600CotumRoleBase)).AddRole(writer);
-                                response = "Your are forced class to SCP-600V";
-                                return true;
-                            }
-                            else
-                            {
-                                response = "? your are scp-600 now";
-                                return false;
-                            }
-                        }
-                        if (writer.Role.Type == PlayerRoles.RoleTypeId.Spectator)
-                        {
-                            response = Sai.Instance.Config.SpawnCommandEr;
-                            return false;
-                        }
+                        CustomRole.Get(typeof(Scp600CotumRoleBase)).AddRole(writer);
+                        response = "Your are forced class to SCP-600V";
+                        return true;
                     }
                     else
                     {
-                        Player neded = Player.Get(arguments.At(0));
-                        if (neded != null)
-                        {
-                            if (neded.Role.Type == PlayerRoles.RoleTypeId.Spectator)
-                            {
-                                response = Sai.Instance.Config.SpawnCommandEr;
-                                return false;
-                            }
-                            if (RoleGet.IsScp600(neded))
-                            {
-                                CustomRole.Get(typeof(Scp600CotumRoleBase)).AddRole(neded);
-                                response = $"Player {neded.Nickname} spawned as SCP-600V";
-                                return true;
-                            }
-                            else
-                            {
-                                response = "? is scp-600 playing now";
-                                return false;
-                            }
-                        }
-                        if (neded == null)
-                        {
-                            response = Sai.Instance.Config.PlayerNF;
-                            return false;
-                        }
+                        response = "? your are scp-600 now";
+                        return false;
                     }
+                }
+                if (writer.Role.Type == PlayerRoles.RoleTypeId.Spectator)
+                {
+                    response = Sai.Instance.Config.SpawnCommandEr;
+                    return false;
                 }
                 else
                 {
