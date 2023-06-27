@@ -2,8 +2,7 @@
 using Exiled.API.Features;
 using CommandSystem;
 using Exiled.Permissions.Extensions;
-using Exiled.CustomRoles.API.Features;
-using SCP_600V.Extension;
+using SCP_600V.API.Role;
 
 namespace SCP_600V.Command
 {
@@ -14,73 +13,32 @@ namespace SCP_600V.Command
 
         public string[] Aliases { get; set; } = { "mhp", "s6mhp" };
 
-        public string Description { get; set; } = "Chenge your maxhealt values\n<amount> <userID>";
+        public string Description { get; set; } = "Chenge your maxhealt values\nmhp <amount>";
 
         public bool Execute(ArraySegment<string> arguments, ICommandSender sender, out string response)
         {
             Player ply = Player.Get(sender);
-            if (ply != null) 
+            if (ply != null && ply.CheckPermission("s6.ChengeMHP") && RoleGet.IsScp600(ply))
             {
-                if (ply.CheckPermission("s6.ChengeMHP"))
+                string arg = arguments.At(0);
+                if (!string.IsNullOrEmpty(arg) && int.TryParse(arg, out _))
                 {
-                    if (CustomRole.Get(typeof(Scp600CotumRoleBase)).Check(ply))
-                    {
-                        if (arguments.Count == 0)
-                        {
-                            response = Sai.Instance.Config.MhpHealArgEr;
-                            return false;
-                        }
-                        else
-                        {
-                            try
-                            {
-                                if (arguments.Count == 1)
-                                {
-                                    int num = int.Parse(arguments.At(0));
-                                    ply.MaxHealth = num;
-                                    ply.Health = num;
-                                    response = $"{Sai.Instance.Config.MhpChenged.Replace("{amount}", num.ToString())}";
-                                    return true;
-                                }
-                                if (arguments.Count == 2)
-                                {
-                                    Player who = Player.Get(arguments.At(1));
-                                    if (who != null)
-                                    {
-                                        int num = int.Parse(arguments.At(0));
-                                        who.MaxHealth = num;
-                                        who.Health = num;
-                                        response = $"{Sai.Instance.Config.MhpChenged.Replace("{amount}", num.ToString())}";
-                                        return true;
-                                    }
-                                    if (who == null)
-                                    {
-                                        response = Sai.Instance.Config.PlayerNF;
-                                        return false;
-                                    }
-                                }
-                            }
-                            catch
-                            {
-                                response = Sai.Instance.Config.MhpHealArgEr;
-                                return false;
-                            }
-                        }
-                    }
-                    else
-                    {
-                        response = "Your are not scp600 now";
-                        return false;
-                    }
+                    ply.MaxHealth = float.Parse(arg);
+                    ply.Health = float.Parse(arg);
+                    response = $"our lives have been successfully changed to {arg}, just like your current health.";
+                    return true;
                 }
                 else
                 {
-                    response = Sai.Instance.Config.PermissionDenied;
+                    response = "You have specified the wrong format or an empty argument. The correct format is an integer number.";
                     return false;
                 }
             }
-            response = "?";
-            return false;
+            else
+            {
+                response = "You are not authorized to use this command or you are not an SCP-600V.";
+                return false;
+            }
         }
     }
 }

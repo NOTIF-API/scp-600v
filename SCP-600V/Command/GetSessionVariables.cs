@@ -19,41 +19,21 @@ namespace SCP_600V.Command
 
             public bool Execute(ArraySegment<string> arguments, ICommandSender sender, out string response)
             {
-                Player send = Player.Get(sender);
-                Player ply = Player.Get(arguments.At(0));
-                if (send.CheckPermission("s6.debug"))
+                Player player = Player.Get(sender);
+                if (player != null && player.CheckPermission("s6.debug"))
                 {
-                    if (send == null)
+                    StringBuilder variableListBuilder = new StringBuilder();
+                    foreach (string arga in player.SessionVariables.Keys)
                     {
-                        response = "Unkown error";
-                        return false;
+                        variableListBuilder.Append(arga).Append(", ");
                     }
-                    if (send != null)
-                    {
-                        StringBuilder asd = new StringBuilder();
-                        if (ply != null)
-                        {
-                            foreach (string arga in ply.SessionVariables.Keys)
-                            {
-                                asd.Append(arga + ", ");
-                            }
-                        }
-                        else
-                        {
-                            foreach (string arga in send.SessionVariables.Keys)
-                            {
-                                asd.Append(arga + ", ");
-                            }
-                        }
-                        response = asd.ToString();
-                        return true;
-                    }
-                    response = "idk";
-                    return false;
+                    string variableList = variableListBuilder.ToString().TrimEnd(',', ' '); // Удалить последнюю запятую и пробел
+                    response = variableList;
+                    return true;
                 }
                 else
                 {
-                    response = Sai.Instance.Config.PermissionDenied;
+                    response = "Your don't have permissons for use this command";
                     return false;
                 }
             }

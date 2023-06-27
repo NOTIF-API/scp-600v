@@ -3,6 +3,7 @@ using Exiled.API.Features;
 using CommandSystem;
 using Exiled.Permissions.Extensions;
 using System.Text;
+using SCP_600V.API.Role;
 
 namespace SCP_600V.Command
 {
@@ -18,29 +19,22 @@ namespace SCP_600V.Command
         public bool Execute(ArraySegment<string> arguments, ICommandSender sender, out string response)
         {
             Player player = Player.Get(sender);
-            if (player != null)
+            if (player != null && player.CheckPermission("s6.GetPlayers"))
             {
-                if (player.CheckPermission("s6.GetPlayers"))
+                StringBuilder playerListBuilder = new StringBuilder();
+                foreach (Player ply in RoleGet.Scp600Players())
                 {
-                    StringBuilder a = new StringBuilder();
-                    foreach (Player ply in Player.List)
-                    {
-                        if (ply.SessionVariables.ContainsKey("IsSCP600"))
-                        {
-                            a.Append(ply.Nickname + ", ");
-                        }
-                    }
-                    response = $"{Sai.Instance.Config.ListGetted.Replace("{name}", a.ToString())}";
-                    return true;
+                    playerListBuilder.Append(ply.Nickname).Append(", ");
                 }
-                else
-                {
-                    response = Sai.Instance.Config.PermissionDenied;
-                    return false;
-                }
+                string playerList = playerListBuilder.ToString().TrimEnd(',', ' '); // Удалить последнюю запятую и пробел
+                response = $"{Sai.Instance.Config.ListGetted.Replace("{name}", playerList)}";
+                return true;
             }
-            response = "? i have not get info";
-            return false;
+            else
+            {
+                response = "Your don't have permissons for use this command";
+                return false;
+            }
         }
     }
 }

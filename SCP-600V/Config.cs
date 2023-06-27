@@ -34,40 +34,11 @@ namespace SCP_600V
         /// </summary>
         [Description("message when admin gets list of scp players")]
         public string ListGetted { get; set; } = "Players: {name} | now playing as SCP-600V";
+
         /// <summary>
-        /// message when admin doesn't have command rights
+        /// SCP-600V Role Configurations
         /// </summary>
-        [Description("message when admin doesn't have command rights")]
-        public string PermissionDenied { get; set; } = "Problems with your's permissions";
-        /// <summary>
-        /// player search error message
-        /// </summary>
-        [Description("player search error message")]
-        public string PlayerNF { get; set; } = "Player not found";
-        /// <summary>
-        /// message when admin changed max hp
-        /// </summary>
-        [Description("message when admin changed max hp")]
-        public string MhpChenged { get; set; } = "your max healt set: {amount} and healed";
-        /// <summary>
-        /// error in determining the player's health
-        /// </summary>
-        [Description("error in determining the player's health")]
-        public string MhpHealArgEr { get; set; } = "i can't find out how much health you need to give";
-        /// <summary>
-        /// message when admin cannot become scp-600
-        /// </summary>
-        [Description("message when admin cannot become scp-600")]
-        public string SpawnCommandEr { get; set; } = "you cannot become scp-600 because you are an observer";
-        /// <summary>
-        /// message if player dead by scp-600
-        /// </summary>
-        [Description("message if player dead by scp-600")]
-        public string MessageDeathPlayerByScp600 { get; set; } = "your killed by <color=#FF0000>SCP-600V</color>";
-        /// <summary>
-        /// message if player last in game with other scp and more
-        /// </summary>
-        public string OnLastPlayer { get; set; } = "<align=\"left\"><color=#00FF00>Your</color> last player\n<align=\"center\"><color=FF0000>All human dead!</color>";
+        [Description("SCP-600V Role Configurations")]
         public Scp600CotumRoleBase Scp600ConfigRole { get; set; } = new Scp600CotumRoleBase();
     }
 }
