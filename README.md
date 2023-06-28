@@ -20,21 +20,7 @@ s_c_p600_v:
   badge_color: 'red'
   # message when admin gets list of scp players
   list_getted: 'Players: {name} | now playing as SCP-600V'
-  # message when admin doesn't have command rights
-  permission_denied: 'Problems with your''s permissions'
-  # player search error message
-  player_n_f: 'Player not found'
-  # message when admin changed max hp
-  mhp_chenged: 'your max healt set: {amount} and healed'
-  # error in determining the player's health
-  mhp_heal_arg_er: 'i can''t find out how much health you need to give'
-  # message when admin cannot become scp-600
-  spawn_command_er: 'you cannot become scp-600 because you are an observer'
-  # message if player dead by scp-600
-  message_death_player_by_scp600: 'your killed by <color=#FF0000>SCP-600V</color>'
-  on_last_player: '<align="left"><color=#00FF00>Your</color> last player
-
-    <align="center"><color=FF0000>All human dead!</color>'
+  # SCP-600V Role Configurations
   scp600_config_role:
     custom_info: 'SCP-600V'
     name: 'SCP-600V'
