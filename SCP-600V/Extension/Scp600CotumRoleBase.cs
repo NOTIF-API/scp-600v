@@ -1,8 +1,6 @@
 ﻿using Exiled.API.Enums;
 using Exiled.API.Features;
-using Exiled.CustomRoles;
 using Exiled.CustomRoles.API.Features;
-using Item = Exiled.API.Features.Items;
 using Exiled.API.Features.Attributes;
 using System.Collections.Generic;
 using PlayerRoles;
@@ -11,21 +9,35 @@ using MEC;
 using Exiled.API.Extensions;
 using Exiled.Events.EventArgs.Player;
 using EvHandler = Exiled.Events.Handlers;
+using YamlDotNet.Serialization;
+using System.ComponentModel;
 
 namespace SCP_600V.Extension
 {
-    [CustomRole(PlayerRoles.RoleTypeId.Tutorial)]
+    [CustomRole(RoleTypeId.Tutorial)]
     internal class Scp600CotumRoleBase : CustomRole
     {
         public override string CustomInfo { get; set; } = "SCP-600V";
+        
         public override string Name { get; set; } = "SCP-600V";
+        
         public override int MaxHealth { get; set; } = 400;
+        
         public override RoleTypeId Role { get; set; } = RoleTypeId.Tutorial;
+
+        [Description("the initial appearance of the object during behavior (preferably left as it will follow among class D)")]
+        public RoleTypeId StartAppearance { get; set; } = RoleTypeId.ClassD;
+
         public override string Description { get; set; } = "<color=\"purple\">Help other scp complete task</color>";
+        
         public override uint Id { get; set; } = 96;
+        
         public override List<string> Inventory { get; set; } = new List<string>() { ItemType.KeycardScientist.ToString()};
+        
         public override string ConsoleMessage { get; set; } = "<color=\"green\">Your are spawned as</color> <color=\"red\">SCP-600V</color>";
-        private RoleTypeId VisibledRole { get; set; }
+        [YamlIgnore]
+        public RoleTypeId VisibledRole { get; set; }
+
         public override Dictionary<RoleTypeId, float> CustomRoleFFMultiplier { get; set; } = new Dictionary<RoleTypeId, float>()
         {
             { RoleTypeId.Scp049, 0 },
@@ -102,7 +114,7 @@ namespace SCP_600V.Extension
         {
             Timing.CallDelayed(1f, () =>
             {
-                player.ChangeAppearance(RoleTypeId.ClassD, false, 0);
+                player.ChangeAppearance(this.StartAppearance, false, 0);
                 this.VisibledRole = RoleTypeId.ClassD;
             });
             base.RoleRemoved(player);
@@ -141,22 +153,19 @@ namespace SCP_600V.Extension
         }
         public void OnDeath(DiedEventArgs e)
         {
-            if (e.Attacker != null & e.Player != null & e.Attacker != e.Player)
+            if (Check(e.Attacker) && e.Attacker != null && e.Player != null && e.Attacker != e.Player)
             {
-                if (Check(e.Attacker))
+                Debug.Log("Attacker is SCP600");
+                if (e.TargetOldRole != this.VisibledRole && e.TargetOldRole != RoleTypeId.None && e.TargetOldRole != RoleTypeId.Spectator)
                 {
-                    Debug.Log("Attacker is SCP600");
-                    if (e.TargetOldRole != RoleTypeId.None & e.TargetOldRole != RoleTypeId.Spectator& e.TargetOldRole != this.VisibledRole)
-                    {
-                        e.Attacker.ChangeAppearance(e.TargetOldRole, false, 0);
-                        this.VisibledRole = e.TargetOldRole;
-                    }
+                    this.VisibledRole = e.TargetOldRole;
+                    e.Attacker.ChangeAppearance(this.VisibledRole, false, 0);
                 }
             }
         }
         public void PickUpItems(PickingUpItemEventArgs e)
         {
-            if (this.DontUserItems.Contains(e.Pickup.Type) & e.Player != null & Check(e.Player))
+            if (e.Player != null && Check(e.Player) && this.DontUserItems.Contains(e.Pickup.Type))
             {
                 e.IsAllowed = false;
             }

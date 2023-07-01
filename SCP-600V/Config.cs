@@ -1,6 +1,4 @@
-﻿using System.Collections.Generic;
-using System.ComponentModel;
-using Exiled.API.Enums;
+﻿using System.ComponentModel;
 using Exiled.API.Interfaces;
 using SCP_600V.Extension;
 
@@ -18,6 +16,10 @@ namespace SCP_600V
         /// </summary>
         [Description("Can the player see the debug message in the server console")]
         public bool Debug { get; set; } = false;
+        /// <summary>
+        /// probability of occurrence at the beginning of the game in percentages.
+        /// </summary>
+        [Description("probability of occurrence at the beginning of the game in percentages")]
         public int PercentToSpawn { get; set; } = 25;
         /// <summary>
         /// determines if SCP-600 will take damage over its lifetime
@@ -34,7 +36,6 @@ namespace SCP_600V
         /// </summary>
         [Description("message when admin gets list of scp players")]
         public string ListGetted { get; set; } = "Players: {name} | now playing as SCP-600V";
-
         /// <summary>
         /// SCP-600V Role Configurations
         /// </summary>

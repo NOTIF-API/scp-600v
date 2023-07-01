@@ -30,7 +30,7 @@ namespace SCP_600V.API.Role
         /// </summary>
         /// <param name="player">The player who will receive the role of SCP-600V</param>
         /// <param name="MaxHealt">Assigning a custom MaxHealt parameter to a player</param>
-        public static void Spawn(Player player, int MaxHealt)
+        public static void Spawn(Player player, int MaxHealt = 400)
         {
             if (player == null && player.IsDead)
             {
