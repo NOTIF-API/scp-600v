@@ -1,10 +1,9 @@
-﻿using System;
-using Exiled.API.Features;
+﻿using Exiled.API.Features;
 using Exiled.CustomRoles.API;
 using Exiled.CustomRoles.API.Features;
 using HarmonyLib;
-using SCP_600V.Extension;
-using Hand = Exiled.Events.Handlers;
+using SCP_600V.EventHandler;
+using Handler = Exiled.Events.Handlers;
 
 namespace SCP_600V
 {
@@ -13,11 +12,8 @@ namespace SCP_600V
         
         public static Sai Instance;
         public Harmony _harma;
-        public EventHandler.RoundEvent.StartingRound str;
-        public EventHandler.RoundEvent.EndingRound er;
-        public EventHandler.GameEvent.OnRoleChenged orc;
-        public EventHandler.GameEvent.Scp106 spd;
-        public EventHandler.GameEvent.OnEscape osc;
+        public GameEvents _gameEvents;
+        public RoundEvents _roundEvents;
 
         public override void OnEnabled()
         {
@@ -28,17 +24,14 @@ namespace SCP_600V
             _harma.PatchAll();
             this.Config.Scp600ConfigRole.Register();
             Log.Debug("Registered role scp600v in game");
-            str = new EventHandler.RoundEvent.StartingRound();
-            er = new EventHandler.RoundEvent.EndingRound();
-            orc = new EventHandler.GameEvent.OnRoleChenged();
-            spd = new EventHandler.GameEvent.Scp106();
-            osc = new SCP_600V.EventHandler.GameEvent.OnEscape();
+            _gameEvents = new GameEvents();
+            _roundEvents = new RoundEvents();
             //s1 = new EventHandler.GameEvent.Scp173();
-            Hand.Server.RoundStarted += str.OnRoundStarted;
-            Hand.Server.EndingRound += er.OnEndingRound;
-            Hand.Player.ChangingRole += orc.OnRoleChenge;
-            Hand.Player.EnteringPocketDimension += spd.OnPocketDemensionCapture;
-            Hand.Player.Escaping += osc.OnEscaped;
+            Handler.Server.RoundStarted += _roundEvents.OnRoundStarted;
+            Handler.Server.EndingRound += _roundEvents.OnEndingRound;
+            Handler.Player.ChangingRole += _gameEvents.ChangingRole;
+            Handler.Player.EnteringPocketDimension += _gameEvents.EnetignPocketDemens;
+            Handler.Player.Escaping += _gameEvents.OnEscape;
         }
         public override void OnDisabled()
         {
@@ -46,17 +39,15 @@ namespace SCP_600V
             Instance = null;
             CustomRole.UnregisterRoles();
             _harma.UnpatchAll("com.scp600.Harmoni");
-            str = null;
-            er = null;
-            orc = null;
-            spd = null;
-            osc = null;
+            _harma = null;
+            _roundEvents = null;
+            _gameEvents = null;
 
-            Hand.Server.RoundStarted -= str.OnRoundStarted;
-            Hand.Server.EndingRound -= er.OnEndingRound;
-            Hand.Player.ChangingRole -= orc.OnRoleChenge;
-            Hand.Player.EnteringPocketDimension -= spd.OnPocketDemensionCapture;
-            Hand.Player.Escaping -= osc.OnEscaped;
+            Handler.Server.RoundStarted -= _roundEvents.OnRoundStarted;
+            Handler.Server.EndingRound -= _roundEvents.OnEndingRound;
+            Handler.Player.ChangingRole -= _gameEvents.ChangingRole;
+            Handler.Player.EnteringPocketDimension -= _gameEvents.EnetignPocketDemens;
+            Handler.Player.Escaping -= _gameEvents.OnEscape;
         }
     }
 }

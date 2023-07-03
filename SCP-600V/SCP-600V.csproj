@@ -51,11 +51,8 @@
     <Compile Include="Command\PermissionList.cs" />
     <Compile Include="Command\Spawn.cs" />
     <Compile Include="Config.cs" />
-    <Compile Include="EventHandler\GameEvent\OnEscape.cs" />
-    <Compile Include="EventHandler\GameEvent\OnRoleChenged.cs" />
-    <Compile Include="EventHandler\GameEvent\Scp106.cs" />
-    <Compile Include="EventHandler\RoundEvent\EndingRound.cs" />
-    <Compile Include="EventHandler\RoundEvent\StartingRound.cs" />
+    <Compile Include="EventHandler\GameEvents.cs" />
+    <Compile Include="EventHandler\RoundEvents.cs" />
     <Compile Include="Extension\Scp600CotumRoleBase.cs" />
     <Compile Include="Sai.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
