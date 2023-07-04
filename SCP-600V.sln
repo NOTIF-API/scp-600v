@@ -1,0 +1,25 @@
+﻿
+Microsoft Visual Studio Solution File, Format Version 12.00
+# Visual Studio Version 17
+VisualStudioVersion = 17.2.32630.192
+MinimumVisualStudioVersion = 10.0.40219.1
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "SCP-600V", "SCP-600V\SCP-600V.csproj", "{E08107A7-26AD-4DC7-9EF4-ACA6BF75F4C9}"
+EndProject
+Global
+	GlobalSection(SolutionConfigurationPlatforms) = preSolution
+		Debug|Any CPU = Debug|Any CPU
+		Release|Any CPU = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(ProjectConfigurationPlatforms) = postSolution
+		{E08107A7-26AD-4DC7-9EF4-ACA6BF75F4C9}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{E08107A7-26AD-4DC7-9EF4-ACA6BF75F4C9}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{E08107A7-26AD-4DC7-9EF4-ACA6BF75F4C9}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{E08107A7-26AD-4DC7-9EF4-ACA6BF75F4C9}.Release|Any CPU.Build.0 = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(SolutionProperties) = preSolution
+		HideSolutionNode = FALSE
+	EndGlobalSection
+	GlobalSection(ExtensibilityGlobals) = postSolution
+		SolutionGuid = {38BB6720-026C-46B3-A28B-7CC5EDF9CE45}
+	EndGlobalSection
+EndGlobal
