@@ -32,6 +32,7 @@ namespace SCP_600V
             Handler.Player.ChangingRole += _gameEvents.ChangingRole;
             Handler.Player.EnteringPocketDimension += _gameEvents.EnetignPocketDemens;
             Handler.Player.Escaping += _gameEvents.OnEscape;
+            Handler.Player.Hurting += _gameEvents.HurtingScp;
         }
         public override void OnDisabled()
         {

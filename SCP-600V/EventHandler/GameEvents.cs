@@ -32,5 +32,19 @@ namespace SCP_600V.EventHandler
                 e.IsAllowed = false;
             }
         }
+        /// <summary>
+        /// added to prevent scp from killing each other
+        /// </summary>
+        internal void HurtingScp(HurtingEventArgs e)
+        {
+            if (e.Player != null & RoleGet.IsScp600(e.Player) & e.Attacker.Role.Team == Team.SCPs)
+            {
+                e.IsAllowed = false;
+            }
+            else
+            {
+                return;
+            }
+        }
     }
 }
