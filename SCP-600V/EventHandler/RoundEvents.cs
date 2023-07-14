@@ -5,11 +5,13 @@ using Exiled.Events.EventArgs.Server;
 using PlayerRoles;
 using SCP_600V.API.Role;
 using System.Collections.Generic;
+using System;
 
 namespace SCP_600V.EventHandler
 {
     internal class RoundEvents
     {
+        // makes sure that the game does not end if there are conditions interfering with the end
         internal void OnEndingRound(EndingRoundEventArgs e)
         {
             bool scp = false;
@@ -32,17 +34,19 @@ namespace SCP_600V.EventHandler
                 e.IsRoundEnded = false;
             }
         }
+        // determines whether a player will be selected for role 600 or not
         internal void OnRoundStarted()
         {
             bool Spawnable = IsSpawnable();
-            if (Spawnable && Server.PlayerCount > 2)
+            if (Spawnable & Server.PlayerCount >= Sai.Instance.Config.MinimalPlayers)
             {
                 List<Player> players = new List<Player>();
                 foreach (Player p in Player.List.Where(x => x.IsAlive && x.Role.Type == RoleTypeId.ClassD))
                 {
                     players.Add(p);
                 }
-                RoleSet.Spawn(players[UnityEngine.Random.Range(1, players.Count())]);
+                Random rnd = new Random();
+                RoleSet.Spawn(players[rnd.Next(1, players.Count())]);
                 Log.Debug("Spawned random players");
             }
             else
@@ -52,14 +56,9 @@ namespace SCP_600V.EventHandler
         }
         internal bool IsSpawnable()
         {
-            if (UnityEngine.Random.value <= Sai.Instance.Config.PercentToSpawn)
-            {
-                return true;
-            }
-            else
-            {
-                return false;
-            }
+            Random rand = new Random((int)DateTime.Now.Ticks);
+            int res = rand.Next(101);
+            if (res <= Sai.Instance.Config.PercentToSpawn) return true; else return false;
         }
     }
 }

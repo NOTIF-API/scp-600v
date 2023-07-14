@@ -8,6 +8,7 @@ namespace SCP_600V.EventHandler
 {
     internal class GameEvents
     {
+        // does not allow escape for 600
         internal void OnEscape(EscapingEventArgs e)
         {
             if (e.Player != null && RoleGet.IsScp600(e.Player))
@@ -16,14 +17,7 @@ namespace SCP_600V.EventHandler
                 e.IsAllowed = false;
             }
         }
-        internal void ChangingRole(ChangingRoleEventArgs e)
-        {
-            if (e.Player != null && e.Reason == SpawnReason.ForceClass & e.NewRole == RoleTypeId.None || e.NewRole == RoleTypeId.Spectator & RoleGet.IsScp600(e.Player))
-            {
-                Log.Debug("Detected admin forces scp600 to spectator");
-                e.Player.ShowHint("\n\n\n\n\n\n<color=\"red\">Your are admin forced to spectator scp600 is removed role for your");
-            }
-        }
+        // does not allow 106 to catch 600 in its dimension
         internal void EnetignPocketDemens(EnteringPocketDimensionEventArgs e)
         {
             if (e.Player != null && RoleGet.IsScp600(e.Player))
@@ -32,18 +26,23 @@ namespace SCP_600V.EventHandler
                 e.IsAllowed = false;
             }
         }
-        /// <summary>
-        /// added to prevent scp from killing each other
-        /// </summary>
-        internal void HurtingScp(HurtingEventArgs e)
+        // making sure SCPs can't kill 600
+        internal void HurtingPlayer(HurtingEventArgs e)
         {
-            if (e.Player != null & RoleGet.IsScp600(e.Player) & e.Attacker.Role.Team == Team.SCPs)
+            if (e.Player == null | e.Attacker == null)
             {
+                Log.Debug("e.Player is null or e.Attacker is null");
+                return;
+            }
+            if (RoleGet.IsScp600(e.Player) & e.Attacker.Role.Team == Team.SCPs)
+            {
+                Log.Debug("e.Player is Scp600 and e.Attacker is Scp");
                 e.IsAllowed = false;
             }
-            else
+            if (RoleGet.IsScp600(e.Attacker) & e.Player.Role.Team == Team.SCPs)
             {
-                return;
+                Log.Debug("e.Attacker is Scp600 and e.Player is Scp");
+                e.IsAllowed = false;
             }
         }
     }

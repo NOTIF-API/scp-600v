@@ -1,7 +1,5 @@
 ﻿using System;
-using Exiled.API.Features;
 using CommandSystem;
-using Exiled.Permissions.Extensions;
 
 namespace SCP_600V.Command
 {

@@ -24,7 +24,7 @@
     <WarningLevel>4</WarningLevel>
     <DocumentationFile>
     </DocumentationFile>
-    <PlatformTarget>AnyCPU</PlatformTarget>
+    <PlatformTarget>x64</PlatformTarget>
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|AnyCPU' ">
     <DebugType>pdbonly</DebugType>
@@ -78,10 +78,6 @@
       <SpecificVersion>False</SpecificVersion>
       <HintPath>..\..\..\..\AppData\Roaming\EXILED\Plugins\dependencies\Exiled.API.dll</HintPath>
     </Reference>
-    <Reference Include="Exiled.CreditTags, Version=7.1.1.0, Culture=neutral, processorArchitecture=AMD64">
-      <SpecificVersion>False</SpecificVersion>
-      <HintPath>..\..\..\..\AppData\Roaming\EXILED\Plugins\Exiled.CreditTags.dll</HintPath>
-    </Reference>
     <Reference Include="Exiled.CustomRoles, Version=7.1.1.0, Culture=neutral, processorArchitecture=AMD64">
       <SpecificVersion>False</SpecificVersion>
       <HintPath>..\..\..\..\AppData\Roaming\EXILED\Plugins\Exiled.CustomRoles.dll</HintPath>
@@ -108,11 +104,6 @@
     </Reference>
     <Reference Include="System" />
     <Reference Include="System.ComponentModel.Composition" />
-    <Reference Include="System.ComponentModel.Primitives, Version=4.1.1.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a, processorArchitecture=MSIL">
-      <HintPath>..\packages\System.ComponentModel.Primitives.4.3.0\lib\net45\System.ComponentModel.Primitives.dll</HintPath>
-      <Private>True</Private>
-      <Private>True</Private>
-    </Reference>
     <Reference Include="System.Xml" />
     <Reference Include="System.Xml.Linq" />
     <Reference Include="UnityEngine, Version=0.0.0.0, Culture=neutral, processorArchitecture=MSIL">
@@ -135,10 +126,6 @@
   <ItemGroup>
     <Analyzer Include="..\..\..\..\..\..\Program Files %28x86%29\Steam\steamapps\common\SCP Secret Laboratory Dedicated Server\SCPSL_Data\Managed\System.Xml.dll" />
     <Analyzer Include="..\..\..\..\..\..\Program Files %28x86%29\Steam\steamapps\common\SCP Secret Laboratory Dedicated Server\SCPSL_Data\Managed\System.Xml.Linq.dll" />
-  </ItemGroup>
-  <ItemGroup>
-    <None Include="app.config" />
-    <None Include="packages.config" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
 </Project>

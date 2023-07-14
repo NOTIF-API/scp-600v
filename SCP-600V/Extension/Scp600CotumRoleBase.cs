@@ -22,7 +22,10 @@ namespace SCP_600V.Extension
         public override string Name { get; set; } = "SCP-600V";
         
         public override int MaxHealth { get; set; } = 400;
-        
+
+        [Description("The damage that the player takes over a certain period of time")]
+        public int DamagePerTime { get; set; } = 5;
+
         public override RoleTypeId Role { get; set; } = RoleTypeId.Tutorial;
 
         [Description("the initial appearance of the object during behavior (preferably left as it will follow among class D)")]
@@ -90,7 +93,7 @@ namespace SCP_600V.Extension
                     player.UniqueRole = this.Name;
                     player.TryAddCustomRoleFriendlyFire(this.Name, this.CustomRoleFFMultiplier);
 
-                    player.CustomInfo = $"{player.Nickname}\n{this.CustomInfo}";
+                    player.CustomInfo = $"{this.CustomInfo}";
                     player.InfoArea &= ~PlayerInfoArea.Role;
 
                     if (Sai.Instance.Config.CanBleading)
@@ -104,7 +107,7 @@ namespace SCP_600V.Extension
                     }
                     catch
                     {
-
+                        Log.Debug("Key error player have keys or is null");
                     }
                 });
             }
@@ -175,7 +178,7 @@ namespace SCP_600V.Extension
             for (; ; )
             {
                 yield return Timing.WaitForSeconds(5);
-                player.Hurt(5f, DamageType.Bleeding);
+                player.Hurt(this.DamagePerTime, DamageType.Bleeding);
             }
         }
     }

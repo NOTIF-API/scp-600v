@@ -22,6 +22,11 @@ namespace SCP_600V
         [Description("probability of occurrence at the beginning of the game in percentages")]
         public int PercentToSpawn { get; set; } = 25;
         /// <summary>
+        /// minimum number of people to spawn
+        /// </summary>
+        [Description("minimum number of people to spawn")]
+        public int MinimalPlayers { get; set; } = 3;
+        /// <summary>
         /// determines if SCP-600 will take damage over its lifetime
         /// </summary>
         [Description("determines if SCP-600 will take damage over its lifetime")]

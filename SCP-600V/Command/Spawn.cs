@@ -13,20 +13,20 @@ namespace SCP_600V.Command
 
         public string[] Aliases { get; set; } = { "S600", "sp6", "scp600" };
 
-        public string Description { get; set; } = "Spawn your as scp-600v\nsp6 <userID>";
+        public string Description { get; set; } = "Spawn your as scp-600v";
 
         public bool Execute(ArraySegment<string> arguments, ICommandSender sender, out string response)
         {
             Player player = Player.Get(sender);
-            if (player != null && player.CheckPermission("s6.SelfSpawn") && !player.Role.IsDead)
+            if (player != null & player.CheckPermission("s6.SelfSpawn") & !player.IsDead)
             {
                 RoleSet.Spawn(player);
-                response = "You have successfully acquired the role of SCP-600V";
+                response = "Done";
                 return true;
             }
             else
             {
-                response = "At the moment you have the role of an observer or you are dead";
+                response = "Your don't have permission or your are spectator";
                 return false;
             }
         }
