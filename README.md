@@ -13,7 +13,10 @@ s_c_p600_v:
   is_enabled: true
   # Can the player see the debug message in the server console
   debug: false
+  # probability of occurrence at the beginning of the game in percentages
   percent_to_spawn: 25
+  # minimum number of people to spawn
+  minimal_players: 3
   # determines if SCP-600 will take damage over its lifetime
   can_bleading: true
   # Badge color in player list only lowers chars
@@ -25,7 +28,11 @@ s_c_p600_v:
     custom_info: 'SCP-600V'
     name: 'SCP-600V'
     max_health: 400
+    # The damage that the player takes over a certain period of time
+    damage_per_time: 5
     role: Tutorial
+    # the initial appearance of the object during behavior (preferably left as it will follow among class D)
+    start_appearance: ClassD
     description: '<color="purple">Help other scp complete task</color>'
     id: 96
     inventory:
