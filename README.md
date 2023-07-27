@@ -19,6 +19,8 @@ s_c_p600_v:
   minimal_players: 3
   # determines if SCP-600 will take damage over its lifetime
   can_bleading: true
+  # whether it will be shown next to the player's name that he is SCP-600V
+  visible_player_name: true
   # Badge color in player list only lowers chars
   badge_color: 'red'
   # message when admin gets list of scp players
