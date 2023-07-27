@@ -15,12 +15,8 @@ s_c_p600_v:
   debug: false
   # probability of occurrence at the beginning of the game in percentages
   percent_to_spawn: 25
-  # minimum number of people to spawn
-  minimal_players: 3
   # determines if SCP-600 will take damage over its lifetime
   can_bleading: true
-  # whether it will be shown next to the player's name that he is SCP-600V
-  visible_player_name: true
   # Badge color in player list only lowers chars
   badge_color: 'red'
   # message when admin gets list of scp players
@@ -30,8 +26,8 @@ s_c_p600_v:
     custom_info: 'SCP-600V'
     name: 'SCP-600V'
     max_health: 400
-    # The damage that the player takes over a certain period of time
-    damage_per_time: 5
+    # whether it will be shown next to the player's name that he is SCP-600V
+    visible_scp_name: true
     role: Tutorial
     # the initial appearance of the object during behavior (preferably left as it will follow among class D)
     start_appearance: ClassD
