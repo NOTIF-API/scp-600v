@@ -26,11 +26,11 @@ namespace SCP_600V
             Log.Debug("Registered role scp600v in game");
             _gameEvents = new GameEvents();
             _roundEvents = new RoundEvents();
+            //s1 = new EventHandler.GameEvent.Scp173();
             Handler.Server.RoundStarted += _roundEvents.OnRoundStarted;
             Handler.Server.EndingRound += _roundEvents.OnEndingRound;
             Handler.Player.EnteringPocketDimension += _gameEvents.EnetignPocketDemens;
             Handler.Player.Escaping += _gameEvents.OnEscape;
-            Handler.Player.Hurting += _gameEvents.HurtingPlayer;
         }
         public override void OnDisabled()
         {
@@ -46,7 +46,6 @@ namespace SCP_600V
             Handler.Server.EndingRound -= _roundEvents.OnEndingRound;
             Handler.Player.EnteringPocketDimension -= _gameEvents.EnetignPocketDemens;
             Handler.Player.Escaping -= _gameEvents.OnEscape;
-            Handler.Player.Hurting -= _gameEvents.HurtingPlayer;
         }
     }
 }

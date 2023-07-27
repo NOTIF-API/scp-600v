@@ -29,19 +29,8 @@ namespace SCP_600V.EventHandler
         // making sure SCPs can't kill 600
         internal void HurtingPlayer(HurtingEventArgs e)
         {
-            if (e.Player == null | e.Attacker == null)
+            if (e.Player != null & e.Attacker != null & RoleGet.IsScp600(e.Player) & e.Attacker.Role.Team == Team.SCPs)
             {
-                Log.Debug("e.Player is null or e.Attacker is null");
-                return;
-            }
-            if (RoleGet.IsScp600(e.Player) & e.Attacker.Role.Team == Team.SCPs)
-            {
-                Log.Debug("e.Player is Scp600 and e.Attacker is Scp");
-                e.IsAllowed = false;
-            }
-            if (RoleGet.IsScp600(e.Attacker) & e.Player.Role.Team == Team.SCPs)
-            {
-                Log.Debug("e.Attacker is Scp600 and e.Player is Scp");
                 e.IsAllowed = false;
             }
         }

@@ -23,9 +23,9 @@ namespace SCP_600V.Extension
         
         public override int MaxHealth { get; set; } = 400;
 
-        [Description("The damage that the player takes over a certain period of time")]
-        public int DamagePerTime { get; set; } = 5;
-
+        [Description("whether it will be shown next to the player's name that he is SCP-600V")]
+        public bool VisibleScpName { get; set; } = true;
+        
         public override RoleTypeId Role { get; set; } = RoleTypeId.Tutorial;
 
         [Description("the initial appearance of the object during behavior (preferably left as it will follow among class D)")]
@@ -93,9 +93,11 @@ namespace SCP_600V.Extension
                     player.UniqueRole = this.Name;
                     player.TryAddCustomRoleFriendlyFire(this.Name, this.CustomRoleFFMultiplier);
 
-                    player.CustomInfo = $"{this.CustomInfo}";
-                    player.InfoArea &= ~PlayerInfoArea.Role;
-
+                    if (this.VisibleScpName)
+                    {
+                        player.CustomInfo = $"{player.Nickname}\n{this.CustomInfo}";
+                        player.InfoArea &= ~PlayerInfoArea.Role;
+                    }
                     if (Sai.Instance.Config.CanBleading)
                     {
                         Timing.RunCoroutine(this.Hurting(player), $"{player.Id}-hurt");
@@ -107,7 +109,7 @@ namespace SCP_600V.Extension
                     }
                     catch
                     {
-                        Log.Debug("Key error player have keys or is null");
+
                     }
                 });
             }
@@ -156,10 +158,10 @@ namespace SCP_600V.Extension
         }
         public void OnDeath(DiedEventArgs e)
         {
-            if (Check(e.Attacker) && e.Attacker != null && e.Player != null && e.Attacker != e.Player)
+            if (Check(e.Attacker) & e.Attacker != null & e.Player != null & e.Attacker != e.Player)
             {
                 Debug.Log("Attacker is SCP600");
-                if (e.TargetOldRole != this.VisibledRole && e.TargetOldRole != RoleTypeId.None && e.TargetOldRole != RoleTypeId.Spectator)
+                if (e.TargetOldRole != this.VisibledRole & e.TargetOldRole != RoleTypeId.None & e.TargetOldRole != RoleTypeId.Spectator)
                 {
                     this.VisibledRole = e.TargetOldRole;
                     e.Attacker.ChangeAppearance(this.VisibledRole, false, 0);
@@ -168,7 +170,7 @@ namespace SCP_600V.Extension
         }
         public void PickUpItems(PickingUpItemEventArgs e)
         {
-            if (e.Player != null && Check(e.Player) && this.DontUserItems.Contains(e.Pickup.Type))
+            if (e.Player != null & Check(e.Player) & this.DontUserItems.Contains(e.Pickup.Type))
             {
                 e.IsAllowed = false;
             }
@@ -178,7 +180,7 @@ namespace SCP_600V.Extension
             for (; ; )
             {
                 yield return Timing.WaitForSeconds(5);
-                player.Hurt(this.DamagePerTime, DamageType.Bleeding);
+                player.Hurt(5f, DamageType.Bleeding);
             }
         }
     }

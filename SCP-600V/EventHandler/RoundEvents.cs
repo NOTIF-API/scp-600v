@@ -5,7 +5,6 @@ using Exiled.Events.EventArgs.Server;
 using PlayerRoles;
 using SCP_600V.API.Role;
 using System.Collections.Generic;
-using System;
 
 namespace SCP_600V.EventHandler
 {
@@ -38,15 +37,14 @@ namespace SCP_600V.EventHandler
         internal void OnRoundStarted()
         {
             bool Spawnable = IsSpawnable();
-            if (Spawnable & Server.PlayerCount >= Sai.Instance.Config.MinimalPlayers)
+            if (Spawnable & Server.PlayerCount > 2)
             {
                 List<Player> players = new List<Player>();
                 foreach (Player p in Player.List.Where(x => x.IsAlive && x.Role.Type == RoleTypeId.ClassD))
                 {
                     players.Add(p);
                 }
-                Random rnd = new Random();
-                RoleSet.Spawn(players[rnd.Next(1, players.Count())]);
+                RoleSet.Spawn(players[UnityEngine.Random.Range(1, players.Count())]);
                 Log.Debug("Spawned random players");
             }
             else
@@ -56,9 +54,14 @@ namespace SCP_600V.EventHandler
         }
         internal bool IsSpawnable()
         {
-            Random rand = new Random((int)DateTime.Now.Ticks);
-            int res = rand.Next(101);
-            if (res <= Sai.Instance.Config.PercentToSpawn) return true; else return false;
+            if (UnityEngine.Random.value <= Sai.Instance.Config.PercentToSpawn)
+            {
+                return true;
+            }
+            else
+            {
+                return false;
+            }
         }
     }
 }

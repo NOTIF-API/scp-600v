@@ -20,6 +20,6 @@ namespace SCP_600V.API.Role
         /// </summary>
         /// <param name="team">Team to check</param>
         /// <returns>returns true if the SCP player is on the team</returns>
-        public static bool ScpInTeam(Team team) => !Player.List.Any(x => x != null && x.Role.Team == team && x.SessionVariables.ContainsKey("IsSCP600"));
+        public static bool ScpInTeam(Team team) => Player.List.Any(x => x != null && x.Role.Team == team && x.SessionVariables.ContainsKey("IsSCP600"));
     }
 }
