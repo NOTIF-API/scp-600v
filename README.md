@@ -28,7 +28,6 @@ s_c_p600_v:
     max_health: 400
     # whether it will be shown next to the player's name that he is SCP-600V
     visible_scp_name: true
-    role: Tutorial
     # the initial appearance of the object during behavior (preferably left as it will follow among class D)
     start_appearance: ClassD
     description: '<color="purple">Help other scp complete task</color>'
@@ -36,6 +35,11 @@ s_c_p600_v:
     inventory:
     - 'KeycardScientist'
     console_message: '<color="green">Your are spawned as</color> <color="red">SCP-600V</color>'
+    # will allow you to change the size of scp but personally I would not change
+    scale:
+      x: 1
+      y: 1
+      z: 1
     custom_role_f_f_multiplier:
       Scp049: 0
       Scp173: 0
@@ -51,19 +55,9 @@ s_c_p600_v:
       Ammo12Gauge: 0
     dont_user_items:
     - MicroHID
-    custom_abilities: []
-    spawn_properties:
-      limit: 0
-      dynamic_spawn_points: []
-      static_spawn_points: []
-      role_spawn_points: []
-    keep_position_on_spawn: false
     keep_inventory_on_spawn: false
     removal_kills_player: true
-    keep_role_on_death: false
-    spawn_chance: 0
     ignore_spawn_system: false
-    keep_role_on_changing_role: false
     broadcast:
     # The broadcast content
       content: ''
@@ -74,9 +68,5 @@ s_c_p600_v:
       # Indicates whether the broadcast should be shown or not
       show: true
     display_custom_item_messages: true
-    scale:
-      x: 1
-      y: 1
-      z: 1
     ability_usage: 'Enter ".special" in the console to use your ability. If you have multiple abilities, you can use this command to cycle through them, or specify the one to use with ".special ROLENAME AbilityNum"'
 ```
