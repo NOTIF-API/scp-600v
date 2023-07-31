@@ -11,6 +11,7 @@ using Exiled.Events.EventArgs.Player;
 using EvHandler = Exiled.Events.Handlers;
 using YamlDotNet.Serialization;
 using System.ComponentModel;
+using Exiled.API.Features.Spawn;
 
 namespace SCP_600V.Extension
 {
@@ -25,7 +26,8 @@ namespace SCP_600V.Extension
 
         [Description("whether it will be shown next to the player's name that he is SCP-600V")]
         public bool VisibleScpName { get; set; } = true;
-        
+
+        [YamlIgnore]
         public override RoleTypeId Role { get; set; } = RoleTypeId.Tutorial;
 
         [Description("the initial appearance of the object during behavior (preferably left as it will follow among class D)")]
@@ -40,6 +42,20 @@ namespace SCP_600V.Extension
         public override string ConsoleMessage { get; set; } = "<color=\"green\">Your are spawned as</color> <color=\"red\">SCP-600V</color>";
         [YamlIgnore]
         public RoleTypeId VisibledRole { get; set; }
+        [YamlIgnore]
+        public override bool KeepPositionOnSpawn { get; set; }
+        [YamlIgnore]
+        public override bool KeepRoleOnDeath { get; set; } = false;
+        [YamlIgnore]
+        public override bool KeepRoleOnChangingRole { get; set; } = false;
+        [YamlIgnore]
+        public override float SpawnChance { get; set; }
+        [YamlIgnore]
+        public override SpawnProperties SpawnProperties { get; set; } = new SpawnProperties();
+        [YamlIgnore]
+        public override List<CustomAbility> CustomAbilities { get; set; } = new List<CustomAbility>();
+        [Description("will allow you to change the size of scp but personally I would not change")]
+        public override Vector3 Scale { get; set; } = new Vector3(1, 1, 1);
 
         public override Dictionary<RoleTypeId, float> CustomRoleFFMultiplier { get; set; } = new Dictionary<RoleTypeId, float>()
         {
@@ -92,7 +108,7 @@ namespace SCP_600V.Extension
                     this.RoleAdded(player);
                     player.UniqueRole = this.Name;
                     player.TryAddCustomRoleFriendlyFire(this.Name, this.CustomRoleFFMultiplier);
-
+                    player.Scale = this.Scale;
                     if (this.VisibleScpName)
                     {
                         player.CustomInfo = $"{player.Nickname}\n{this.CustomInfo}";
