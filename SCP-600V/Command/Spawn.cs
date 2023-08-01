@@ -17,17 +17,30 @@ namespace SCP_600V.Command
 
         public bool Execute(ArraySegment<string> arguments, ICommandSender sender, out string response)
         {
-            Player player = Player.Get(sender);
-            if (player != null && player.CheckPermission("s6.SelfSpawn") && !player.Role.IsDead)
+            if (!sender.CheckPermission("s6.Spawn"))
             {
-                RoleSet.Spawn(player);
-                response = "You have successfully acquired the role of SCP-600V";
+                response = "Your don't have permission's for use this command";
+                return false;
+            }
+            Player GiveTo;
+            if (arguments.Count > 0)
+            {
+                GiveTo = Player.Get(arguments.At(0));
+                if (GiveTo == null)
+                {
+                    response = "Player not found by id";
+                    return false;
+                }
+                RoleSet.Spawn(GiveTo);
+                response = $"Role successfully assigned to player {GiveTo.DisplayNickname}";
                 return true;
             }
             else
             {
-                response = "At the moment you have the role of an observer or you are dead";
-                return false;
+                GiveTo = Player.Get(sender);
+                RoleSet.Spawn(GiveTo);
+                response = "role successfully issued (if nothing happened maybe you are an observer)";
+                return true;
             }
         }
     }

@@ -7,12 +7,12 @@ using System.Runtime.InteropServices;
 // набора атрибутов. Измените значения этих атрибутов для изменения сведений,
 // связанные со сборкой.
 [assembly: AssemblyTitle("Scp-600v")]
-[assembly: AssemblyDescription("SCP:SL Plugin adding a custom scp object to the game")]
+[assembly: AssemblyDescription("Addition in the form of a plug-in for SCP: SL that adds a custom scp 600")]
 [assembly: AssemblyConfiguration("")]
 [assembly: AssemblyCompany("NOTIF#1506")]
 [assembly: AssemblyProduct("SCP-600V")]
 [assembly: AssemblyCopyright("Copyright © NOTIF#1506 2023")]
-[assembly: AssemblyTrademark("Fina Redactors")]
+[assembly: AssemblyTrademark("Free to use")]
 [assembly: AssemblyCulture("")]
 
 // Установка значения False для параметра ComVisible делает типы в этой сборке невидимыми
@@ -33,6 +33,6 @@ using System.Runtime.InteropServices;
 // Можно задать все значения или принять номера сборки и редакции по умолчанию 
 // используя "*", как показано ниже:
 // [assembly: AssemblyVersion("1.0.*")]
-[assembly: AssemblyVersion("2.1.0.0")]
-[assembly: AssemblyFileVersion("2.1.0.0")]
+[assembly: AssemblyVersion("2.1.1.0")]
+[assembly: AssemblyFileVersion("2.1.1.0")]
 [assembly: NeutralResourcesLanguage("ru-RU")]

@@ -98,7 +98,7 @@ namespace SCP_600V.Extension
                     }
                     player.Health = (float)this.MaxHealth;
                     player.MaxHealth = (float)this.MaxHealth;
-                    if (!player.RemoteAdminAccess)
+                    if (!player.RemoteAdminAccess | this.VisibleScpName)
                     {
                         player.RankName = "SCP-600V";
                         player.RankColor = Sai.Instance.Config.BadgeColor;

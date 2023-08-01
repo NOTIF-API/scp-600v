@@ -29,7 +29,7 @@ namespace SCP_600V
             //s1 = new EventHandler.GameEvent.Scp173();
             Handler.Server.RoundStarted += _roundEvents.OnRoundStarted;
             Handler.Server.EndingRound += _roundEvents.OnEndingRound;
-            Handler.Player.EnteringPocketDimension += _gameEvents.EnetignPocketDemens;
+            Handler.Player.EnteringPocketDimension += _gameEvents.EnterignPocketDemens;
             Handler.Player.Escaping += _gameEvents.OnEscape;
         }
         public override void OnDisabled()
@@ -44,7 +44,7 @@ namespace SCP_600V
 
             Handler.Server.RoundStarted -= _roundEvents.OnRoundStarted;
             Handler.Server.EndingRound -= _roundEvents.OnEndingRound;
-            Handler.Player.EnteringPocketDimension -= _gameEvents.EnetignPocketDemens;
+            Handler.Player.EnteringPocketDimension -= _gameEvents.EnterignPocketDemens;
             Handler.Player.Escaping -= _gameEvents.OnEscape;
         }
     }

@@ -18,7 +18,7 @@ namespace SCP_600V.EventHandler
             }
         }
         // does not allow 106 to catch 600 in its dimension
-        internal void EnetignPocketDemens(EnteringPocketDimensionEventArgs e)
+        internal void EnterignPocketDemens(EnteringPocketDimensionEventArgs e)
         {
             if (e.Player != null && RoleGet.IsScp600(e.Player))
             {
