@@ -3,7 +3,7 @@ a new object scp-600 which at the beginning of the game with some chance will sp
 # permission's
 > s6.Spawn - can an admin give himself the scp-600 role    
 > s6.ChengeMHP - can admin change max health while playing as scp-600     
-> s6.debug - can admin get player's session variables     
+> s6.debug - can admin allow accses to use debug command
 > s6.GetPlayers - can the admin find out the list of players playing for scp-600     
 
 # Configs
