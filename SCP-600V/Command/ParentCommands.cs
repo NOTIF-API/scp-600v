@@ -1,4 +1,5 @@
 ﻿using CommandSystem;
+using Exiled.CustomRoles.Commands;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -10,6 +11,7 @@ namespace SCP_600V.Command
     [CommandHandler(typeof(RemoteAdminCommandHandler))]
     public class ParentCommands : ParentCommand
     {
+        public ParentCommands() => LoadGeneratedCommands();
         public override string Command { get; } = "SCP600";
 
         public override string[] Aliases { get; } = new string[] { "s6" };
@@ -28,7 +30,7 @@ namespace SCP_600V.Command
         protected override bool ExecuteParent(ArraySegment<string> arguments, ICommandSender sender, out string response)
         {
             response = "s6 spawn | list | vars | mhp | perms";
-            return true;
+            return false;
         }
     }
 }
