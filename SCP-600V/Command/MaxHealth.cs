@@ -6,12 +6,11 @@ using SCP_600V.API.Role;
 
 namespace SCP_600V.Command
 {
-    [CommandHandler(typeof(RemoteAdminCommandHandler))]
     internal class MaxHealth : ICommand
     {
-        public string Command { get; set; } = "MHP";
+        public string Command { get; set; } = "mhp";
 
-        public string[] Aliases { get; set; } = { "mhp", "s6mhp" };
+        public string[] Aliases { get; set; } = Array.Empty<string>();
 
         public string Description { get; set; } = "Chenge your maxhealt values\nmhp <amount>";
 
@@ -21,7 +20,7 @@ namespace SCP_600V.Command
             if (ply != null && ply.CheckPermission("s6.ChengeMHP") && RoleGet.IsScp600(ply))
             {
                 string arg = arguments.At(0);
-                if (!string.IsNullOrEmpty(arg) && int.TryParse(arg, out _))
+                if (!string.IsNullOrEmpty(arg) & int.TryParse(arg, out _))
                 {
                     ply.MaxHealth = float.Parse(arg);
                     ply.Health = float.Parse(arg);

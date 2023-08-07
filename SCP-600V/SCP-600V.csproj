@@ -48,6 +48,7 @@
     <Compile Include="Command\GetPlayerAsScp600.cs" />
     <Compile Include="Command\GetSessionVariables.cs" />
     <Compile Include="Command\MaxHealth.cs" />
+    <Compile Include="Command\ParentCommands.cs" />
     <Compile Include="Command\PermissionList.cs" />
     <Compile Include="Command\Spawn.cs" />
     <Compile Include="Config.cs" />

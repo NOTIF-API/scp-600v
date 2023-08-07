@@ -6,12 +6,11 @@ using SCP_600V.API.Role;
 
 namespace SCP_600V.Command
 {
-    [CommandHandler(typeof(RemoteAdminCommandHandler))]
     internal class Spawn : ICommand
     {
-        public string Command { get; set; } = "SpawnScp600";
+        public string Command { get; set; } = "spawn";
 
-        public string[] Aliases { get; set; } = { "S600", "sp6", "scp600" };
+        public string[] Aliases { get; set; } = Array.Empty<string>();
 
         public string Description { get; set; } = "Spawn your as scp-600v\nsp6 <userID>";
 

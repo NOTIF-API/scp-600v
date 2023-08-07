@@ -7,12 +7,11 @@ using SCP_600V.API.Role;
 
 namespace SCP_600V.Command
 {
-    [CommandHandler(typeof(RemoteAdminCommandHandler))]
     internal class GetPlayerAsScp600 : ICommand
     {
-        public string Command { get; set; } = "ListScp600Player";
+        public string Command { get; set; } = "list";
 
-        public string[] Aliases { get; set; } = { "LSP6", "li6" };
+        public string[] Aliases { get; set; } = Array.Empty<string>();
 
         public string Description { get; set; } = "Get player list playing as scp-600v now";
 
