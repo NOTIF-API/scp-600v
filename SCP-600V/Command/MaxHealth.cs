@@ -17,7 +17,7 @@ namespace SCP_600V.Command
         public bool Execute(ArraySegment<string> arguments, ICommandSender sender, out string response)
         {
             Player ply = Player.Get(sender);
-            if (ply != null && ply.CheckPermission("s6.ChengeMHP") && RoleGet.IsScp600(ply))
+            if (ply != null && ply.CheckPermission("s6.ChengeMHP") && Role.IsScp600(ply))
             {
                 string arg = arguments.At(0);
                 if (!string.IsNullOrEmpty(arg) & int.TryParse(arg, out _))

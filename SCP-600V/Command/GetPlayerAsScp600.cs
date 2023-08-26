@@ -21,7 +21,7 @@ namespace SCP_600V.Command
             if (player != null && player.CheckPermission("s6.GetPlayers"))
             {
                 StringBuilder playerListBuilder = new StringBuilder();
-                foreach (Player ply in RoleGet.Scp600Players())
+                foreach (Player ply in Role.Scp600Players())
                 {
                     playerListBuilder.Append(ply.Nickname).Append(", ");
                 }

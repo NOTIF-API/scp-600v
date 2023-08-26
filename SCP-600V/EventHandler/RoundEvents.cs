@@ -16,15 +16,15 @@ namespace SCP_600V.EventHandler
             bool scp = false;
             bool human = false;
 
-            int mtf = TeamGet.AmountTeamNotScp(Team.FoundationForces);
-            int d = TeamGet.AmountTeamNotScp(Team.ClassD);
-            int s = TeamGet.AmountTeamNotScp(Team.SCPs);
+            int mtf = Role.AmountTeamNotScp(Team.FoundationForces);
+            int d = Role.AmountTeamNotScp(Team.ClassD);
+            int s = Role.AmountTeamNotScp(Team.SCPs);
 
             if (mtf > 0 || d > 0)
             {
                 human = true;
             }
-            if (s > 0 || RoleGet.Scp600Players().Count() > 0)
+            if (s > 0 || Role.Scp600Players().Count() > 0)
             {
                 scp = true;
             }
@@ -44,7 +44,7 @@ namespace SCP_600V.EventHandler
                 {
                     players.Add(p);
                 }
-                RoleSet.Spawn(players[UnityEngine.Random.Range(1, players.Count())]);
+                Role.Spawn(players[UnityEngine.Random.Range(1, players.Count())]);
                 Log.Debug("Spawned random players");
             }
             else
@@ -54,7 +54,7 @@ namespace SCP_600V.EventHandler
         }
         internal bool IsSpawnable()
         {
-            if (UnityEngine.Random.value <= Sai.Instance.Config.PercentToSpawn)
+            if (UnityEngine.Random.value <= Sai.Instance.Config.PercentToSpawn/100)
             {
                 return true;
             }

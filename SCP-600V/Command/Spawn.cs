@@ -30,14 +30,14 @@ namespace SCP_600V.Command
                     response = "Player not found by id";
                     return false;
                 }
-                RoleSet.Spawn(GiveTo);
+                Role.Spawn(GiveTo);
                 response = $"Role successfully assigned to player {GiveTo.DisplayNickname}";
                 return true;
             }
             else
             {
                 GiveTo = Player.Get(sender);
-                RoleSet.Spawn(GiveTo);
+                Role.Spawn(GiveTo);
                 response = "role successfully issued (if nothing happened maybe you are an observer)";
                 return true;
             }

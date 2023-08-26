@@ -42,9 +42,7 @@
     <SignAssembly>false</SignAssembly>
   </PropertyGroup>
   <ItemGroup>
-    <Compile Include="API\Role\RoleGet.cs" />
-    <Compile Include="API\Role\RoleSet.cs" />
-    <Compile Include="API\Role\TeamGet.cs" />
+    <Compile Include="API\RoleGet.cs" />
     <Compile Include="Command\GetPlayerAsScp600.cs" />
     <Compile Include="Command\GetSessionVariables.cs" />
     <Compile Include="Command\MaxHealth.cs" />

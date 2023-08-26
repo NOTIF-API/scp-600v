@@ -129,7 +129,6 @@ namespace SCP_600V.Extension
                     }
                 });
             }
-            base.RoleAdded(player);
         }
         protected override void RoleAdded(Player player)
         {
@@ -138,7 +137,7 @@ namespace SCP_600V.Extension
                 player.ChangeAppearance(this.StartAppearance, false, 0);
                 this.VisibledRole = RoleTypeId.ClassD;
             });
-            base.RoleRemoved(player);
+            base.RoleAdded(player);
         }
         protected override void RoleRemoved(Player player)
         {
