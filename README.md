@@ -1,4 +1,7 @@
 # scp-600v
+[![Sponsor on Patreon](https://img.shields.io/badge/sponsor-patreon-orange.svg)](https://www.patreon.com/NOTIF247)
+[![Download letest version](https://img.shields.io/badge/download-latest-red.svg)](https://github.com/NOTIF-API/scp-600v/releases)
+
 a new object scp-600 which at the beginning of the game with some chance will spawn among class d, its task is absolutely the same as that of any scp, when a person is killed, it changes its role to the killed one (only the role), when there is no one left but him and other scp round ends
 # permission's
 > s6.Spawn - can an admin give himself the scp-600 role    
