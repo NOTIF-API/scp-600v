@@ -9,9 +9,9 @@ using System.Runtime.InteropServices;
 [assembly: AssemblyTitle("Scp-600v")]
 [assembly: AssemblyDescription("Addition in the form of a plug-in for SCP: SL that adds a custom scp 600")]
 [assembly: AssemblyConfiguration("")]
-[assembly: AssemblyCompany("NOTIF#1506")]
+[assembly: AssemblyCompany("notifapi")]
 [assembly: AssemblyProduct("SCP-600V")]
-[assembly: AssemblyCopyright("Copyright © NOTIF#1506 2023")]
+[assembly: AssemblyCopyright("Copyright © notifapi 2023")]
 [assembly: AssemblyTrademark("Free to use")]
 [assembly: AssemblyCulture("")]
 
@@ -33,6 +33,6 @@ using System.Runtime.InteropServices;
 // Можно задать все значения или принять номера сборки и редакции по умолчанию 
 // используя "*", как показано ниже:
 // [assembly: AssemblyVersion("1.0.*")]
-[assembly: AssemblyVersion("2.3.0.0")]
-[assembly: AssemblyFileVersion("2.3.0.0")]
+[assembly: AssemblyVersion("2.3.1.0")]
+[assembly: AssemblyFileVersion("2.3.1.0")]
 [assembly: NeutralResourcesLanguage("ru-RU")]

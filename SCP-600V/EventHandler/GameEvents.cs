@@ -8,15 +8,6 @@ namespace SCP_600V.EventHandler
 {
     internal class GameEvents
     {
-        // does not allow escape for 600
-        internal void OnEscape(EscapingEventArgs e)
-        {
-            if (e.Player != null && Role.IsScp600(e.Player))
-            {
-                Log.Debug($"Canceling escape scp600 player: [{e.Player.Nickname}]");
-                e.IsAllowed = false;
-            }
-        }
         // does not allow 106 to catch 600 in its dimension
         internal void EnterignPocketDemens(EnteringPocketDimensionEventArgs e)
         {

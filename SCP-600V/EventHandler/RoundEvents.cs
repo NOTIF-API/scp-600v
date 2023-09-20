@@ -11,7 +11,7 @@ namespace SCP_600V.EventHandler
     internal class RoundEvents
     {
         // makes sure that the game does not end if there are conditions interfering with the end
-        internal void OnEndingRound(EndingRoundEventArgs e)
+        /*internal void OnEndingRound(EndingRoundEventArgs e)
         {
             bool scp = false;
             bool human = false;
@@ -32,7 +32,7 @@ namespace SCP_600V.EventHandler
             {
                 e.IsRoundEnded = false;
             }
-        }
+        }*/
         // determines whether a player will be selected for role 600 or not
         internal void OnRoundStarted()
         {
