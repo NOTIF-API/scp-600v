@@ -40,6 +40,6 @@ namespace SCP_600V
         /// SCP-600V Role Configurations
         /// </summary>
         [Description("SCP-600V Role Configurations")]
-        public Scp600CotumRoleBase Scp600ConfigRole { get; set; } = new Scp600CotumRoleBase();
+        public Scp600Base Scp600ConfigRole { get; set; } = new Scp600Base();
     }
 }

@@ -52,7 +52,10 @@
     <Compile Include="Config.cs" />
     <Compile Include="EventHandler\GameEvents.cs" />
     <Compile Include="EventHandler\RoundEvents.cs" />
-    <Compile Include="Extension\Scp600CotumRoleBase.cs" />
+    <Compile Include="Events\EventArg\SpawnedEventArgs.cs" />
+    <Compile Include="Events\EventArg\SpawningEventArgs.cs" />
+    <Compile Include="Events\Scp600Handler.cs" />
+    <Compile Include="Extension\Scp600Base.cs" />
     <Compile Include="Sai.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
@@ -130,5 +133,6 @@
       <HintPath>..\packages\EXILED.7.2.0\lib\net48\YamlDotNet.dll</HintPath>
     </Reference>
   </ItemGroup>
+  <ItemGroup />
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
 </Project>

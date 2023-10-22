@@ -5,7 +5,7 @@ using SCP_600V.Extension;
 using System.Collections.Generic;
 using System.Linq;
 using Exiled.CustomRoles.API.Features;
-
+using SCP_600V.Events;
 
 namespace SCP_600V.API.Role
 {
@@ -46,6 +46,7 @@ namespace SCP_600V.API.Role
         /// Gives the role of SCP-600V to the player
         /// </summary>
         /// <param name="player">The player who will receive the role of SCP-600V</param>
+        /// <param name="MaxHealt">Assigning a custom MaxHealt parameter to a player</param>
         public static void Spawn(Player player)
         {
             if (player == null && player.IsDead)
@@ -54,28 +55,19 @@ namespace SCP_600V.API.Role
             }
             else
             {
-                CustomRole.Get(typeof(Scp600CotumRoleBase)).AddRole(player);
-            }
-        }
-        /// <summary>
-        /// Gives the role of SCP-600V to the player
-        /// </summary>
-        /// <param name="player">The player who will receive the role of SCP-600V</param>
-        /// <param name="MaxHealt">Assigning a custom MaxHealt parameter to a player</param>
-        public static void Spawn(Player player, int MaxHealt = 400)
-        {
-            if (player == null && player.IsDead)
-            {
-                return;
-            }
-            else
-            {
-                CustomRole.Get(typeof(Scp600CotumRoleBase)).AddRole(player);
-                Timing.CallDelayed(2f, () =>
+                Events.EventArg.SpawningEventArgs e = new Events.EventArg.SpawningEventArgs(player, true);
+                Log.Debug($"After Invoke event Player: {e.Player.Nickname} IsAllow: {e.IsAllow}");
+                new Scp600Handler().InvokeSpawning(e);
+                Log.Debug($"Before Invoke event Player: {e.Player.Nickname} IsAllow: {e.IsAllow}");
+
+                if (e.IsAllow)
                 {
-                    player.MaxHealth = MaxHealt;
-                    player.Health = MaxHealt;
-                });
+                    CustomRole.Get(typeof(Scp600Base)).AddRole(e.Player);
+                }
+                if (e.IsAllow == false)
+                {
+                    Log.Debug("Player do not get role called event set IsSpawning to false");
+                }
             }
         }
         /// <summary>

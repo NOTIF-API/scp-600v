@@ -3,6 +3,7 @@ using Exiled.CustomRoles.API;
 using Exiled.CustomRoles.API.Features;
 using HarmonyLib;
 using SCP_600V.EventHandler;
+using UnityEngine;
 using Handler = Exiled.Events.Handlers;
 
 namespace SCP_600V
@@ -51,6 +52,7 @@ namespace SCP_600V
             Handler.Player.EnteringPocketDimension += _gameEvents.EnterignPocketDemens;
             //Handler.Player.Escaping += _gameEvents.OnEscape;
         }
+
         private void UnRegisterEvent()
         {
             _roundEvents = null;
