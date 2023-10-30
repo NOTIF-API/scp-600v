@@ -20,25 +20,11 @@ namespace SCP_600V.Events
 
         internal void InvokeSpawning(SpawningEventArgs e)
         {
-            if (OnSpawning != null)
-            {
-                OnSpawning.Invoke(e);
-            }
-            else
-            {
-                Log.Debug("No have subscriders to event OnSpawning");
-            }
+            OnSpawning?.Invoke(e);
         }
         internal void InvokeSpawned(SpawnedEventArgs e)
         {
-            if (OnSpawned != null)
-            {
-                OnSpawned.Invoke(e);
-            }
-            else
-            {
-                Log.Debug("No have subscriders to event OnSpawned");
-            }
+            OnSpawned?.Invoke(e);
         }
     }
 }

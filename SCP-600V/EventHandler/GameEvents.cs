@@ -1,8 +1,13 @@
 ﻿using Exiled.API.Enums;
+using Exiled.API.Extensions;
 using Exiled.API.Features;
+using Exiled.API.Features.Components;
+using Exiled.API.Features.Pickups;
 using Exiled.Events.EventArgs.Player;
+using Exiled.Events.EventArgs.Scp173;
 using PlayerRoles;
 using SCP_600V.API.Role;
+using System.Linq;
 
 namespace SCP_600V.EventHandler
 {

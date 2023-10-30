@@ -87,6 +87,7 @@ namespace SCP_600V.Extension
         {
             if (this.Role != RoleTypeId.None)
             {
+                RoleTypeId _ArgRole = player.Role.Type;
                 Vector3 pos = player.Position;
                 player.Role.Set(this.Role, RoleSpawnFlags.None);
                 Timing.CallDelayed(1f, () =>
@@ -133,7 +134,7 @@ namespace SCP_600V.Extension
 
                     }
                 });
-                Events.EventArg.SpawnedEventArgs e = new Events.EventArg.SpawnedEventArgs(player, pos, this.MaxHealth, (float)this.MaxHealth);
+                Events.EventArg.SpawnedEventArgs e = new Events.EventArg.SpawnedEventArgs(player, pos, this.MaxHealth, (float)this.MaxHealth, _ArgRole);
                 new Scp600Handler().InvokeSpawned(e);
             }
         }

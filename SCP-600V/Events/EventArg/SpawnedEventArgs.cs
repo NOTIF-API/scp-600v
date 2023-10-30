@@ -1,4 +1,5 @@
 ﻿using Exiled.API.Features;
+using PlayerRoles;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -26,13 +27,18 @@ namespace SCP_600V.Events.EventArg
         /// Health
         /// </summary>
         public float Healt { get; private set; } = 400f;
+        /// <summary>
+        /// the role the player had before being called
+        /// </summary>
+        public RoleTypeId PlayerOldRole { get; private set; }
 
-        public SpawnedEventArgs(Player player, Vector3 position, int maxHealt, float healt)
+        public SpawnedEventArgs(Player player, Vector3 position, int maxHealt, float healt, RoleTypeId role)
         {
             Player = player;
             Position = position;
             MaxHealt = maxHealt;
             Healt = healt;
+            PlayerOldRole = role;
         }
     }
 }

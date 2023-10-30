@@ -10,30 +10,9 @@ namespace SCP_600V.EventHandler
 {
     internal class RoundEvents
     {
-        // makes sure that the game does not end if there are conditions interfering with the end
-        /*internal void OnEndingRound(EndingRoundEventArgs e)
-        {
-            bool scp = false;
-            bool human = false;
-
-            int mtf = Role.AmountTeamNotScp(Team.FoundationForces);
-            int d = Role.AmountTeamNotScp(Team.ClassD);
-            int s = Role.AmountTeamNotScp(Team.SCPs);
-
-            if (mtf > 0 || d > 0)
-            {
-                human = true;
-            }
-            if (s > 0 || Role.Scp600Players().Count() > 0)
-            {
-                scp = true;
-            }
-            if (human & scp)
-            {
-                e.IsRoundEnded = false;
-            }
-        }*/
-        // determines whether a player will be selected for role 600 or not
+        /// <summary>
+        /// determines whether a player will be selected for role 600 or not
+        /// </summary>
         internal void OnRoundStarted()
         {
             bool Spawnable = IsSpawnable();
@@ -52,6 +31,10 @@ namespace SCP_600V.EventHandler
                 return;
             }
         }
+        /// <summary>
+        /// determines by random selection whether an event will occur
+        /// </summary>
+        /// <returns><para>returns True if the event can occur</para><para>returns False if the event cannot occur</para></returns>
         internal bool IsSpawnable()
         {
             if (UnityEngine.Random.value <= Sai.Instance.Config.PercentToSpawn/100)
