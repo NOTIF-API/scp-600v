@@ -2,7 +2,14 @@
 [![Sponsor on Patreon](https://img.shields.io/badge/sponsor-patreon-orange.svg)](https://www.patreon.com/NOTIF247)
 [![Download letest version](https://img.shields.io/badge/download-latest-red.svg)](https://github.com/NOTIF-API/scp-600v/releases)
 
-a new object scp-600 which at the beginning of the game with some chance will spawn among class d, its task is absolutely the same as that of any scp, when a person is killed, it changes its role to the killed one (only the role), when there is no one left but him and other scp round ends
+# about the plugin
+a new object scp-600 which at the beginning of the game has a certain chance of spawning among D-class personnel. The task of this scp object is exactly the same as that of any other scp where it helps to fulfill their goals. This object is capable of changing its appearance to that of the one killed, which makes it quite difficult to recognize it from afar.
+
+# Questions and bugs
+if you have questions about scp-600 or you find a bug, you can contact me on the `notifapi` discord or here 
+
+[![Help](https://img.shields.io/badge/issues-aqua)]( https://github.com/NOTIF-API/scp-600v/issues)
+
 # permission's
 > s6.Spawn - can an admin give himself the scp-600 role    
 > s6.ChengeMHP - can admin change max health while playing as scp-600     
