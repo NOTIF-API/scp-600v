@@ -19,8 +19,6 @@ namespace SCP_600V
         /// <summary>
         /// probability of occurrence at the beginning of the game in percentages.
         /// </summary>
-        [Description("probability of occurrence at the beginning of the game in percentages")]
-        public int PercentToSpawn { get; set; } = 25;
         /// <summary>
         /// determines if SCP-600 will take damage over its lifetime
         /// </summary>
@@ -29,7 +27,7 @@ namespace SCP_600V
         /// <summary>
         /// Badge color in player list
         /// </summary>
-        [Description("Badge color in player list only lowers chars")]
+        [Description("Badge color in player list")]
         public string BadgeColor { get; set; } = "red";
         /// <summary>
         /// message when admin gets list of scp players

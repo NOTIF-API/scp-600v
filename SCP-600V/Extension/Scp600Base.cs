@@ -23,7 +23,7 @@ namespace SCP_600V.Extension
     internal class Scp600Base : CustomRole
     {
         public override string CustomInfo { get; set; } = "SCP-600V";
-        
+
         public override string Name { get; set; } = "SCP-600V";
         
         public override int MaxHealth { get; set; } = 400;
@@ -55,7 +55,20 @@ namespace SCP_600V.Extension
         [YamlIgnore]
         public override float SpawnChance { get; set; }
         [YamlIgnore]
-        public override SpawnProperties SpawnProperties { get; set; } = new SpawnProperties();
+        public override SpawnProperties SpawnProperties { get; set; } = new SpawnProperties() { Limit = 1, RoleSpawnPoints = new List<RoleSpawnPoint>()
+        {
+            new RoleSpawnPoint()
+            {
+                Role = RoleTypeId.ClassD,
+                Chance = 25
+            },
+            new RoleSpawnPoint()
+            {
+                Role = RoleTypeId.Scientist,
+                Chance = 20
+            }
+        }
+        };
         [YamlIgnore]
         public override List<CustomAbility> CustomAbilities { get; set; } = new List<CustomAbility>();
         [Description("will allow you to change the size of scp but personally I would not change")]
@@ -107,7 +120,7 @@ namespace SCP_600V.Extension
                     if (!player.RemoteAdminAccess | this.VisibleScpName)
                     {
                         player.RankName = "SCP-600V";
-                        player.RankColor = Sai.Instance.Config.BadgeColor;
+                        player.RankColor = Main.Instance.Config.BadgeColor;
                     }
                     this.ShowMessage(player);
                     this.TrackedPlayers.Add(player);
@@ -120,7 +133,7 @@ namespace SCP_600V.Extension
                         player.CustomInfo = $"{player.Nickname}\n{this.CustomInfo}";
                         player.InfoArea &= ~PlayerInfoArea.Role;
                     }
-                    if (Sai.Instance.Config.CanBleading)
+                    if (Main.Instance.Config.CanBleading)
                     {
                         Timing.RunCoroutine(this.Hurting(player), $"{player.Id}-hurt");
                     }
@@ -149,7 +162,7 @@ namespace SCP_600V.Extension
         }
         protected override void RoleRemoved(Player player)
         {
-            Log.Debug($"SCP-600V dead and role romoved to player: {player}");
+            Log.Debug($"SCP-600V dead and role removed for player: {player}");
             try
             {
                 player.SessionVariables.Remove("IsSCP600");

@@ -26,7 +26,7 @@ namespace SCP_600V.Command
                     playerListBuilder.Append(ply.Nickname).Append(", ");
                 }
                 string playerList = playerListBuilder.ToString().TrimEnd(',', ' '); // Удалить последнюю запятую и пробел
-                response = $"{Sai.Instance.Config.ListGetted.Replace("{name}", playerList)}";
+                response = $"{Main.Instance.Config.ListGetted.Replace("{name}", playerList)}";
                 return true;
             }
             else
