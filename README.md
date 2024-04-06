@@ -11,10 +11,8 @@ if you have questions about scp-600 or you find a bug, you can contact me on the
 [![Help](https://img.shields.io/badge/issues-aqua)]( https://github.com/NOTIF-API/scp-600v/issues)
 
 # permission's
-> s6.Spawn - can an admin give himself the scp-600 role    
-> s6.ChengeMHP - can admin change max health while playing as scp-600     
+> s6.spawn - can an admin give himself the scp-600 role       
 > s6.debug - can admin allow accses to use debug command
-> s6.GetPlayers - can the admin find out the list of players playing for scp-600     
 
 # Configs
 ```yaml
