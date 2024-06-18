@@ -4,16 +4,13 @@ using Exiled.CustomRoles.API.Features;
 using Exiled.Permissions.Extensions;
 using SCP_600V.Roles;
 using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace SCP_600V.Commands
 {
     [CommandHandler(typeof(RemoteAdminCommandHandler))]
     public class Spawn : ICommand
     {
+        public bool SanitizeResponse => true;
         public string Command { get; set; } = "spawn";
 
         public string[] Aliases { get; set; } = { "s6cr" };

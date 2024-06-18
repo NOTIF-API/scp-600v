@@ -9,14 +9,9 @@ using System;
 using Exiled.API.Enums;
 using System.Collections.Generic;
 using System.ComponentModel;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 using Exiled.Events.EventArgs.Player;
 using SCP_600V.Extensions;
 using Exiled.API.Extensions;
-using System.Threading;
-using PlayerStatsSystem;
 using SCP_600V.Events.EventArgs;
 
 namespace SCP_600V.Roles
@@ -43,6 +38,8 @@ namespace SCP_600V.Roles
         public bool AddAhpWhenKill { get; set;} = true;
         [Description("The amount a player will receive when he kills a player")]
         public int AhpAmount { get; set; } = 15;
+
+        public override bool IgnoreSpawnSystem { get; set; } = true;
 
         private s6.Scp600Handler Evs6 { get; set; }
 
@@ -134,6 +131,7 @@ namespace SCP_600V.Roles
                 if (this.BlackListItems.Contains(e.Pickup.Type))
                 {
                     e.IsAllowed = false;
+                    return;
                 }
                 else
                 {
@@ -165,7 +163,7 @@ namespace SCP_600V.Roles
             }
             catch (Exception ex)
             {
-                Log.Debug(ex.Message);
+                Log.Debug($"{nameof(OnHurting)} error {ex.Message}");
             }
         }
 
@@ -176,13 +174,13 @@ namespace SCP_600V.Roles
             {
                 if (player == null | !player.IsConnected)
                 {
-                    Log.Debug("Hurting coroutine stopped, player is null or not connected");
+                    Log.Debug($"{nameof(Hurting)} Hurting coroutine stopped, player is null or not connected");
                     break;
                 }
                 int damage = rnd.Next(1, 5);
                 yield return Timing.WaitForSeconds(5);
                 player.Hurt(damage, DamageType.Bleeding);
-                Log.Debug($"{player.Nickname} hurted {damage} hp");
+                Log.Debug($"{nameof(Hurting)} {player.Nickname} hurted {damage} hp");
             }
         }
     }

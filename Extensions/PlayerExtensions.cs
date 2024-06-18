@@ -1,7 +1,7 @@
 ﻿using Exiled.API.Features;
-using Exiled.CustomRoles.API;
 using Exiled.CustomRoles.API.Features;
 using SCP_600V.Roles;
+using System;
 using System.Collections.Generic;
 
 namespace SCP_600V.Extensions
@@ -13,6 +13,7 @@ namespace SCP_600V.Extensions
         /// </summary>
         /// <param name="ply"></param>
         /// <returns>true if is supported custom else false</returns>
+        [Obsolete("Now roles do not use special keys supported if plugin version oldest", false)]
         public static bool IsCustomScp(this Player ply)
         {
             //keys for know
@@ -36,8 +37,6 @@ namespace SCP_600V.Extensions
         /// <summary>
         /// determines whether the player is Scp600
         /// </summary>
-        /// <param name="ply"></param>
-        /// <returns>true if is have</returns>
         public static bool IsScp600(this Player ply)
         {
             try
@@ -48,8 +47,9 @@ namespace SCP_600V.Extensions
                 }
                 return false;
             }
-            catch
+            catch (Exception ex)
             {
+                Log.Debug($"{nameof(IsScp600)} returned false with error: {ex.Message}");
                 return false;
             }
         }

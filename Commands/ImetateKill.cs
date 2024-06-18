@@ -8,6 +8,8 @@ namespace SCP_600V.Commands
     [CommandHandler(typeof(RemoteAdminCommandHandler))]
     public class ImetateKill : ICommand
     {
+        public bool SanitizeResponse => true;
+
         public string Command { get; } = "fakekill";
 
         public string[] Aliases { get; } = { "fkl" };

@@ -3,16 +3,16 @@ using Exiled.API.Features;
 using Exiled.Permissions.Extensions;
 using SCP_600V.Extensions;
 using System;
-using System.Collections.Generic;
 using System.Linq;
 using System.Text;
-using System.Threading.Tasks;
 
 namespace SCP_600V.Commands
 {
     [CommandHandler(typeof(RemoteAdminCommandHandler))]
     public class Lists : ICommand
     {
+        public bool SanitizeResponse => true;
+
         public string Command { get; set; } = "slist";
 
         public string[] Aliases { get; set; } = Array.Empty<string>();

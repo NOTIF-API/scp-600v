@@ -1,7 +1,6 @@
 ﻿using Exiled.API.Enums;
 using Exiled.API.Features;
 using Exiled.CustomRoles.API;
-using HarmonyLib;
 using System;
 
 namespace SCP_600V
@@ -14,9 +13,9 @@ namespace SCP_600V
 
         public override bool IgnoreRequiredVersionCheck { get; } = false;
 
-        public override Version RequiredExiledVersion { get; } = new Version(8, 6, 0);
+        public override Version RequiredExiledVersion { get; } = new Version(8, 9, 0);
 
-        public override Version Version { get; } = new Version(3, 0, 1);
+        public override Version Version { get; } = new Version(3, 0, 2);
 
         public override PluginPriority Priority { get; } = PluginPriority.Medium;
 
@@ -25,29 +24,19 @@ namespace SCP_600V
         /// </summary>
         public static Main Instance { get; private set; }
 
-        private Harmony Harmony;
-
         public override void OnEnabled()
         {
-            Log.Debug("Creating instance of main class");
             Instance = this;
-            Log.Debug("Creating harmony");
-            Harmony = new Harmony("com.scp600.object");
-            Log.Debug("Patching all in harmony");
-            Harmony.PatchAll();
-            Log.Debug("Registaring role scp600");
+            Log.Debug($"{nameof(OnEnabled)} Registaring role scp600");
             this.Config.ScpConfig.Register();
             base.OnEnabled();
         }
 
         public override void OnDisabled()
         {
-            Log.Debug("Unregister role scp600");
+            Log.Debug($"{nameof(OnDisabled)} Unregister role scp600");
             this.Config.ScpConfig.Unregister();
-            Log.Debug("Unpatching harmony");
-            Harmony.UnpatchAll();
             Instance = null;
-            Harmony = null;
             base.OnDisabled();
         }
         //at the moment I have no idea what to add here

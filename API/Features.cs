@@ -4,6 +4,7 @@ using SCP_600V.Extensions;
 using SCP_600V.Roles;
 using System;
 using System.Linq;
+using System.Reflection;
 
 namespace SCP_600V.API
 {
@@ -15,6 +16,7 @@ namespace SCP_600V.API
         /// <param name="ply">Player who getted role</param>
         public static void SpawnPlayer(Player ply)
         {
+            Log.Debug($"{nameof(SpawnPlayer)} called by {Assembly.GetCallingAssembly().GetName().Name}");
             CustomRole.Get(typeof(Scp600)).AddRole(ply);
         }
         /// <summary>
@@ -31,10 +33,9 @@ namespace SCP_600V.API
             }
         }
         /// <summary>
-        /// Is the player Scp600
+        /// Return if player is scp600 now, original source <see cref="PlayerExtensions.IsScp600(Player)"/>
         /// </summary>
-        /// <param name="ply"></param>
-        /// <returns>true if scp600</returns>
+        /// <param name="ply"><see cref="Player"/> for check</param>
         [Obsolete("there is a method in Extensions which is also called", false)]
         public static bool IsScp600(Player ply) => ply.IsScp600();
     }
