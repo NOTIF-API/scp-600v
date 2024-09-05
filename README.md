@@ -27,14 +27,23 @@ scp600v:
     max_health: 400
     name: 'SCP-600V'
     description: 'Angry scp 600, help other scp complete a task'
-    # If need hide set a epty string
+    # If need hide set a empty string
     custom_info: 'SCP-600V'
     # Role a player self visible (do not change to scp's)
     role: Tutorial
     # Can scp600 get damage
     can_bleading: true
+    # Chance for spawn role
     spawn_chance: 15
-    transformation_message: 'you kelled %player% and changed your apperance to %role%'
+    # The message that the player will see when he kills the player
+    transformation_message: 'you killed %player% and changed your apperance to %role%'
+    # Will the player receive AHP when killing another player
+    add_ahp_when_kill: true
+    # The amount a player will receive when he kills a player
+    ahp_amount: 15
+    # Will the player be affected by the effects of various scp (for example, invisible field 939)
+    scp_affect_player: false
+    ignore_spawn_system: true
     spawn_properties:
       limit: 0
       dynamic_spawn_points: []
@@ -51,7 +60,6 @@ scp600v:
     keep_inventory_on_spawn: false
     removal_kills_player: true
     keep_role_on_death: false
-    ignore_spawn_system: false
     keep_role_on_changing_role: false
     broadcast:
     # The broadcast content
