@@ -21,7 +21,6 @@ namespace SCP_600V.Extensions
             {
                 "IsScp",
                 "IsScp600",
-                "IsSH",
                 "IsScp035"
             };
             foreach (string a in Keys)

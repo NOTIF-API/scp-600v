@@ -2,7 +2,7 @@
 using Exiled.API.Features.Attributes;
 using Exiled.API.Features.Spawn;
 using Exiled.CustomRoles.API.Features;
-using s6 = SCP_600V.Events.Handlers;
+using SCP_600V.Events;
 using MEC;
 using PlayerRoles;
 using System;
@@ -12,7 +12,8 @@ using System.ComponentModel;
 using Exiled.Events.EventArgs.Player;
 using SCP_600V.Extensions;
 using Exiled.API.Extensions;
-using SCP_600V.Events.EventArgs;
+using SCP_600V.Events.EventArg;
+using Exiled.API.Features.Hazards;
 
 namespace SCP_600V.Roles
 {
@@ -24,7 +25,7 @@ namespace SCP_600V.Roles
         public override string Name { get; set; } = "SCP-600V";
         public override string Description { get; set; } = "Angry scp 600, help other scp complete a task";
 
-        [Description("If need hide set a epty string")]
+        [Description("If need hide set a empty string")]
         public override string CustomInfo { get; set; } = "SCP-600V";
         [Description("Role a player self visible (do not change to scp's)")]
         public override RoleTypeId Role { get; set; } = RoleTypeId.Tutorial;
@@ -33,15 +34,15 @@ namespace SCP_600V.Roles
         [Description("Chance for spawn role")]
         public override float SpawnChance { get; set; } = 15;
         [Description("The message that the player will see when he kills the player")]
-        public string TransformationMessage { get; set; } = "you kelled %player% and changed your apperance to %role%";
+        public string TransformationMessage { get; set; } = "you killed %player% and changed your apperance to %role%";
         [Description("Will the player receive AHP when killing another player")]
         public bool AddAhpWhenKill { get; set;} = true;
         [Description("The amount a player will receive when he kills a player")]
         public int AhpAmount { get; set; } = 15;
+        [Description("Will the player be affected by the effects of various scp (for example, invisible field 939)")]
+        public bool ScpAffectPlayer { get; set; } = false;
 
         public override bool IgnoreSpawnSystem { get; set; } = true;
-
-        private s6.Scp600Handler Evs6 { get; set; }
 
         public override SpawnProperties SpawnProperties { get; set; } = new SpawnProperties()
         {
@@ -61,9 +62,8 @@ namespace SCP_600V.Roles
 
         public override void AddRole(Player player)
         {
-            Evs6 = new s6.Scp600Handler();
-            SpawningEventArg e = new SpawningEventArg(player, this.MaxHealth, true);
-            Evs6.CallSpawning(e);
+            RespawningEventArgs e = new RespawningEventArgs(player);
+            EventManager.InvokeRespawning(e);
             Log.Debug($"{e.IsAllow} for event scp600 spawning detected");
             if (e.IsAllow)
             {
@@ -73,6 +73,8 @@ namespace SCP_600V.Roles
         }
         protected override void RoleAdded(Player player)
         {
+            RespawnedEventArgs e = new RespawnedEventArgs(player);
+            EventManager.InvokeRespawned(e);
             player.SessionVariables.Add("IsScp", null);
             player.SessionVariables.Add("IsScp600", null);
             if (CanBleading)
@@ -95,6 +97,8 @@ namespace SCP_600V.Roles
             Exiled.Events.Handlers.Player.Hurting += this.OnHurting;
             Exiled.Events.Handlers.Player.PickingUpItem += this.OnPickingUpItem;
             Exiled.Events.Handlers.Player.Died += this.OnDied;
+            Exiled.Events.Handlers.Player.EnteringEnvironmentalHazard += this.OnEnterEnviromentHazard;
+            Exiled.Events.Handlers.Player.EnteringPocketDimension += this.OnEnteringPocketDemension;
             base.SubscribeEvents();
         }
         protected override void UnsubscribeEvents()
@@ -102,6 +106,8 @@ namespace SCP_600V.Roles
             Exiled.Events.Handlers.Player.Hurting -= this.OnHurting;
             Exiled.Events.Handlers.Player.PickingUpItem -= this.OnPickingUpItem;
             Exiled.Events.Handlers.Player.Died -= this.OnDied;
+            Exiled.Events.Handlers.Player.EnteringEnvironmentalHazard -= this.OnEnterEnviromentHazard;
+            Exiled.Events.Handlers.Player.EnteringPocketDimension -= this.OnEnteringPocketDemension;
             base.UnsubscribeEvents();
         }
 
@@ -110,8 +116,8 @@ namespace SCP_600V.Roles
             if (e.Player == null | e.Attacker == null) return;
             if (this.Check(e.Player))
             {
-                DiedEventArg es = new DiedEventArg(e.Player, e.Attacker);
-                Evs6.CallDied(es);
+                KilledEventArgs ev = new KilledEventArgs(e.Player, e.Attacker);
+                EventManager.InvokeKilled(ev);
                 return;
             }
             else if (this.Check(e.Attacker) & this.AddAhpWhenKill)
@@ -167,9 +173,28 @@ namespace SCP_600V.Roles
             }
         }
 
+        private void OnEnterEnviromentHazard(EnteringEnvironmentalHazardEventArgs e)
+        {
+            if (!this.ScpAffectPlayer & Check(e.Player))
+            {
+                if (e.Hazard is AmnesticCloudHazard | e.Hazard is TantrumHazard | e.Hazard is SinkholeHazard)
+                {
+                    e.IsAllowed = false;
+                    return;
+                }
+            }
+        }
+
+        private void OnEnteringPocketDemension(EnteringPocketDimensionEventArgs e)
+        {
+            if (!this.ScpAffectPlayer && Check(e.Player))
+            {
+                e.IsAllowed = false;
+            }
+        }
+
         private IEnumerator<float> Hurting(Player player)
         {
-            Random rnd = new System.Random();
             for (; ; )
             {
                 if (player == null | !player.IsConnected)
@@ -177,7 +202,8 @@ namespace SCP_600V.Roles
                     Log.Debug($"{nameof(Hurting)} Hurting coroutine stopped, player is null or not connected");
                     break;
                 }
-                int damage = rnd.Next(1, 5);
+
+                int damage = UnityEngine.Random.Range(1, 5);
                 yield return Timing.WaitForSeconds(5);
                 player.Hurt(damage, DamageType.Bleeding);
                 Log.Debug($"{nameof(Hurting)} {player.Nickname} hurted {damage} hp");

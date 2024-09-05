@@ -7,7 +7,7 @@ using System.Runtime.InteropServices;
 // набора атрибутов. Измените значения этих атрибутов для изменения сведений,
 // связанные со сборкой.
 [assembly: AssemblyTitle("Scp-600v")]
-[assembly: AssemblyDescription("Addition in the form of a plug-in for SCP: SL that adds a custom scp 600")]
+[assembly: AssemblyDescription("Plugin for SCP:SL Dedicated server base on EXILED Framework")]
 [assembly: AssemblyConfiguration("")]
 [assembly: AssemblyCompany("notifapi")]
 [assembly: AssemblyProduct("SCP-600V")]
@@ -33,6 +33,6 @@ using System.Runtime.InteropServices;
 // Можно задать все значения или принять номера сборки и редакции по умолчанию 
 // используя "*", как показано ниже:
 // [assembly: AssemblyVersion("1.0.*")]
-[assembly: AssemblyVersion("3.0.2.0")]
-[assembly: AssemblyFileVersion("3.0.2.0")]
+[assembly: AssemblyVersion("3.1.0.0")]
+[assembly: AssemblyFileVersion("3.1.0.0")]
 [assembly: NeutralResourcesLanguage("ru-RU")]
