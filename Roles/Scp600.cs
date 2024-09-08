@@ -1,19 +1,20 @@
 ﻿using Exiled.API.Features;
+using Exiled.API.Features.Hazards;
 using Exiled.API.Features.Attributes;
 using Exiled.API.Features.Spawn;
+using Exiled.API.Enums;
+using Exiled.API.Extensions;
 using Exiled.CustomRoles.API.Features;
+using Exiled.Events.EventArgs.Player;
+using Exiled.Events.EventArgs.Scp096;
 using SCP_600V.Events;
 using MEC;
 using PlayerRoles;
 using System;
-using Exiled.API.Enums;
 using System.Collections.Generic;
 using System.ComponentModel;
-using Exiled.Events.EventArgs.Player;
 using SCP_600V.Extensions;
-using Exiled.API.Extensions;
 using SCP_600V.Events.EventArg;
-using Exiled.API.Features.Hazards;
 
 namespace SCP_600V.Roles
 {
@@ -99,6 +100,7 @@ namespace SCP_600V.Roles
             Exiled.Events.Handlers.Player.Died += this.OnDied;
             Exiled.Events.Handlers.Player.EnteringEnvironmentalHazard += this.OnEnterEnviromentHazard;
             Exiled.Events.Handlers.Player.EnteringPocketDimension += this.OnEnteringPocketDemension;
+            Exiled.Events.Handlers.Scp096.AddingTarget += this.OnAddingTarget;
             base.SubscribeEvents();
         }
         protected override void UnsubscribeEvents()
@@ -108,6 +110,7 @@ namespace SCP_600V.Roles
             Exiled.Events.Handlers.Player.Died -= this.OnDied;
             Exiled.Events.Handlers.Player.EnteringEnvironmentalHazard -= this.OnEnterEnviromentHazard;
             Exiled.Events.Handlers.Player.EnteringPocketDimension -= this.OnEnteringPocketDemension;
+            Exiled.Events.Handlers.Scp096.AddingTarget -= this.OnAddingTarget;
             base.UnsubscribeEvents();
         }
 
@@ -172,7 +175,7 @@ namespace SCP_600V.Roles
                 Log.Debug($"{nameof(OnHurting)} error {ex.Message}");
             }
         }
-
+        // scp173, scp106, scp939 handler hazard
         private void OnEnterEnviromentHazard(EnteringEnvironmentalHazardEventArgs e)
         {
             if (!this.ScpAffectPlayer & Check(e.Player))
@@ -184,7 +187,7 @@ namespace SCP_600V.Roles
                 }
             }
         }
-
+        // scp106 handler
         private void OnEnteringPocketDemension(EnteringPocketDimensionEventArgs e)
         {
             if (!this.ScpAffectPlayer && Check(e.Player))
@@ -192,7 +195,14 @@ namespace SCP_600V.Roles
                 e.IsAllowed = false;
             }
         }
-
+        // Scp096 handler
+        private void OnAddingTarget(AddingTargetEventArgs e)
+        {
+            if (!this.ScpAffectPlayer && Check(e.Player))
+            {
+                e.IsAllowed = false;
+            }
+        }
         private IEnumerator<float> Hurting(Player player)
         {
             for (; ; )
