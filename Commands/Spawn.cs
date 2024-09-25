@@ -15,7 +15,7 @@ namespace SCP_600V.Commands
 
         public string[] Aliases { get; set; } = { "s6cr" };
 
-        public string Description { get; set; } = "allow spaawn your or other player as scp600";
+        public string Description { get; set; } = "allow spawn your or other player as scp600";
 
         public bool Execute(ArraySegment<string> arguments, ICommandSender sender, out string response)
         {
@@ -26,18 +26,27 @@ namespace SCP_600V.Commands
             }
             else
             {
-                Player ply = null;
-                if (arguments.Count > 0)
+                try
                 {
-                    ply = Player.Get(arguments.At(0));
+                    Player ply = null;
+                    if (arguments.Count > 0)
+                    {
+                        ply = Player.Get(arguments.At(0));
+                    }
+                    if (arguments.Count == 0)
+                    {
+                        ply = Player.Get(sender);
+                    }
+                    CustomRole.Get(typeof(Scp600)).AddRole(ply);
+                    response = $"succes added for {ply.Nickname}";
+                    return true;
                 }
-                if (arguments.Count == 0)
+                catch (Exception ex)
                 {
-                    ply = Player.Get(sender);
+                    Log.Debug($"Spawn.Execute call error {ex.Message}");
+                    response = "An error occurred while executing the command, perhaps the reason is a non-existent player in the command argument or the player is the host (Dedicated Server)";
+                    return false;
                 }
-                CustomRole.Get(typeof(Scp600)).AddRole(ply);
-                response = $"succes added for {ply.Nickname}";
-                return true;
             }
         }
     }
