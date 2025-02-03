@@ -1,10 +1,13 @@
-﻿using CommandSystem;
-using Exiled.API.Features;
-using Exiled.Permissions.Extensions;
-using SCP_600V.Extensions;
-using System;
+﻿using System;
 using System.Linq;
 using System.Text;
+
+using CommandSystem;
+
+using Exiled.API.Features;
+using Exiled.Permissions.Extensions;
+
+using SCP_600V.Extensions;
 
 namespace SCP_600V.Commands
 {
@@ -17,30 +20,29 @@ namespace SCP_600V.Commands
 
         public string[] Aliases { get; set; } = Array.Empty<string>();
 
-        public string Description { get; set; } = "get all player played now as scp600";
+        public string Description { get; set; } = "Get all player played now as scp600";
 
         public bool Execute(ArraySegment<string> arguments, ICommandSender sender, out string response)
         {
-            if (!sender.CheckPermission("s6.list")) { response = "do not have permissions"; return false; }
-            else
+            if (!sender.CheckPermission("s6.list"))
             {
-                try
-                {
-                    StringBuilder sb = new StringBuilder();
-                    foreach (Player ply in Player.List.Where(x => x.IsAlive & x.IsScp600()).ToList())
-                    {
-                        sb.AppendLine($"{ply.Nickname}: {(int)ply.Health} Hp | {(int)ply.ArtificialHealth} Ahp");
-                    }
-                    response = sb.ToString();
-                    return true;
-                }
-                catch
-                {
-                    Log.Debug("slist unkown error");
-                    response = "command not complete detected error try again later";
-                    return false;
-                }
+                response = "You do not have permission s6.list to use this command";
+                return false;
             }
+            Player[] players = Player.List.Where(x => x.IsScp600()).ToArray();
+            if (players.Length == 0)
+            {
+                response = "There are no users with the role Scp600";
+                return false;
+            }
+            StringBuilder sb = new StringBuilder();
+            sb.AppendLine($"At the moment {players.Length} players have been detected");
+            foreach (Player p in players)
+            {
+                sb.AppendLine($"{p.DisplayNickname}: {p.Health}/{p.MaxHealth}-HP {p.ArtificialHealth}/{p.MaxArtificialHealth}-AHP");
+            }
+            response = sb.ToString();
+            return true;
         }
     }
 }

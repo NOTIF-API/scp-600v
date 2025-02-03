@@ -1,10 +1,12 @@
-﻿using Exiled.API.Features;
-using Exiled.CustomRoles.API.Features;
-using SCP_600V.Extensions;
-using SCP_600V.Roles;
-using System;
+﻿using System;
 using System.Linq;
 using System.Reflection;
+
+using Exiled.API.Features;
+using Exiled.CustomRoles.API.Features;
+
+using SCP_600V.Extensions;
+using SCP_600V.Roles;
 
 namespace SCP_600V.API
 {
@@ -16,22 +18,14 @@ namespace SCP_600V.API
         /// <param name="ply">Player who getted role</param>
         public static void SpawnPlayer(Player ply)
         {
-            Log.Debug($"{nameof(SpawnPlayer)} called by {Assembly.GetCallingAssembly().GetName().Name}");
+            Log.Debug($"{nameof(SpawnPlayer)}: Called by {Assembly.GetCallingAssembly().GetName().Name} for {ply.Nickname}");
             CustomRole.Get(typeof(Scp600)).AddRole(ply);
         }
         /// <summary>
         /// Lets you get <see cref="Array"/> containing players playing for Scp600
         /// </summary>
         /// <returns>An array with players or null if there is no one</returns>
-        public static Player[] GetAffected()
-        {
-            Player[] a = Player.List.Where(x => x != null & x.IsScp600()).ToArray();
-            if (a.Length == 0) return null;
-            else
-            {
-                return a;
-            }
-        }
+        public static Player[] GetAffected() => Player.List.Where(x => x != null & x.IsScp600()).ToArray();
         /// <summary>
         /// Return if player is scp600 now, original source <see cref="PlayerExtensions.IsScp600(Player)"/>
         /// </summary>

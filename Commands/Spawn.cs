@@ -1,9 +1,12 @@
-﻿using CommandSystem;
+﻿using System;
+
+using CommandSystem;
+
 using Exiled.API.Features;
 using Exiled.CustomRoles.API.Features;
 using Exiled.Permissions.Extensions;
+
 using SCP_600V.Roles;
-using System;
 
 namespace SCP_600V.Commands
 {
@@ -15,29 +18,33 @@ namespace SCP_600V.Commands
 
         public string[] Aliases { get; set; } = { "s6cr" };
 
-        public string Description { get; set; } = "allow spaawn your or other player as scp600";
+        public string Description { get; set; } = "allow spawn your or other player as scp600";
 
         public bool Execute(ArraySegment<string> arguments, ICommandSender sender, out string response)
         {
             if (!sender.CheckPermission("s6.spawn"))
             {
-                response = "do not have permissions";
+                response = "You do not have permission to use this command.";
                 return false;
             }
-            else
+            Player target = arguments.Count == 0 ? Player.Get(sender) : Player.Get(arguments.At(0));
+            if (target == null)
             {
-                Player ply = null;
-                if (arguments.Count > 0)
-                {
-                    ply = Player.Get(arguments.At(0));
-                }
-                if (arguments.Count == 0)
-                {
-                    ply = Player.Get(sender);
-                }
-                CustomRole.Get(typeof(Scp600)).AddRole(ply);
-                response = $"succes added for {ply.Nickname}";
+                response = "Target for getting role not found, error interacting with command";
+                Log.Debug($"Spawn.{nameof(Execute)}: {arguments.Count} Command can be execute from console");
+                return false;
+            }
+            try
+            {
+                CustomRole.Get(typeof(Scp600)).AddRole(target);
+                response = "";
                 return true;
+            }
+            catch (Exception ex)
+            {
+                Log.Debug($"Spawn.{nameof(Execute)}: {ex.Message}");
+                response = "Error in command execution, details were recorded in Debug";
+                return false;
             }
         }
     }

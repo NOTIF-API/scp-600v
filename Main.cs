@@ -1,7 +1,8 @@
-﻿using Exiled.API.Enums;
+﻿using System;
+
+using Exiled.API.Enums;
 using Exiled.API.Features;
 using Exiled.CustomRoles.API;
-using System;
 
 namespace SCP_600V
 {
@@ -13,9 +14,9 @@ namespace SCP_600V
 
         public override bool IgnoreRequiredVersionCheck { get; } = false;
 
-        public override Version RequiredExiledVersion { get; } = new Version(8, 9, 0);
+        public override Version RequiredExiledVersion { get; } = new Version(9, 0, 0);
 
-        public override Version Version { get; } = new Version(3, 1, 1);
+        public override Version Version { get; } = new Version(3, 2, 0);
 
         public override PluginPriority Priority { get; } = PluginPriority.Medium;
 
@@ -38,17 +39,6 @@ namespace SCP_600V
             this.Config.ScpConfig.Unregister();
             Instance = null;
             base.OnDisabled();
-        }
-        //at the moment I have no idea what to add here
-
-        private void RegisterEvent()
-        {
-            Log.Debug("Subscride to events");
-        }
-
-        private void UnRegisterEvent()
-        {
-            Log.Debug("Unsubscride to events");
         }
     }
 }

@@ -1,4 +1,6 @@
 ﻿using CommandSystem;
+
+using Exiled.API.Enums;
 using Exiled.API.Features;
 using Exiled.Permissions.Extensions;
 using System;
@@ -10,27 +12,29 @@ namespace SCP_600V.Commands
     {
         public bool SanitizeResponse => true;
 
-        public string Command { get; } = "fakekill";
+        public string Command { get; } = "testkill";
 
-        public string[] Aliases { get; } = { "fkl" };
+        public string[] Aliases { get; } = { "tkill" };
 
         public string Description { get; } = "Created for test, you can do not use it";
 
         public bool Execute(ArraySegment<string> arguments, ICommandSender sender, out string response)
         {
-            if (!sender.CheckPermission("s6.debug") | arguments.Count > 2)
+            if (!sender.CheckPermission("s6.debug"))
             {
-                response = "do not have permissions or arguments lower 2";
+                response = "You do not have permission to use this command.";
                 return false;
             }
-            else
+            Player player = Player.Get(arguments.At(0)); 
+            Player attacker = Player.Get(arguments.At(1));
+            if (player == null | attacker == null)
             {
-                Player a = Player.Get(arguments.At(0)); // attacker
-                Player b = Player.Get(arguments.At(1)); // target
-                b.Hurt(a, b.Health+1, Exiled.API.Enums.DamageType.Custom, null); // for kill target
-                response = "done";
-                return true;
+                response = "Players with such ID or name may not be valid or do not exist";
+                return false;
             }
+            player.Hurt(attacker, player.MaxHealth + 1, DamageType.Custom, null, "SCP-600 Test kill");
+            response = "Command done";
+            return true;
         }
     }
 }

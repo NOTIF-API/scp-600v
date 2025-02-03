@@ -1,6 +1,8 @@
-﻿using CommandSystem;
+﻿using System;
+
+using CommandSystem;
+
 using Exiled.API.Features;
-using System;
 
 namespace SCP_600V.Commands
 {
@@ -17,13 +19,11 @@ namespace SCP_600V.Commands
 
         public override void LoadGeneratedCommands()
         {
-            Log.Debug("Registering other commands");
+            Log.Debug($"{nameof(LoadGeneratedCommands)}: Registration of parental commands");
             RegisterCommand(new Lists());
             RegisterCommand(new Spawn());
             RegisterCommand(new ImetateKill());
-            
         }
-
         protected override bool ExecuteParent(ArraySegment<string> arguments, ICommandSender sender, out string response)
         {
             response = "sp6 slist | spawn";

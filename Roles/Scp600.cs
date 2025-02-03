@@ -1,26 +1,26 @@
-﻿using Exiled.API.Features;
-using Exiled.API.Features.Hazards;
-using Exiled.API.Features.Attributes;
-using Exiled.API.Features.Spawn;
+﻿using System.Collections.Generic;
+using System.ComponentModel;
+
 using Exiled.API.Enums;
 using Exiled.API.Extensions;
+using Exiled.API.Features;
+using Exiled.API.Features.Attributes;
+using Exiled.API.Features.Spawn;
 using Exiled.CustomRoles.API.Features;
 using Exiled.Events.EventArgs.Player;
-using Exiled.Events.EventArgs.Scp096;
-using SCP_600V.Events;
+
 using MEC;
+
 using PlayerRoles;
-using System;
-using System.Collections.Generic;
-using System.ComponentModel;
-using SCP_600V.Extensions;
-using SCP_600V.Events.EventArg;
+
+using YamlDotNet.Serialization;
 
 namespace SCP_600V.Roles
 {
     [CustomRole(RoleTypeId.Tutorial)]
     public class Scp600 : CustomRole
     {
+        
         public override uint Id { get; set; } = 600;
         public override int MaxHealth { get; set; } = 400;
         public override string Name { get; set; } = "SCP-600V";
@@ -28,7 +28,7 @@ namespace SCP_600V.Roles
 
         [Description("If need hide set a empty string")]
         public override string CustomInfo { get; set; } = "SCP-600V";
-        [Description("Role a player self visible (do not change to scp's)")]
+        [YamlIgnore]
         public override RoleTypeId Role { get; set; } = RoleTypeId.Tutorial;
         [Description("Can scp600 get damage")]
         public bool CanBleading { get; set; } = true;
@@ -42,15 +42,13 @@ namespace SCP_600V.Roles
         public int AhpAmount { get; set; } = 15;
         [Description("Will the player be affected by the effects of various scp (for example, invisible field 939)")]
         public bool ScpAffectPlayer { get; set; } = false;
-
-        public override bool IgnoreSpawnSystem { get; set; } = true;
-
         public override SpawnProperties SpawnProperties { get; set; } = new SpawnProperties()
         {
+            Limit = 1,
             RoleSpawnPoints = new List<RoleSpawnPoint>()
             {
                 new RoleSpawnPoint() {
-                    Chance = 100,
+                    Chance = 45,
                     Role = RoleTypeId.ClassD
                 }
             }
@@ -59,28 +57,15 @@ namespace SCP_600V.Roles
         public List<ItemType> BlackListItems { get; set; } = new List<ItemType>()
         {
             ItemType.MicroHID,
+            ItemType.Jailbird
         };
-
-        public override void AddRole(Player player)
-        {
-            RespawningEventArgs e = new RespawningEventArgs(player);
-            EventManager.InvokeRespawning(e);
-            Log.Debug($"{e.IsAllow} for event scp600 spawning detected");
-            if (e.IsAllow)
-            {
-                Log.Debug($"adding role for {player.Nickname}");
-                base.AddRole(player);
-            }
-        }
         protected override void RoleAdded(Player player)
         {
-            RespawnedEventArgs e = new RespawnedEventArgs(player);
-            EventManager.InvokeRespawned(e);
-            player.SessionVariables.Add("IsScp", null);
+            player.SessionVariables.Add("IsScp", true);
             player.SessionVariables.Add("IsScp600", null);
             if (CanBleading)
             {
-                Timing.RunCoroutine(this.Hurting(player), $"{player.Id}-hurtingsp6");
+                Timing.RunCoroutine(this.Hurting(player), $"{player.Id}-hurtscp600");
             }
             player.ChangeAppearance(RoleTypeId.ClassD);
             base.RoleAdded(player);
@@ -90,7 +75,7 @@ namespace SCP_600V.Roles
         {
             player.SessionVariables.Remove("IsScp600");
             player.SessionVariables.Remove("IsScp");
-            Timing.KillCoroutines($"{player.Id}-hurtingsp6");
+            Timing.KillCoroutines($"{player.Id}-hurtscp600");
             base.RoleRemoved(player);
         }
         protected override void SubscribeEvents()
@@ -100,7 +85,6 @@ namespace SCP_600V.Roles
             Exiled.Events.Handlers.Player.Died += this.OnDied;
             Exiled.Events.Handlers.Player.EnteringEnvironmentalHazard += this.OnEnterEnviromentHazard;
             Exiled.Events.Handlers.Player.EnteringPocketDimension += this.OnEnteringPocketDemension;
-            Exiled.Events.Handlers.Scp096.AddingTarget += this.OnAddingTarget;
             base.SubscribeEvents();
         }
         protected override void UnsubscribeEvents()
@@ -110,22 +94,15 @@ namespace SCP_600V.Roles
             Exiled.Events.Handlers.Player.Died -= this.OnDied;
             Exiled.Events.Handlers.Player.EnteringEnvironmentalHazard -= this.OnEnterEnviromentHazard;
             Exiled.Events.Handlers.Player.EnteringPocketDimension -= this.OnEnteringPocketDemension;
-            Exiled.Events.Handlers.Scp096.AddingTarget -= this.OnAddingTarget;
             base.UnsubscribeEvents();
         }
 
         private void OnDied(DiedEventArgs e)
         {
             if (e.Player == null | e.Attacker == null) return;
-            if (this.Check(e.Player))
+            if (this.Check(e.Attacker))
             {
-                KilledEventArgs ev = new KilledEventArgs(e.Player, e.Attacker);
-                EventManager.InvokeKilled(ev);
-                return;
-            }
-            else if (this.Check(e.Attacker) & this.AddAhpWhenKill)
-            {
-                e.Attacker.ArtificialHealth += this.AhpAmount;
+                e.Attacker.ArtificialHealth += AddAhpWhenKill ? this.AhpAmount : 0;
                 e.Attacker.ChangeAppearance(e.TargetOldRole);
                 e.Attacker.ShowHint(this.TransformationMessage.Replace("%player%", e.Player.Nickname).Replace("%role%", e.TargetOldRole.ToString()));
                 return;
@@ -134,45 +111,17 @@ namespace SCP_600V.Roles
 
         private void OnPickingUpItem(PickingUpItemEventArgs e)
         {
-            if (e.Player == null | !this.Check(e.Player)) return;
-            else
-            {
-                if (this.BlackListItems.Contains(e.Pickup.Type))
-                {
-                    e.IsAllowed = false;
-                    return;
-                }
-                else
-                {
-                    return;
-                }
-            }
+            if (e.Player == null | Check(e.Player)) return;
+            if (!BlackListItems.Contains(e.Pickup.Type)) return;
+            e.IsAllowed = false;
+            return;
         }
         private void OnHurting(HurtingEventArgs e)
         {
-            try
+            if (e.Attacker == null | e.Player == null | !Check(e.Player)) return;// players not null, player is not custom object
+            if (e.Attacker.Role.Side == Side.Scp & !Main.Instance.Config.ScpConfig.ScpAffectPlayer) // if Scp object can't interact bad with custom object
             {
-                if (e.Player == null | e.Attacker == null) return;
-                if (this.Check(e.Player))
-                {
-                    if (e.Attacker.IsScp | e.Attacker.IsCustomScp())
-                    {
-                        e.IsAllowed = false;
-                        return;
-                    }
-                }
-                if (this.Check(e.Attacker))
-                {
-                    if (e.Player.IsCustomScp() | e.Player.IsScp)
-                    {
-                        e.IsAllowed = false;
-                        return;
-                    }
-                }
-            }
-            catch (Exception ex)
-            {
-                Log.Debug($"{nameof(OnHurting)} error {ex.Message}");
+                e.IsAllowed = false;
             }
         }
         // scp173, scp106, scp939 handler hazard
@@ -180,10 +129,9 @@ namespace SCP_600V.Roles
         {
             if (!this.ScpAffectPlayer & Check(e.Player))
             {
-                if (e.Hazard is AmnesticCloudHazard | e.Hazard is TantrumHazard | e.Hazard is SinkholeHazard)
+                if (e.Hazard.Type == HazardType.AmnesticCloud | e.Hazard.Type == HazardType.Sinkhole | e.Hazard.Type == HazardType.Tantrum)
                 {
                     e.IsAllowed = false;
-                    return;
                 }
             }
         }
@@ -192,14 +140,7 @@ namespace SCP_600V.Roles
         {
             if (!this.ScpAffectPlayer && Check(e.Player))
             {
-                e.IsAllowed = false;
-            }
-        }
-        // Scp096 handler
-        private void OnAddingTarget(AddingTargetEventArgs e)
-        {
-            if (!this.ScpAffectPlayer && Check(e.Player))
-            {
+                Log.Debug($"{nameof(OnEnteringPocketDemension)}: Intercept the arrival event in the pocket dimension to cancel it taking into account the detection of Scp 600");
                 e.IsAllowed = false;
             }
         }
@@ -209,14 +150,13 @@ namespace SCP_600V.Roles
             {
                 if (player == null | !player.IsConnected)
                 {
-                    Log.Debug($"{nameof(Hurting)} Hurting coroutine stopped, player is null or not connected");
-                    break;
+                    Log.Debug($"{nameof(Hurting)}: Hurting coroutine stopped, player is null or not connected");
+                    yield break;
                 }
-
                 int damage = UnityEngine.Random.Range(1, 5);
-                yield return Timing.WaitForSeconds(5);
                 player.Hurt(damage, DamageType.Bleeding);
-                Log.Debug($"{nameof(Hurting)} {player.Nickname} hurted {damage} hp");
+                Log.Debug($"{nameof(Hurting)}: {player.Nickname} take: -{damage} hp");
+                yield return Timing.WaitForSeconds(5);
             }
         }
     }
