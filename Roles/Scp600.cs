@@ -1,0 +1,178 @@
+﻿using System.Collections.Generic;
+using System.ComponentModel;
+
+using Exiled.API.Enums;
+using Exiled.API.Extensions;
+using Exiled.API.Features;
+using Exiled.API.Features.Attributes;
+using Exiled.API.Features.Spawn;
+using Exiled.CustomRoles.API.Features;
+using Exiled.Events.EventArgs.Player;
+
+using MEC;
+
+using PlayerRoles;
+
+using YamlDotNet.Serialization;
+
+namespace SCP_600V.Roles
+{
+    [CustomRole(RoleTypeId.Tutorial)]
+    public class Scp600v : CustomRole
+    {
+        public override uint Id { get; set; } = 600;
+        public override int MaxHealth { get; set; } = 400;
+        [YamlIgnore]
+        public override string Name { get; set; } = "SCP-600V";
+        public override string Description { get; set; } = "An object performing a task as an aggressive object against humanity";
+        [Description("Information visible on the role, to hide it make the line empty")]
+        public override string CustomInfo { get; set; } = "SCP-600";
+        [Description("The message that a player sees after killing another player")]
+        public string KillMessage { get; set; } = "You killed player %player% and changed your appearance to %role%";
+
+        [Description("Basically will 173, 106, 939 be able to apply abilities to our object")]
+        public bool IsScpInteractWithPlayer { get; set; } = false;
+        [Description("Will the player get AHP when killing a player")]
+        public bool IsAhpRenerate { get; set; } = true;
+        [Description("When killed, will the player also increase the maximum amount of AHP divided by two")]
+        public bool IsAhpMaxIncrease { get; set; } = true;
+        [Description("The amount of AHP that a player will receive when killing another player")]
+        public int AhpAmount { get; set; } = 15;
+        [Description("List of items that the object cannot take, ItemType as the base representation of the item names")]
+        public List<ItemType> BlackListItems { get; set; } = new List<ItemType>()
+        {
+            ItemType.MicroHID,
+            ItemType.Jailbird
+        };
+        [Description("List of items that the player will have when receiving the role (do not give what is prohibited)")]
+        public override List<string> Inventory { get; set; } = new List<string>()
+        {
+            ItemType.Coin.ToString(),
+            ItemType.Adrenaline.ToString()
+        };
+        [Description("You can set the chances and role for appearance as well as the maximum number of players that can appear for a given role")]
+        public override SpawnProperties SpawnProperties { get; set; } = new SpawnProperties()
+        {
+            Limit = 1,
+            RoleSpawnPoints = new()
+            {
+                new ()
+                {
+                    Chance=35,
+                    Role=RoleTypeId.ClassD
+                }
+            }
+        };
+
+        [YamlIgnore]
+        public override RoleTypeId Role { get; set; } = RoleTypeId.Tutorial;
+        [YamlIgnore]
+        public override List<CustomAbility> CustomAbilities { get; set; }
+        [YamlIgnore]
+        public override Dictionary<AmmoType, ushort> Ammo { get; set; }
+        [YamlIgnore]
+        public override bool KeepPositionOnSpawn { get; set; } = true;
+        [YamlIgnore]
+        public override bool KeepRoleOnDeath { get; set; } = false;
+        [YamlIgnore]
+        public override bool KeepRoleOnChangingRole { get; set; } = false;
+        [YamlIgnore]
+        public override bool RemovalKillsPlayer { get; set; } = true;
+
+        protected override void RoleAdded(Player player)
+        {
+            base.RoleAdded(player);
+            player.ChangeAppearance(Role);
+            player.SessionVariables.Add("apperance", Role);
+            player.SessionVariables.Add("IsScp600", null);
+            Timing.RunCoroutine(ApperanceUpdate(player), $"{player.Id}-apudp");
+        }
+        protected override void RoleRemoved(Player player) 
+        {
+            Timing.KillCoroutines($"{player.Id}-apudp");
+            player.SessionVariables.Remove("IsScp600");
+            base.RoleRemoved(player); 
+        }
+        // updates scp 600 skin for all players every 15 seconds
+        private IEnumerator<float> ApperanceUpdate(Player player)
+        {
+            for (; ; )
+            {
+                if (player == null) { break; }
+                if (player.IsDead) { break; }
+                if (player.SessionVariables.ContainsKey($"apperance"))
+                {
+                    player.ChangeAppearance((RoleTypeId)player.SessionVariables["apperance"]);
+                    Log.Debug($"{nameof(ApperanceUpdate)}: Updated apperance for {player.DisplayNickname}");
+                }
+                yield return Timing.WaitForSeconds(15);
+            }
+        }
+
+        protected override void SubscribeEvents()
+        {
+            base.SubscribeEvents();
+            Exiled.Events.Handlers.Player.EnteringEnvironmentalHazard += OnEntaringHazards;
+            Exiled.Events.Handlers.Player.Hurting += OnHurting;
+            Exiled.Events.Handlers.Player.EnteringPocketDimension += OnEnteringPocketDemension;
+            Exiled.Events.Handlers.Player.Died += OnDied;
+            Exiled.Events.Handlers.Player.PickingUpItem += OnPickupingItem;
+        }
+        protected override void UnsubscribeEvents()
+        {
+            base.UnsubscribeEvents();
+            Exiled.Events.Handlers.Player.EnteringEnvironmentalHazard -= OnEntaringHazards;
+            Exiled.Events.Handlers.Player.Hurting -= OnHurting;
+            Exiled.Events.Handlers.Player.EnteringPocketDimension -= OnEnteringPocketDemension;
+            Exiled.Events.Handlers.Player.Died -= OnDied;
+            Exiled.Events.Handlers.Player.PickingUpItem -= OnPickupingItem;
+        }
+        private void OnEntaringHazards(EnteringEnvironmentalHazardEventArgs e)
+        {
+            if (e.Player == null | !Check(e.Player) | IsScpInteractWithPlayer) return;
+            e.IsAllowed = false;
+        }
+        private void OnHurting(HurtingEventArgs e)
+        {
+            if (e.Attacker == null | e.Player == null) return;
+            if (Check(e.Attacker) && e.Player.Role.Side == Side.Scp)
+            {
+                e.Amount = 0;
+                e.IsAllowed = false;
+                return;
+            }
+            if (Check(e.Player) && e.Attacker.Role.Side == Side.Scp)
+            {
+                e.Amount = 0;
+                e.IsAllowed = false;
+                return;
+            }
+        }
+        private void OnEnteringPocketDemension(EnteringPocketDimensionEventArgs e)
+        {
+            if (e.Player == null | !Check(e.Player)) return;
+            e.IsAllowed = false;
+        }
+        private void OnDied(DiedEventArgs e)
+        {
+            if (e.Player == null | e.Attacker == null | !Check(e.Attacker)) return;
+            if (IsAhpRenerate)
+            {
+                e.Attacker.ArtificialHealth += AhpAmount;
+            }
+            if (IsAhpMaxIncrease)
+            {
+                e.Attacker.MaxArtificialHealth += (AhpAmount / 2);
+            }
+            e.Attacker.ShowHint(KillMessage.Replace("%player%", e.Player.DisplayNickname).Replace("%role%", e.Player.Role.Type.ToString()), 4);
+            e.Attacker.ChangeAppearance(e.TargetOldRole);
+            e.Attacker.SessionVariables[$"apperance"] = e.TargetOldRole;
+        }
+        private void OnPickupingItem(PickingUpItemEventArgs e)
+        {
+            if (e.Player == null | !Check(e.Player)) return;
+            if (!BlackListItems.Contains(e.Pickup.Type)) return;
+            e.IsAllowed = false;
+        }
+    }
+}

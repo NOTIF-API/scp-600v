@@ -16,7 +16,7 @@ namespace SCP_600V
 
         public override Version RequiredExiledVersion { get; } = new Version(9, 0, 0);
 
-        public override Version Version { get; } = new Version(3, 2, 0);
+        public override Version Version { get; } = new Version(3, 3, 0);
 
         public override PluginPriority Priority { get; } = PluginPriority.Medium;
 
@@ -28,15 +28,15 @@ namespace SCP_600V
         public override void OnEnabled()
         {
             Instance = this;
-            Log.Debug($"{nameof(OnEnabled)} Registaring role scp600");
-            this.Config.ScpConfig.Register();
+            Log.Debug($"{nameof(OnEnabled)}: Registaring role scp600");
+            this.Config.ScpRole.Register();
             base.OnEnabled();
         }
 
         public override void OnDisabled()
         {
-            Log.Debug($"{nameof(OnDisabled)} Unregister role scp600");
-            this.Config.ScpConfig.Unregister();
+            Log.Debug($"{nameof(OnDisabled)}: Unregister role scp600");
+            this.Config.ScpRole.Unregister();
             Instance = null;
             base.OnDisabled();
         }

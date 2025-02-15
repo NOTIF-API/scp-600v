@@ -11,6 +11,7 @@
     <AssemblyName>SCP-600V</AssemblyName>
     <TargetFrameworkVersion>v4.8</TargetFrameworkVersion>
     <FileAlignment>512</FileAlignment>
+    <LangVersion>9.0</LangVersion>
     <Deterministic>true</Deterministic>
     <TargetFrameworkProfile />
   </PropertyGroup>
@@ -42,13 +43,12 @@
     <SignAssembly>false</SignAssembly>
   </PropertyGroup>
   <ItemGroup>
-    <Compile Include="API\Features.cs" />
-    <Compile Include="Commands\ImetateKill.cs" />
-    <Compile Include="Commands\Lists.cs" />
-    <Compile Include="Commands\Parent.cs" />
+    <Compile Include="API\Extensions\PlayerExtension.cs" />
+    <Compile Include="Commands\List.cs" />
+    <Compile Include="Commands\P.cs" />
     <Compile Include="Commands\Spawn.cs" />
+    <Compile Include="Commands\svr.cs" />
     <Compile Include="Config.cs" />
-    <Compile Include="Extensions\PlayerExtensions.cs" />
     <Compile Include="Main.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="Roles\Scp600.cs" />

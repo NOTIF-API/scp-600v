@@ -14,7 +14,7 @@ namespace SCP_600V
         [Description("Can the player see the debug message in the server console")]
         public bool Debug { get; set; } = false;
 
-        [Description("Configuration for the Scp600 role")]
-        public Scp600 ScpConfig { get; set; } = new Scp600();
+        [Description("Scp 600 role config")]
+        public Scp600v ScpRole { get; set; } = new();
     }
 }
