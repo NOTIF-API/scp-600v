@@ -21,46 +21,44 @@ scp600v:
   is_enabled: true
   # Can the player see the debug message in the server console
   debug: false
-  # Configuration for the Scp600 role
-  scp_config:
+  # Scp 600 role config
+  scp_role:
     id: 600
     max_health: 400
-    name: 'SCP-600V'
-    description: 'Angry scp 600, help other scp complete a task'
-    # If need hide set a empty string
-    custom_info: 'SCP-600V'
-    # Role a player self visible (do not change to scp's)
-    role: Tutorial
-    # Can scp600 get damage
-    can_bleading: true
-    # Chance for spawn role
-    spawn_chance: 15
-    # The message that the player will see when he kills the player
-    transformation_message: 'you killed %player% and changed your apperance to %role%'
-    # Will the player receive AHP when killing another player
-    add_ahp_when_kill: true
-    # The amount a player will receive when he kills a player
+    description: 'An object performing a task as an aggressive object against humanity'
+    # Information visible on the role, to hide it make the line empty
+    custom_info: 'SCP-600'
+    # The message that a player sees after killing another player
+    kill_message: 'You killed player %player% and changed your appearance to %role%'
+    # Basically will 173, 106, 939 be able to apply abilities to our object
+    is_scp_interact_with_player: false
+    # Will the player get AHP when killing a player
+    is_ahp_renerate: true
+    # When killed, will the player also increase the maximum amount of AHP divided by two
+    is_ahp_max_increase: true
+    # The amount of AHP that a player will receive when killing another player
     ahp_amount: 15
-    # Will the player be affected by the effects of various scp (for example, invisible field 939)
-    scp_affect_player: false
-    ignore_spawn_system: true
+    # List of items that the object cannot take, ItemType as the base representation of the item names
+    black_list_items:
+    - MicroHID
+    - Jailbird
+    # List of items that the player will have when receiving the role (do not give what is prohibited)
+    inventory:
+    - 'Coin'
+    - 'Adrenaline'
+    # You can set the chances and role for appearance as well as the maximum number of players that can appear for a given role
     spawn_properties:
-      limit: 0
+      limit: 1
       dynamic_spawn_points: []
       static_spawn_points: []
       role_spawn_points:
       - role: ClassD
-        chance: 100
-    black_list_items:
-    - MicroHID
-    custom_abilities: []
-    inventory: []
-    ammo: {}
-    keep_position_on_spawn: false
+        chance: 35
+      room_spawn_points: []
+      locker_spawn_points: []
     keep_inventory_on_spawn: false
-    removal_kills_player: true
-    keep_role_on_death: false
-    keep_role_on_changing_role: false
+    spawn_chance: 0
+    ignore_spawn_system: false
     broadcast:
     # The broadcast content
       content: ''
@@ -68,7 +66,7 @@ scp600v:
       duration: 10
       # The broadcast type
       type: Normal
-      # Indicates whether the broadcast should be shown or not
+      # Indicates whether the broadcast should be shown
       show: true
     display_custom_item_messages: true
     scale:
