@@ -19,7 +19,7 @@ namespace SCP_600V.Commands
 
         public bool Execute(ArraySegment<string> arguments, ICommandSender sender, out string response)
         {
-            if (sender.CheckPermission("s6.debug"))
+            if (!sender.CheckPermission("s6.debug"))
             {
                 response = "You do not have permission to use this command";
                 return false;

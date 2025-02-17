@@ -16,7 +16,7 @@ namespace SCP_600V
 
         public override Version RequiredExiledVersion { get; } = new Version(9, 0, 0);
 
-        public override Version Version { get; } = new Version(3, 3, 0);
+        public override Version Version { get; } = new Version(3, 3, 1);
 
         public override PluginPriority Priority { get; } = PluginPriority.Medium;
 

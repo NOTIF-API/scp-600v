@@ -11,7 +11,6 @@ using SCP_600V.Roles;
 namespace SCP_600V.Commands
 {
     [CommandHandler(typeof(RemoteAdminCommandHandler))]
-    [CommandHandler(typeof(GameConsoleCommandHandler))]
     public class Spawn : ICommand
     {
         public string Command { get; set; } = "spawn";
@@ -22,7 +21,7 @@ namespace SCP_600V.Commands
 
         public bool Execute(ArraySegment<string> arguments, ICommandSender sender, out string response)
         {
-            if (sender.CheckPermission("s6.spawn"))
+            if (!sender.CheckPermission("s6.spawn"))
             {
                 response = "You do not have permission to use this command";
                 return false;

@@ -1,17 +1,27 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
 using System.ComponentModel;
+using System.Linq;
+using System.Text;
 
 using Exiled.API.Enums;
 using Exiled.API.Extensions;
 using Exiled.API.Features;
 using Exiled.API.Features.Attributes;
+using Exiled.API.Features.Pools;
 using Exiled.API.Features.Spawn;
 using Exiled.CustomRoles.API.Features;
 using Exiled.Events.EventArgs.Player;
 
+using InventorySystem.Configs;
+
 using MEC;
 
 using PlayerRoles;
+
+using SCP_600V.API.Extensions;
+
+using UnityEngine;
 
 using YamlDotNet.Serialization;
 
@@ -38,6 +48,10 @@ namespace SCP_600V.Roles
         public bool IsAhpMaxIncrease { get; set; } = true;
         [Description("The amount of AHP that a player will receive when killing another player")]
         public int AhpAmount { get; set; } = 15;
+        [Description("Object Spawn Probability")]
+        public override float SpawnChance { get; set; } = 25;
+        [Description("Minimum player online for spawning role")]
+        public int MinPlayerCount { get; set; } = 8;
         [Description("List of items that the object cannot take, ItemType as the base representation of the item names")]
         public List<ItemType> BlackListItems { get; set; } = new List<ItemType>()
         {
@@ -50,20 +64,8 @@ namespace SCP_600V.Roles
             ItemType.Coin.ToString(),
             ItemType.Adrenaline.ToString()
         };
-        [Description("You can set the chances and role for appearance as well as the maximum number of players that can appear for a given role")]
-        public override SpawnProperties SpawnProperties { get; set; } = new SpawnProperties()
-        {
-            Limit = 1,
-            RoleSpawnPoints = new()
-            {
-                new ()
-                {
-                    Chance=35,
-                    Role=RoleTypeId.ClassD
-                }
-            }
-        };
-
+        [YamlIgnore]
+        public override SpawnProperties SpawnProperties { get; set; }
         [YamlIgnore]
         public override RoleTypeId Role { get; set; } = RoleTypeId.Tutorial;
         [YamlIgnore]
@@ -78,6 +80,8 @@ namespace SCP_600V.Roles
         public override bool KeepRoleOnChangingRole { get; set; } = false;
         [YamlIgnore]
         public override bool RemovalKillsPlayer { get; set; } = true;
+        [YamlIgnore]
+        public override bool IgnoreSpawnSystem { get; set; } = true;
 
         protected override void RoleAdded(Player player)
         {
@@ -91,6 +95,7 @@ namespace SCP_600V.Roles
         {
             Timing.KillCoroutines($"{player.Id}-apudp");
             player.SessionVariables.Remove("IsScp600");
+            player.SessionVariables.Remove("apperance");
             base.RoleRemoved(player); 
         }
         // updates scp 600 skin for all players every 15 seconds
@@ -117,6 +122,7 @@ namespace SCP_600V.Roles
             Exiled.Events.Handlers.Player.EnteringPocketDimension += OnEnteringPocketDemension;
             Exiled.Events.Handlers.Player.Died += OnDied;
             Exiled.Events.Handlers.Player.PickingUpItem += OnPickupingItem;
+            Exiled.Events.Handlers.Server.RoundStarted += OnRoundStarted;
         }
         protected override void UnsubscribeEvents()
         {
@@ -126,7 +132,25 @@ namespace SCP_600V.Roles
             Exiled.Events.Handlers.Player.EnteringPocketDimension -= OnEnteringPocketDemension;
             Exiled.Events.Handlers.Player.Died -= OnDied;
             Exiled.Events.Handlers.Player.PickingUpItem -= OnPickupingItem;
+            Exiled.Events.Handlers.Server.RoundStarted -= OnRoundStarted;
         }
+        // i don't trust CustomRole spawn system lol
+        private void OnRoundStarted()
+        {
+            if (Server.PlayerCount > MinPlayerCount && UnityEngine.Random.value < (SpawnChance/100))
+            {
+                //spawn random class D!
+                try
+                {
+                    Player.List.Where(x => x.Role.Type == RoleTypeId.ClassD).FirstOrDefault().SpawnAs600();
+                }
+                catch (Exception ex)
+                {
+                    Log.Debug(ex.Message);
+                }
+            }
+        }
+
         private void OnEntaringHazards(EnteringEnvironmentalHazardEventArgs e)
         {
             if (e.Player == null | !Check(e.Player) | IsScpInteractWithPlayer) return;

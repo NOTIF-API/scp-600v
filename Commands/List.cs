@@ -13,7 +13,6 @@ using SCP_600V.Roles;
 namespace SCP_600V.Commands
 {
     [CommandHandler(typeof(RemoteAdminCommandHandler))]
-    [CommandHandler(typeof(GameConsoleCommandHandler))]
     public class List : ICommand
     {
         public string Command { get; set; } = "list";
