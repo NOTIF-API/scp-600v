@@ -21,44 +21,38 @@ scp600v:
   is_enabled: true
   # Can the player see the debug message in the server console
   debug: false
-  # Scp 600 role config
-  scp_role:
+  # Configuration for the Scp600 role
+  scp_config:
     id: 600
     max_health: 400
-    description: 'An object performing a task as an aggressive object against humanity'
-    # Information visible on the role, to hide it make the line empty
-    custom_info: 'SCP-600'
-    # The message that a player sees after killing another player
-    kill_message: 'You killed player %player% and changed your appearance to %role%'
-    # Basically will 173, 106, 939 be able to apply abilities to our object
-    is_scp_interact_with_player: false
-    # Will the player get AHP when killing a player
-    is_ahp_renerate: true
-    # When killed, will the player also increase the maximum amount of AHP divided by two
-    is_ahp_max_increase: true
-    # The amount of AHP that a player will receive when killing another player
-    ahp_amount: 15
-    # List of items that the object cannot take, ItemType as the base representation of the item names
-    black_list_items:
-    - MicroHID
-    - Jailbird
-    # List of items that the player will have when receiving the role (do not give what is prohibited)
-    inventory:
-    - 'Coin'
-    - 'Adrenaline'
-    # You can set the chances and role for appearance as well as the maximum number of players that can appear for a given role
+    name: 'SCP-600V'
+    description: 'Angry scp 600, help other scp complete a task'
+    # If need hide set a epty string
+    custom_info: 'SCP-600V'
+    # Role a player self visible (do not change to scp's)
+    role: Tutorial
+    # Can scp600 get damage
+    can_bleading: true
+    spawn_chance: 15
+    transformation_message: 'you kelled %player% and changed your apperance to %role%'
     spawn_properties:
-      limit: 1
+      limit: 0
       dynamic_spawn_points: []
       static_spawn_points: []
       role_spawn_points:
       - role: ClassD
-        chance: 35
-      room_spawn_points: []
-      locker_spawn_points: []
+        chance: 100
+    black_list_items:
+    - MicroHID
+    custom_abilities: []
+    inventory: []
+    ammo: {}
+    keep_position_on_spawn: false
     keep_inventory_on_spawn: false
-    spawn_chance: 0
+    removal_kills_player: true
+    keep_role_on_death: false
     ignore_spawn_system: false
+    keep_role_on_changing_role: false
     broadcast:
     # The broadcast content
       content: ''
@@ -66,7 +60,7 @@ scp600v:
       duration: 10
       # The broadcast type
       type: Normal
-      # Indicates whether the broadcast should be shown
+      # Indicates whether the broadcast should be shown or not
       show: true
     display_custom_item_messages: true
     scale:

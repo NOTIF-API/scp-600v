@@ -38,7 +38,8 @@ namespace SCP_600V.Commands
                 {
                     try
                     {
-                        stringBuilder.AppendLine($"{item.Key}: {item.Value.ToString()}");
+                        string value = item.Value == null ? "Null" : item.Value.ToString();
+                        stringBuilder.AppendLine($"{item.Key}: {value}");
                     }
                     catch (Exception ex)
                     {

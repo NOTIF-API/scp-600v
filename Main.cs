@@ -1,8 +1,10 @@
 ﻿using System;
+using System.Collections.Generic;
 
 using Exiled.API.Enums;
 using Exiled.API.Features;
 using Exiled.CustomRoles.API;
+using Exiled.Events.EventArgs.Player;
 
 namespace SCP_600V
 {
@@ -24,10 +26,10 @@ namespace SCP_600V
         /// A static variable called Instance is created to gain access to the plugin configurations and other parameters
         /// </summary>
         public static Main Instance { get; private set; }
+        private List<string> RoleTypes { get; set; } = new List<string>();
 
         public override void OnEnabled()
         {
-            Instance = this;
             Log.Debug($"{nameof(OnEnabled)}: Registaring role scp600");
             this.Config.ScpRole.Register();
             base.OnEnabled();

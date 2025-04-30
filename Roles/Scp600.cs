@@ -2,26 +2,33 @@
 using System.Collections.Generic;
 using System.ComponentModel;
 using System.Linq;
-using System.Text;
+
+using AdminToys;
 
 using Exiled.API.Enums;
 using Exiled.API.Extensions;
 using Exiled.API.Features;
 using Exiled.API.Features.Attributes;
-using Exiled.API.Features.Pools;
+using Exiled.API.Features.Core.UserSettings;
 using Exiled.API.Features.Spawn;
+using Exiled.API.Features.Toys;
 using Exiled.CustomRoles.API.Features;
 using Exiled.Events.EventArgs.Player;
-
-using InventorySystem.Configs;
-
+using Exiled.Events.EventArgs.Server;
 using MEC;
 
+using Mirror;
+
 using PlayerRoles;
+using PlayerRoles.Voice;
 
 using SCP_600V.API.Extensions;
 
 using UnityEngine;
+
+using VoiceChat;
+using VoiceChat.Codec;
+using VoiceChat.Networking;
 
 using YamlDotNet.Serialization;
 
@@ -31,6 +38,7 @@ namespace SCP_600V.Roles
     public class Scp600v : CustomRole
     {
         public override uint Id { get; set; } = 600;
+
         public override int MaxHealth { get; set; } = 400;
         [YamlIgnore]
         public override string Name { get; set; } = "SCP-600V";
@@ -64,6 +72,8 @@ namespace SCP_600V.Roles
             ItemType.Coin.ToString(),
             ItemType.Adrenaline.ToString()
         };
+        [Description("Initial appearance of the object upon respawn")]
+        public RoleTypeId StartApperance { get; set; } = RoleTypeId.ClassD;
         [YamlIgnore]
         public override SpawnProperties SpawnProperties { get; set; }
         [YamlIgnore]
@@ -86,10 +96,18 @@ namespace SCP_600V.Roles
         protected override void RoleAdded(Player player)
         {
             base.RoleAdded(player);
-            player.ChangeAppearance(Role);
-            player.SessionVariables.Add("apperance", Role);
+            player.SessionVariables.Add("apperance", StartApperance);
             player.SessionVariables.Add("IsScp600", null);
             Timing.RunCoroutine(ApperanceUpdate(player), $"{player.Id}-apudp");
+            Timing.CallDelayed(0.5f, () =>
+            {
+                if (CustomInfo == "" | CustomInfo == string.Empty)
+                {
+                    player.CustomInfo = string.Empty;
+                    player.InfoArea |= PlayerInfoArea.Nickname | PlayerInfoArea.Role;
+                }
+                player.ChangeAppearance(StartApperance);
+            });
         }
         protected override void RoleRemoved(Player player) 
         {
@@ -123,6 +141,7 @@ namespace SCP_600V.Roles
             Exiled.Events.Handlers.Player.Died += OnDied;
             Exiled.Events.Handlers.Player.PickingUpItem += OnPickupingItem;
             Exiled.Events.Handlers.Server.RoundStarted += OnRoundStarted;
+            Exiled.Events.Handlers.Server.EndingRound += OnEndingRound;
         }
         protected override void UnsubscribeEvents()
         {
@@ -133,6 +152,7 @@ namespace SCP_600V.Roles
             Exiled.Events.Handlers.Player.Died -= OnDied;
             Exiled.Events.Handlers.Player.PickingUpItem -= OnPickupingItem;
             Exiled.Events.Handlers.Server.RoundStarted -= OnRoundStarted;
+            Exiled.Events.Handlers.Server.EndingRound -= OnEndingRound;
         }
         // i don't trust CustomRole spawn system lol
         private void OnRoundStarted()
@@ -148,6 +168,19 @@ namespace SCP_600V.Roles
                 {
                     Log.Debug(ex.Message);
                 }
+            }
+        }
+
+        private void OnEndingRound(EndingRoundEventArgs e)
+        {
+            if (e.LeadingTeam == LeadingTeam.Anomalies) return;
+            else
+            {
+                int customs = TrackedPlayers.Count;
+                if (customs == 0) return;
+                int targets = Player.List.Where(x => x.IsAlive && !x.IsScp && !x.IsScp600() && x.Role.Type != RoleTypeId.Tutorial).Count();
+                if (targets == 0) return;
+                e.IsAllowed = false;
             }
         }
 
@@ -188,9 +221,10 @@ namespace SCP_600V.Roles
             {
                 e.Attacker.MaxArtificialHealth += (AhpAmount / 2);
             }
-            e.Attacker.ShowHint(KillMessage.Replace("%player%", e.Player.DisplayNickname).Replace("%role%", e.Player.Role.Type.ToString()), 4);
+            e.Attacker.ShowHint(KillMessage.Replace("%player%", e.Player.DisplayNickname).Replace("%role%", e.TargetOldRole.ToString()), 4);
             e.Attacker.ChangeAppearance(e.TargetOldRole);
             e.Attacker.SessionVariables[$"apperance"] = e.TargetOldRole;
+            Log.Debug($"{nameof(OnDied)}: {e.Player.DisplayNickname}-{e.Player.IsScp600()} killed by {e.Attacker.DisplayNickname}-{e.Attacker.IsScp600()}");
         }
         private void OnPickupingItem(PickingUpItemEventArgs e)
         {
