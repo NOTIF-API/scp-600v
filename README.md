@@ -13,6 +13,7 @@ if you have questions about scp-600 or you find a bug, you can contact me on the
 # permission's
 > s6.spawn - can an admin give himself the scp-600 role       
 > s6.debug - can admin allow accses to use debug command
+> s6.list - can admin allow get list of active players
 
 # Configs
 ```yaml
