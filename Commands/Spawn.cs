@@ -23,7 +23,7 @@ namespace SCP_600V.Commands
         {
             if (!sender.CheckPermission("s6.spawn"))
             {
-                response = "You do not have permission to use this command";
+                response = "You do not have permission to use this command.";
                 return false;
             }
             else
@@ -31,7 +31,7 @@ namespace SCP_600V.Commands
                 Player target = arguments.Count > 0 ? Player.Get(arguments.At(0)) : Player.Get(sender);
                 if (target == null | target.IsHost)
                 {
-                    response = "the target does not exist or you are a console";
+                    response = "the target does not exist or you are a console.";
                     return false;
                 }
                 CustomRole.Get(typeof(Scp600v)).AddRole(target);

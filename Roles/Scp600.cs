@@ -3,32 +3,20 @@ using System.Collections.Generic;
 using System.ComponentModel;
 using System.Linq;
 
-using AdminToys;
-
 using Exiled.API.Enums;
 using Exiled.API.Extensions;
 using Exiled.API.Features;
 using Exiled.API.Features.Attributes;
-using Exiled.API.Features.Core.UserSettings;
 using Exiled.API.Features.Spawn;
-using Exiled.API.Features.Toys;
 using Exiled.CustomRoles.API.Features;
 using Exiled.Events.EventArgs.Player;
+using Exiled.Events.EventArgs.Scp096;
 using Exiled.Events.EventArgs.Server;
 using MEC;
 
-using Mirror;
-
 using PlayerRoles;
-using PlayerRoles.Voice;
 
 using SCP_600V.API.Extensions;
-
-using UnityEngine;
-
-using VoiceChat;
-using VoiceChat.Codec;
-using VoiceChat.Networking;
 
 using YamlDotNet.Serialization;
 
@@ -37,6 +25,11 @@ namespace SCP_600V.Roles
     [CustomRole(RoleTypeId.Tutorial)]
     public class Scp600v : CustomRole
     {
+        [YamlIgnore]
+        public const string IsScp600 = "IsScp600";
+        [YamlIgnore]
+        private const string apperancekey = "Apperance";
+
         public override uint Id { get; set; } = 600;
 
         public override int MaxHealth { get; set; } = 400;
@@ -50,6 +43,8 @@ namespace SCP_600V.Roles
 
         [Description("Basically will 173, 106, 939 be able to apply abilities to our object")]
         public bool IsScpInteractWithPlayer { get; set; } = false;
+        [Description("Will the player and Scp be able to attack each other (SCP VS Scp600)")]
+        public bool IsFf { get; set; } = false;
         [Description("Will the player get AHP when killing a player")]
         public bool IsAhpRenerate { get; set; } = true;
         [Description("When killed, will the player also increase the maximum amount of AHP divided by two")]
@@ -96,24 +91,24 @@ namespace SCP_600V.Roles
         protected override void RoleAdded(Player player)
         {
             base.RoleAdded(player);
-            player.SessionVariables.Add("apperance", StartApperance);
-            player.SessionVariables.Add("IsScp600", null);
-            Timing.RunCoroutine(ApperanceUpdate(player), $"{player.Id}-apudp");
+            player.SessionVariables.Add(apperancekey, StartApperance);
+            player.SessionVariables.Add(IsScp600, null);
+            Timing.RunCoroutine(ApperanceUpdate(player), $"{player.Id}-apperance-updater");
             Timing.CallDelayed(0.5f, () =>
             {
-                if (CustomInfo == "" | CustomInfo == string.Empty)
+                if (string.IsNullOrWhiteSpace(CustomInfo)) // if there are empty lines or a hint that there will be empty lines, we set the basic information about the player
                 {
                     player.CustomInfo = string.Empty;
                     player.InfoArea |= PlayerInfoArea.Nickname | PlayerInfoArea.Role;
                 }
-                player.ChangeAppearance(StartApperance);
+                ChangeApperance(player, StartApperance);
             });
         }
         protected override void RoleRemoved(Player player) 
         {
-            Timing.KillCoroutines($"{player.Id}-apudp");
-            player.SessionVariables.Remove("IsScp600");
-            player.SessionVariables.Remove("apperance");
+            Timing.KillCoroutines($"{player.Id}-apperance-updater");
+            player.SessionVariables.Remove(IsScp600);
+            player.SessionVariables.Remove(apperancekey);
             base.RoleRemoved(player); 
         }
         // updates scp 600 skin for all players every 15 seconds
@@ -123,9 +118,9 @@ namespace SCP_600V.Roles
             {
                 if (player == null) { break; }
                 if (player.IsDead) { break; }
-                if (player.SessionVariables.ContainsKey($"apperance"))
+                if (player.SessionVariables.ContainsKey(apperancekey))
                 {
-                    player.ChangeAppearance((RoleTypeId)player.SessionVariables["apperance"]);
+                    player.ChangeAppearance((RoleTypeId)player.SessionVariables[apperancekey]);
                     Log.Debug($"{nameof(ApperanceUpdate)}: Updated apperance for {player.DisplayNickname}");
                 }
                 yield return Timing.WaitForSeconds(15);
@@ -157,16 +152,17 @@ namespace SCP_600V.Roles
         // i don't trust CustomRole spawn system lol
         private void OnRoundStarted()
         {
-            if (Server.PlayerCount > MinPlayerCount && UnityEngine.Random.value < (SpawnChance/100))
+            if (Server.PlayerCount > MinPlayerCount && UnityEngine.Random.value < ( SpawnChance / 100))
             {
-                //spawn random class D!
+                //spawn random selectable role!
                 try
                 {
-                    Player.List.Where(x => x.Role.Type == RoleTypeId.ClassD).FirstOrDefault().SpawnAs600();
+                    Player[] s = Player.List.Where(x => Main.Instance.Config.SelectableRoles.Contains(x.Role.Type)).ToArray();
+                    s[UnityEngine.Random.Range(0, s.Length - 1)].SpawnAs600();
                 }
                 catch (Exception ex)
                 {
-                    Log.Debug(ex.Message);
+                    Log.Debug($"{nameof(OnRoundStarted)}: {ex.Message}");
                 }
             }
         }
@@ -174,39 +170,32 @@ namespace SCP_600V.Roles
         private void OnEndingRound(EndingRoundEventArgs e)
         {
             if (e.LeadingTeam == LeadingTeam.Anomalies) return;
-            else
-            {
-                int customs = TrackedPlayers.Count;
-                if (customs == 0) return;
-                int targets = Player.List.Where(x => x.IsAlive && !x.IsScp && !x.IsScp600() && x.Role.Type != RoleTypeId.Tutorial).Count();
-                if (targets == 0) return;
-                e.IsAllowed = false;
-            }
+            if (e.IsForceEnded) return;
+            if (TrackedPlayers.Count == 0) return;
+            if (Player.List.Where(x => !x.IsDead && !x.IsScp600() && !x.IsScp).Count() == 0) return;
+            e.IsAllowed = false;
         }
 
         private void OnEntaringHazards(EnteringEnvironmentalHazardEventArgs e)
         {
-            if (e.Player == null | !Check(e.Player) | IsScpInteractWithPlayer) return;
+            if (IsScpInteractWithPlayer) return;
+            if (e.Player == null | !Check(e.Player)) return;
             e.IsAllowed = false;
         }
         private void OnHurting(HurtingEventArgs e)
         {
-            if (e.Attacker == null | e.Player == null) return;
-            if (Check(e.Attacker) && e.Player.Role.Side == Side.Scp)
+            if (IsFf) return; // if it is possible to fight then let it be
+            if (e.Attacker == null | e.Player == null) return; // if someone does not exist then there is no point in processing
+            if (!Check(e.Attacker) | !Check(e.Player)) return; // if there is no object among us, then the point of processing disappears
+            if (e.Attacker.IsScp | e.Player.IsScp | e.Attacker.IsScp600() | e.Player.IsScp600()) // if someone is Scp or object then we cancel the event
             {
                 e.Amount = 0;
                 e.IsAllowed = false;
-                return;
-            }
-            if (Check(e.Player) && e.Attacker.Role.Side == Side.Scp)
-            {
-                e.Amount = 0;
-                e.IsAllowed = false;
-                return;
             }
         }
         private void OnEnteringPocketDemension(EnteringPocketDimensionEventArgs e)
         {
+            if (IsScpInteractWithPlayer) return;
             if (e.Player == null | !Check(e.Player)) return;
             e.IsAllowed = false;
         }
@@ -223,7 +212,7 @@ namespace SCP_600V.Roles
             }
             e.Attacker.ShowHint(KillMessage.Replace("%player%", e.Player.DisplayNickname).Replace("%role%", e.TargetOldRole.ToString()), 4);
             e.Attacker.ChangeAppearance(e.TargetOldRole);
-            e.Attacker.SessionVariables[$"apperance"] = e.TargetOldRole;
+            e.Attacker.SessionVariables[apperancekey] = e.TargetOldRole;
             Log.Debug($"{nameof(OnDied)}: {e.Player.DisplayNickname}-{e.Player.IsScp600()} killed by {e.Attacker.DisplayNickname}-{e.Attacker.IsScp600()}");
         }
         private void OnPickupingItem(PickingUpItemEventArgs e)
@@ -231,6 +220,14 @@ namespace SCP_600V.Roles
             if (e.Player == null | !Check(e.Player)) return;
             if (!BlackListItems.Contains(e.Pickup.Type)) return;
             e.IsAllowed = false;
+        }
+
+        public static void ChangeApperance(Player ply, RoleTypeId role)
+        {
+            if (ply == null) return;
+            if (!ply.IsScp600()) return;
+            ply.ChangeAppearance(role);
+            ply.SessionVariables[apperancekey] = role;
         }
     }
 }

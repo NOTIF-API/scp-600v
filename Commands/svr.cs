@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Collections.Generic;
 using System.Text;
 
 using CommandSystem;
@@ -34,7 +35,7 @@ namespace SCP_600V.Commands
                 }
                 StringBuilder stringBuilder = new StringBuilder();
                 stringBuilder.AppendLine("SessiongVariables");
-                foreach (var item in target.SessionVariables)
+                foreach (KeyValuePair<string, object> item in target.SessionVariables)
                 {
                     try
                     {

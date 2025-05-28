@@ -6,9 +6,11 @@ using Exiled.API.Features;
 using Exiled.CustomRoles.API;
 using Exiled.Events.EventArgs.Player;
 
+using SCP_600V.Features;
+
 namespace SCP_600V
 {
-    internal class Main: Plugin<Config>
+    public class Main: Plugin<Config>
     {
         public override string Author { get; } = "notifapi";
 
@@ -18,7 +20,7 @@ namespace SCP_600V
 
         public override Version RequiredExiledVersion { get; } = new Version(9, 0, 0);
 
-        public override Version Version { get; } = new Version(3, 3, 1);
+        public override Version Version { get; } = new Version(3, 4, 0);
 
         public override PluginPriority Priority { get; } = PluginPriority.Medium;
 
@@ -26,10 +28,11 @@ namespace SCP_600V
         /// A static variable called Instance is created to gain access to the plugin configurations and other parameters
         /// </summary>
         public static Main Instance { get; private set; }
-        private List<string> RoleTypes { get; set; } = new List<string>();
 
         public override void OnEnabled()
         {
+            Instance = new Main();
+            SSS.Init();
             Log.Debug($"{nameof(OnEnabled)}: Registaring role scp600");
             this.Config.ScpRole.Register();
             base.OnEnabled();

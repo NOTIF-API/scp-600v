@@ -8,11 +8,13 @@ using Exiled.API.Features;
 using Exiled.CustomRoles.API.Features;
 using Exiled.Permissions.Extensions;
 
+using SCP_600V.API.Extensions;
 using SCP_600V.Roles;
 
 namespace SCP_600V.Commands
 {
     [CommandHandler(typeof(RemoteAdminCommandHandler))]
+    [CommandHandler(typeof(GameConsoleCommandHandler))]
     public class List : ICommand
     {
         public string Command { get; set; } = "list";
@@ -23,35 +25,20 @@ namespace SCP_600V.Commands
 
         public bool Execute(ArraySegment<string> arguments, ICommandSender sender, out string response)
         {
-            if (!sender.CheckPermission("s6.debug"))
+            if (!sender.CheckPermission("s6.list"))
             {
                 response = "You do not have permission to use this command";
                 return false;
             }
-            else
+            StringBuilder sb = new StringBuilder();
+            Player[] catched = Player.List.Where(x => x.IsScp600()).ToArray();
+            sb.AppendLine($"Active players tracked: {catched.Length}");
+            foreach (Player player in catched)
             {
-                CustomRole scp = CustomRole.Get(typeof(Scp600v));
-                if (scp == null)
-                {
-                    response = "Could not find the role of Scp 600 as a registered object, perhaps it could not be registered";
-                    return false;
-                }
-                Player[] a = Player.List.Where(x => scp.Check(x)).ToArray();
-                StringBuilder stringBuilder = new StringBuilder();
-                stringBuilder.AppendLine("Active players:");
-                if (a.Length == 0)
-                {
-                    stringBuilder.AppendLine("0 players");
-                    response = stringBuilder.ToString();
-                    return true;
-                }
-                foreach (Player item in a)
-                {
-                    stringBuilder.AppendLine($"{item.DisplayNickname}: {item.Health}/{item.MaxHealth} HP {item.ArtificialHealth}/{item.MaxArtificialHealth} AHP");
-                }
-                response = stringBuilder.ToString();
-                return true;
+                sb.AppendLine($"{player.DisplayNickname}: HP-{player.Health} MHP-{player.MaxHealth}");
             }
+            response = sb.ToString();
+            return true;
         }
     }
 }

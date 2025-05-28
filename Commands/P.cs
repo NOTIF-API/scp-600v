@@ -25,7 +25,7 @@ namespace SCP_600V.Commands
 
         protected override bool ExecuteParent(ArraySegment<string> arguments, ICommandSender sender, out string response)
         {
-            response = $"sp6 {string.Join(" | ", Commands.Select(x => x.Key))}";
+            response = $"sp6 [ {string.Join(" | ", Commands.Select(x => x.Key))} ]";
             return true;
         }
     }
