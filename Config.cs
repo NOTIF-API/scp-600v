@@ -33,6 +33,8 @@ namespace SCP_600V
         public string KeyBindName { get; set; } = "Ability to change appearance (bind)";
         [Description("Description for the button bind parameter")]
         public string KeyBindDescription { get; set; } = "The key responsible for activating the ability to change appearance to random role";
+        [Description("Header component base id")]
+        public int HeaderId { get; set; } = 600;
         [Description("Button identifier for the bind, this value must be unique for its instance")]
         public int KeyBindId { get; set; } = 601;
 
