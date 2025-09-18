@@ -11,10 +11,12 @@ a new object scp-600 which at the beginning of the game has a certain chance of 
 
 [![Help](https://img.shields.io/badge/issues-aqua)]( https://github.com/NOTIF-API/scp-600v/issues)
 
-# permission's
-> s6.spawn - can an admin give himself the scp-600 role       
-> s6.debug - can admin allow accses to use debug command
-> s6.list - can allow for your admins get active tracked players
+# permission for command execution
+### admin permission
+> s6.spawn - can an admin give himself the scp-600 role.     
+> s6.list - can allow for your admins get active tracked players.
+### debug permission
+> s6.debug - can admin allow accses to use debug command.
 
 # PlaceHolders
 
