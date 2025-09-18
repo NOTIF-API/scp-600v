@@ -6,10 +6,8 @@
 a new object scp-600 which at the beginning of the game has a certain chance of spawning among D-class personnel. The task of this scp object is exactly the same as that of any other scp where it helps to fulfill their goals. This object is capable of changing its appearance to that of the one killed, which makes it quite difficult to recognize it from afar.
 
 # Questions and bugs
-1. if you have questions about scp-600 or you find a bug, you can contact me on the `notifapi` discord or here 
+1. if you have questions about scp-600 or you find a bug, you can contact me on the `notifapi` discord or [here](https://github.com/NOTIF-API/scp-600v/issues) 
 2. If you want the player's role not to be shown when hovering over them, set this field to this: `custom_info: ''`
-
-[![Help](https://img.shields.io/badge/issues-aqua)]( https://github.com/NOTIF-API/scp-600v/issues)
 
 # permission for command execution
 ### admin permission
