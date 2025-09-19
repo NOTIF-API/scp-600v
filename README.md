@@ -19,7 +19,7 @@ if you have questions about scp-600 or you find a bug, you can contact me on the
 # Enable or disable plugin
 is_enabled: true
 # Can the player see the debug message in the server console
-debug: true
+debug: false
 # The message the player will see if they use their ability.
 ability_use_message: 'You have successfully changed your appearance with your ability to %role%'
 # Scp 600 role config
