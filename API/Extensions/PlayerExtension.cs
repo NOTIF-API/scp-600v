@@ -23,7 +23,7 @@ namespace SCP_600V.API.Extensions
             }
             catch (Exception ex)
             {
-                Log.Debug($"{nameof(IsScp600)}: {ex.Message}");
+                Log.Debug($"[IsScp600]: {ex}");
                 return false; 
             }
         }

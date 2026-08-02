@@ -18,23 +18,18 @@ namespace SCP_600V.Commands
 
         public string[] Aliases { get; set; } = Array.Empty<string>();
 
-        public string Description { get; set; } = "Returns a list of players playing as SCP-600 and their stats";
+        public string Description { get; set; } = Main.Instance.Config.ListCommandDescription;
 
         public bool Execute(ArraySegment<string> arguments, ICommandSender sender, out string response)
         {
             if (!sender.CheckPermission("s6.list"))
             {
-                response = "<color=red>You do not have permission to use this command</color> <color=orange>(required have s6.list)</color>";
-                return true;
-            }
-            if (Scp600v.RegisteredInstance == null)
-            {
-                response = "<color=yellow>For unknown reasons, we were unable to find the role among the list of registered ones</color>";
+                response = Main.Instance.Config.UnpermitedMessage.Replace("%permission%", "s6.list");
                 return true;
             }
             StringBuilder sb = new StringBuilder();
             Player[] catched = Player.List.Where(x => Scp600v.RegisteredInstance.Check(x)).ToArray();
-            sb.AppendLine($"<color=green>Active players tracked:</color> <color=red>{catched.Length}</color>");
+            sb.AppendLine(Main.Instance.Config.ListCommandTracked.Replace("{count}", catched.Length.ToString()));
             sb.Append("<color=orange>");
             foreach (Player player in catched)
             {

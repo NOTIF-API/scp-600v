@@ -21,7 +21,7 @@ namespace SCP_600V.Commands
         {
             if (!sender.CheckPermission("s6.debug"))
             {
-                response = "You don't have permission for use this command (required have s6.debug)";
+                response = Main.Instance.Config.UnpermitedMessage.Replace("%permission%", "s6.debug");
                 return false;
             }
 

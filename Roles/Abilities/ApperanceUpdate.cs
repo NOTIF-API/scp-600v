@@ -14,10 +14,13 @@ namespace SCP_600V.Roles.Abilities
 
         protected override void AbilityUsed(Player player)
         {
-            RoleTypeId newApperance = Main.ApperaceableRoles.RandomItem();
-            Scp600v.ChangeApperance(player, newApperance);
-            player.Broadcast(5, Main.Instance.Config.AbilityUseMessage.Replace("%role%", newApperance.ToString()), Broadcast.BroadcastFlags.Normal, false);
-            Log.Debug($"{nameof(AbilityUsed)}: Invoked ability used for {player.DisplayNickname}");
+            RoleTypeId role = Main.Instance.Config.ApperancableRoles.RandomItem();
+            Scp600v.ChangeApperance(player, role);
+            Main.Instance.Config.AbilityUseMessage.Show(player, (string inner) =>
+            {
+                return inner.Replace("%role%", role.ToString());
+            });
+            Log.Debug($"[AbilityUsed]: Invoked ability use for {player.DisplayNickname}\nnew apperace role: {role}");
         }
     }
 }

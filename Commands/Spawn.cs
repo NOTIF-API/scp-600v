@@ -16,23 +16,23 @@ namespace SCP_600V.Commands
 
         public string[] Aliases { get; set; } = Array.Empty<string>();
 
-        public string Description { get; set; } = "Spawn any player as SCP-600";
+        public string Description { get; set; } = Main.Instance.Config.SpawnCommandDescription;
 
         public bool Execute(ArraySegment<string> arguments, ICommandSender sender, out string response)
         {
             if (!sender.CheckPermission("s6.spawn"))
             {
-                response = "<color=red>You do not have permission to use this command</color> <color=orange>(required have s6.spawn)</color>";
+                response = Main.Instance.Config.UnpermitedMessage.Replace("%permission%", "s6.spawn");
                 return true;
             }
             Player target = arguments.Count > 0 ? Player.Get(arguments.At(0)) : Player.Get(sender);
             if (target.HasAnyCustomRole())
             {
-                response = $"<color=yellow>{target.DisplayNickname} already has another custom role on the server</color>";
+                response = Main.Instance.Config.SpawnCommandAlerdyHasRole;
                 return true;
             }
             Scp600v.RegisteredInstance?.AddRole(target);
-            response = $"<color=green>The SCP-600 role was successfully assigned to the player</color>";
+            response = Main.Instance.Config.SpawnCommandSuccess.Replace("%player%", target.DisplayNickname);
             return true;
         }
     }

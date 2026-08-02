@@ -10,12 +10,13 @@ using Exiled.API.Features.Spawn;
 using Exiled.CustomRoles.API.Features;
 using Exiled.Events.EventArgs.Player;
 using Exiled.Events.EventArgs.Server;
+
 using MEC;
 
 using PlayerRoles;
 
-using SCP_600V.API.Extensions;
 using SCP_600V.Roles.Abilities;
+using SCP_600V.Serelizables;
 
 using YamlDotNet.Serialization;
 
@@ -29,6 +30,7 @@ namespace SCP_600V.Roles
         [YamlIgnore]
         public static Scp600v RegisteredInstance { get; internal set; }
 
+        #region Role Properties
         [Description("Role special id (Don't allow similarities with other roles!)")]
         public override uint Id { get; set; } = 600;
 
@@ -45,7 +47,23 @@ namespace SCP_600V.Roles
         public override string CustomInfo { get; set; } = "SCP-600";
 
         [Description("The message that a player sees after killing another player")]
-        public string KillMessage { get; set; } = "You killed player %player% and changed your appearance to %role%";
+        public ScreenMessageSerelizable KillMessage { get; set; } = new ScreenMessageSerelizable
+        {
+            Message = "You killed player %player% and changed your appearance to %role%",
+            Duration = 5f,
+            MessageType = MessageType.Hint
+        };
+
+        [Description("The message that a player sees when trying to pick up a prohibited item")]
+        public ScreenMessageSerelizable NotAllowedItemMessage { get; set; } = new ScreenMessageSerelizable
+        {
+            Message = "You cannot pick up this item as SCP-600",
+            Duration = 5f,
+            MessageType = MessageType.Hint
+        };
+
+        [Description("Show role in the player tab")]
+        public bool IsShowRoleInTab { get; set; } = true;
 
         [Description("Will the player and Scp be able to attack each other (SCP VS Scp600) and SCP Ability work on 600")]
         public bool IsFrindleFireEnabled { get; set; } = false;
@@ -91,6 +109,7 @@ namespace SCP_600V.Roles
         };
         [Description("Chance for a player to appear for a given role at the start of a round")]
         public override float SpawnChance { get; set; } = 25f;
+
         [Description("The role that the player has on his own behalf (it is not advisable to change it, as it is a human role)")]
         public override RoleTypeId Role { get; set; } = RoleTypeId.Tutorial;
 
@@ -105,18 +124,22 @@ namespace SCP_600V.Roles
         {
             { AmmoType.Nato9, 20 }
         };
+
         [YamlIgnore]
         public override bool KeepRoleOnDeath { get; set; } = false;
+
         [YamlIgnore]
         public override bool KeepRoleOnChangingRole { get; set; } = false;
+        #endregion
 
+        #region Role Methods
         protected override void RoleAdded(Player player)
         {
-            
-            Log.Debug($"{nameof(RoleAdded)}: Added role SCP-600 for {player.DisplayNickname}");
+            player.IsSpectatable = IsShowRoleInTab;
+            Log.Debug($"[RoleAdded]: Added role SCP-600 for {player.DisplayNickname}");
             base.RoleAdded(player);
             player.SessionVariables.Add(apperancekey, StartApperance);
-            Timing.RunCoroutine(ApperanceUpdate(player), $"{player.Id}-{nameof(ApperanceUpdate)}");
+            Timing.RunCoroutine(ApperanceUpdate(player), $"{player.Id}-ApperanceUpdate");
             Timing.CallDelayed(0.5f, () =>
             {
                 if (string.IsNullOrWhiteSpace(CustomInfo)) // if there are empty lines or a hint that there will be empty lines, we set the basic information about the player
@@ -129,9 +152,10 @@ namespace SCP_600V.Roles
         }
         public override void RemoveRole(Player player)
         {
-            Log.Debug($"{nameof(RemoveRole)}: Remove role SCP-600 for {player.DisplayNickname}");
-            Timing.KillCoroutines($"{player.Id}-{nameof(ApperanceUpdate)}");
+            Log.Debug($"[RemoveRole]: Remove role SCP-600 for {player.DisplayNickname}");
+            Timing.KillCoroutines($"{player.Id}-ApperanceUpdate");
             player.SessionVariables.Remove(apperancekey);
+            player.IsSpectatable = true;
             base.RemoveRole(player);
         }
         // updates scp 600 skin for all players every 15 seconds
@@ -139,13 +163,13 @@ namespace SCP_600V.Roles
         {
             for (; ; )
             {
-                Log.Debug($"{nameof(ApperanceUpdate)}: Start iteration for the Player.");
+                Log.Debug($"[ApperanceUpdate]: Start iteration for the Player.");
                 if (player == null) break;
                 if (!Check(player) | player.IsDead) break;
                 if (player.SessionVariables.TryGetValue(apperancekey, out object val))
                 {
                     player.ChangeAppearance((RoleTypeId)val);
-                    Log.Debug($"{nameof(ApperanceUpdate)}: Updated apperance for {player.DisplayNickname}");
+                    Log.Debug($"[ApperanceUpdate]: Updated apperance for {player.DisplayNickname}");
                 }
                 yield return Timing.WaitForSeconds(15);
             }
@@ -171,7 +195,9 @@ namespace SCP_600V.Roles
             Exiled.Events.Handlers.Player.PickingUpItem -= OnPickupingItem;
             Exiled.Events.Handlers.Server.EndingRound -= OnEndingRound;
         }
+        #endregion
 
+        #region Role events
         private void OnEndingRound(EndingRoundEventArgs e)
         {
             if (e.LeadingTeam == LeadingTeam.Anomalies) return;
@@ -203,25 +229,35 @@ namespace SCP_600V.Roles
                 ChangeApperance(e.Attacker, e.TargetOldRole);
                 if (IsAhpRenerate) e.Attacker.ArtificialHealth += AhpAmount;
                 if (IsAhpMaxIncrease) e.Attacker.MaxArtificialHealth += (AhpAmount / 2);
-                e.Attacker.ShowHint(KillMessage.Replace("%player%", e.Player.DisplayNickname).Replace("%role%", e.TargetOldRole.ToString()), 4);
-                Log.Debug($"{nameof(OnDied)}: {e.Attacker.DisplayNickname}(SCP-600) killed player {e.Player.DisplayNickname}");
+                KillMessage.Show(e.Attacker, (string inner) =>
+                {
+                    return inner.Replace("%player%", e.Player.DisplayNickname).Replace("%role%", e.TargetOldRole.ToString());
+                });
+                Log.Debug($"[OnDied]: {e.Attacker.DisplayNickname}(SCP-600) killed player {e.Player.DisplayNickname}");
             }
             if (Check(e.Player)) // For some reason unknown to me, when a player dies, he has the role of Scp600, according to my role, so we will remove it ourselves:( (However, all abilities disappear as does the event with the player)
             {
                 this.RemoveRole(e.Player);
+                e.Player.IsSpectatable = true;
             }
         }
 
         private void OnPickupingItem(PickingUpItemEventArgs e)
         {
-            if (Check(e.Player) && BlackListItems.Contains(e.Pickup.Type)) e.IsAllowed = false;
+            if (Check(e.Player) && BlackListItems.Contains(e.Pickup.Type))
+            {
+                e.IsAllowed = false;
+                NotAllowedItemMessage.Show(e.Player);
+            }
         }
 
         public static void ChangeApperance(Player ply, RoleTypeId role)
         {
             if (!RegisteredInstance.Check(ply)) return;
+            if (!Main.Instance.Config.ApperancableRoles.Contains(role)) return;
             ply.ChangeAppearance(role);
             ply.SessionVariables[apperancekey] = role;
         }
+        #endregion
     }
 }
